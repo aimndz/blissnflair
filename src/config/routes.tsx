@@ -2,7 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 
 import Home from "../Home";
 import Login from "../pages/auth/Login";
-import Signup from "../pages/auth/Signup";
+import SignUp from "../pages/auth/SignUp";
 import Error from "../pages/Error";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Overview from "../pages/Overview";
@@ -76,7 +76,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/sign-up",
-    element: <Signup />,
+    element: <SignUp />,
   },
   {
     path: "/dashboard",
