@@ -37,29 +37,13 @@ export async function getAccountById(id: string) {
 }
 
 //// CREATE ACCOUNT
-export async function createAccount({
-  firstName,
-  lastName,
-  email,
-  phoneNumber,
-  role,
-  password,
-  confirmPassword,
-}: Account) {
+export async function createAccount(account: Account) {
   const res = await fetch(`${API_URL}/accounts`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      firstName,
-      lastName,
-      email,
-      phoneNumber,
-      role,
-      password,
-      confirmPassword,
-    }),
+    body: JSON.stringify(account),
   });
 
   if (!res.ok) {
