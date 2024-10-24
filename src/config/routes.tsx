@@ -16,6 +16,7 @@ import Preview from "../pages/Preview";
 import ProfileEdit from "../pages/ProfileEdit";
 import AccountCreate from "../pages/AccountCreate";
 import SystemSettings from "../pages/SystemSettings";
+import MainLayout from "../layouts/MainLayout";
 
 const userRoutes = [
   {
@@ -66,17 +67,23 @@ const adminRoutes = [
 
 const router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
+    element: <MainLayout />,
     errorElement: <Error />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/sign-up",
-    element: <SignUp />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+        errorElement: <Error />,
+      },
+      {
+        path: "/login",
+        element: <Login />,
+      },
+      {
+        path: "/sign-up",
+        element: <SignUp />,
+      },
+    ],
   },
   {
     path: "/dashboard",
