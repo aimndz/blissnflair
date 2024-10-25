@@ -1,25 +1,49 @@
 import { useState } from "react";
 import { login } from "../../services/authApi";
 import { useNavigate } from "react-router-dom";
-import InputField from "../../components/InputField";
 import { Link } from "react-router-dom";
+import { z } from "zod";
+
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "../../components/ui/form";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "../../components/ui/input";
+import { Button } from "../../components/ui/button";
+import GoogleIcon from "../../components/icons/GoogleIcon";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Please enter a valid email address" }),
+  password: z
+    .string()
+    .min(6, { message: "Password must be at least 8 characters" }),
+});
 
 function Login() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const navigate = useNavigate();
   const [error, setError] = useState("");
 
-  const navigate = useNavigate();
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
 
-  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError("");
-
+  const handleLogin = async (values: z.infer<typeof formSchema>) => {
     try {
-      const res = await login({ email, password });
-      console.log(res);
+      await login({
+        email: values.email,
+        password: values.password,
+      });
       navigate("/dashboard");
-    } catch (error) {
+    } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
         console.error(error);
@@ -28,27 +52,77 @@ function Login() {
   };
 
   return (
-    <div>
-      <h1>Login</h1>
-      <form method="POST" onSubmit={handleLogin}>
-        <InputField
-          label="Email"
-          name="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <InputField
-          label="Password"
-          name="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {error && <p>{error}</p>}
-        <Link to="/sign-up">Don't have an account? Sign up</Link>
-        <button type="submit">Login</button>
-      </form>
+    <div className="flex h-screen flex-col justify-center text-center">
+      <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
+        <div>
+          {/* Replace with logo */}
+          <h1 className="text-2xl font-bold text-primary-100">// Logo</h1>
+          {/* <img src="" alt="logo" /> */}
+        </div>
+        <h1 className="text-xl font-bold">Login</h1>
+        <p className="mb-8 text-sm text-secondary-800">
+          Welcome back! Please login to continue.
+        </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(handleLogin)} className="space-y-5">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input type="password" placeholder="Password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {error && <FormMessage>{error}</FormMessage>}
+            <div className="text-right">
+              <Link to="" className="text-sm text-secondary-800 underline">
+                Forgot password?
+              </Link>
+            </div>
+            <Button
+              type="submit"
+              className="hover:bg-primary-200 w-full rounded-full bg-primary-100 font-bold text-secondary-900"
+            >
+              Login
+            </Button>
+            <div className="mt-5">
+              <Link
+                to="/sign-up"
+                className="text-sm text-secondary-800 hover:underline"
+              >
+                Don't have an account?{" "}
+                <span className="font-semibold">Sign up</span>
+              </Link>
+            </div>
+            <p className="text-sm text-secondary-800">or</p>
+            <Button
+              type="button"
+              className="w-full rounded-full border border-solid border-secondary-600 bg-secondary-100 text-secondary-700 hover:bg-secondary-200"
+            >
+              <div className="scale-125">
+                <GoogleIcon />
+              </div>
+              Continue with Google
+            </Button>
+          </form>
+        </Form>
+      </div>
     </div>
   );
 }
