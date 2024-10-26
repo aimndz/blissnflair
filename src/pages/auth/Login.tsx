@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import GoogleIcon from "../../components/icons/GoogleIcon";
+import verifyAuth from "../../utils/verifyAuth";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -42,7 +43,17 @@ function Login() {
         email: values.email,
         password: values.password,
       });
-      navigate("/dashboard");
+
+      const { authenticated, role } = await verifyAuth();
+
+      if (authenticated) {
+        // Navigate based on role
+        if (role === "ADMIN") {
+          navigate("/admin/dashboard");
+        } else {
+          navigate("/dashboard");
+        }
+      }
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
@@ -97,7 +108,7 @@ function Login() {
             </div>
             <Button
               type="submit"
-              className="hover:bg-primary-200 w-full rounded-full bg-primary-100 font-bold text-secondary-900"
+              className="w-full rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"
             >
               Login
             </Button>

@@ -17,6 +17,7 @@ import ProfileEdit from "../pages/ProfileEdit";
 import AccountCreate from "../pages/AccountCreate";
 import SystemSettings from "../pages/SystemSettings";
 import MainLayout from "../layouts/MainLayout";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 const userRoutes = [
   {
@@ -87,7 +88,9 @@ const router = createBrowserRouter([
   },
   {
     path: "/dashboard",
-    element: <DashboardLayout />,
+    element: (
+      <ProtectedRoute element={<DashboardLayout />} requiredRoles={["USER"]} />
+    ),
     errorElement: <Error />,
     children: [
       {
@@ -108,7 +111,12 @@ const router = createBrowserRouter([
       },
       {
         path: "dashboard",
-        element: <DashboardLayout />,
+        element: (
+          <ProtectedRoute
+            element={<DashboardLayout />}
+            requiredRoles={["ADMIN"]}
+          />
+        ),
         children: [
           {
             path: "",
