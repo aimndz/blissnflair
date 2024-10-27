@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import verifyAuth from "../utils/verifyAuth";
+import { getUserProfile } from "../services/utilsApi";
 
 interface ProtectedRouteProps {
   element: JSX.Element;
@@ -14,9 +14,10 @@ function ProtectedRoute({ element, requiredRoles = [] }: ProtectedRouteProps) {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const { authenticated, role } = await verifyAuth();
-      setIsAuth(authenticated);
-      setUserRole(role);
+      const userProfile = await getUserProfile();
+
+      setIsAuth(userProfile.authenticated);
+      setUserRole(userProfile.user?.role);
       setIsLoading(false);
     };
 

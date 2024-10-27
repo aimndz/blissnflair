@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login } from "../../services/authApi";
+import { getUserProfile } from "../../services/utilsApi";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { z } from "zod";
@@ -16,8 +17,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import GoogleIcon from "../../components/icons/GoogleIcon";
-import verifyAuth from "../../utils/verifyAuth";
+import { useUser } from "../../hooks/use-user";
 
+// Define form schema
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
   password: z
@@ -27,8 +29,10 @@ const formSchema = z.object({
 
 function Login() {
   const navigate = useNavigate();
+  const { setUser } = useUser();
   const [error, setError] = useState("");
 
+  // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,11 +48,16 @@ function Login() {
         password: values.password,
       });
 
-      const { authenticated, role } = await verifyAuth();
+      const userProfile = await getUserProfile();
 
-      if (authenticated) {
+      // Set user context
+      if (userProfile.user) {
+        setUser(userProfile.user);
+      }
+
+      if (userProfile) {
         // Navigate based on role
-        if (role === "ADMIN") {
+        if (userProfile.user?.role === "ADMIN") {
           navigate("/admin/dashboard");
         } else {
           navigate("/dashboard");
