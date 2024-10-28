@@ -1,15 +1,15 @@
 import { Outlet } from "react-router-dom";
-import { SidebarProvider, SidebarTrigger } from "../components/ui/sidebar";
+import { SidebarProvider } from "../components/ui/sidebar";
 import { AppSidebar } from "../components/AppSidebar";
+import DashboardMainLayout from "./DashboardMainLayout";
 
 function DashboardLayout() {
   return (
     <SidebarProvider>
       <AppSidebar />
-      <main className="w-full bg-secondary-200">
-        <SidebarTrigger />
+      <DashboardMainLayout>
         <Outlet />
-      </main>
+      </DashboardMainLayout>
     </SidebarProvider>
   );
 }
