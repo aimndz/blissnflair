@@ -4,11 +4,12 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 //// GET ALL EVENTS
 export async function getAllEvents() {
-  const res = await fetch(`${API_URL}/events`, {
+  const res = await fetch(`${API_URL}/event`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -21,11 +22,12 @@ export async function getAllEvents() {
 
 //// GET EVENT BY ID
 export async function getAllEventById(id: string) {
-  const res = await fetch(`${API_URL}/events/${id}`, {
+  const res = await fetch(`${API_URL}/event/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -38,11 +40,12 @@ export async function getAllEventById(id: string) {
 
 //// CREATE EVENT
 export async function createEvent(event: Event) {
-  const res = await fetch(`${API_URL}/events`, {
+  const res = await fetch(`${API_URL}/event`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(event),
   });
 
@@ -56,11 +59,12 @@ export async function createEvent(event: Event) {
 
 //// UPDATE EVENT
 export async function updateEvent(id: string, event: Event) {
-  const res = await fetch(`${API_URL}/events/${id}`, {
+  const res = await fetch(`${API_URL}/event/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(event),
   });
 
@@ -74,11 +78,12 @@ export async function updateEvent(id: string, event: Event) {
 
 //// DELETE EVENT
 export async function deleteEvent(id: string) {
-  const res = await fetch(`${API_URL}/events/${id}`, {
+  const res = await fetch(`${API_URL}/event/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
   });
 
   if (!res.ok) {
