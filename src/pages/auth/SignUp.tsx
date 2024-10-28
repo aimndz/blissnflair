@@ -91,7 +91,7 @@ function SignUp() {
             onSubmit={form.handleSubmit(handleSignUp)}
             className="space-y-5"
           >
-            <div className="flex gap-3">
+            <div className="flex flex-col gap-5 md:flex-row">
               <FormField
                 control={form.control}
                 name="firstName"
@@ -165,7 +165,7 @@ function SignUp() {
             </div>
             <Button
               type="submit"
-              className="hover:bg-primary-200 w-full rounded-full bg-primary-100 font-bold text-secondary-900"
+              className="w-full rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"
             >
               Sign up
             </Button>
@@ -178,7 +178,16 @@ function SignUp() {
                 <span className="font-semibold">Login</span>
               </Link>
             </div>
-            <p className="text-sm text-secondary-800">or</p>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-secondary-100 px-2 text-secondary-800">
+                  or
+                </span>
+              </div>
+            </div>
             <Button
               type="button"
               className="w-full rounded-full border border-solid border-secondary-600 bg-secondary-100 text-secondary-700 hover:bg-secondary-200"

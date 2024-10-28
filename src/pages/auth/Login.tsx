@@ -18,6 +18,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import GoogleIcon from "../../components/icons/GoogleIcon";
 import { useUser } from "../../hooks/use-user";
+import Logo from "../../components/icons/Logo";
 
 // Define form schema
 const formSchema = z.object({
@@ -74,10 +75,8 @@ function Login() {
   return (
     <div className="flex h-screen flex-col justify-center text-center">
       <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
-        <div>
-          {/* Replace with logo */}
-          <h1 className="text-2xl font-bold text-primary-100">// Logo</h1>
-          {/* <img src="" alt="logo" /> */}
+        <div className="mb-2">
+          <Logo />
         </div>
         <h1 className="text-xl font-bold">Login</h1>
         <p className="mb-8 text-sm text-secondary-800">
@@ -130,7 +129,16 @@ function Login() {
                 <span className="font-semibold">Sign up</span>
               </Link>
             </div>
-            <p className="text-sm text-secondary-800">or</p>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-secondary-100 px-2 text-secondary-800">
+                  or
+                </span>
+              </div>
+            </div>
             <Button
               type="button"
               className="w-full rounded-full border border-solid border-secondary-600 bg-secondary-100 text-secondary-700 hover:bg-secondary-200"
