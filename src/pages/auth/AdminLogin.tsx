@@ -14,6 +14,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
+import Logo from "../../components/icons/Logo";
+import { getUserProfile } from "../../services/utilsApi";
+import { useUser } from "../../hooks/use-user";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
@@ -24,6 +27,7 @@ const formSchema = z.object({
 
 function Login() {
   const navigate = useNavigate();
+  const { setUser } = useUser();
   const [error, setError] = useState("");
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -36,12 +40,21 @@ function Login() {
 
   const handleLogin = async (values: z.infer<typeof formSchema>) => {
     try {
-      const res = await login({
+      await login({
         email: values.email,
         password: values.password,
       });
-      console.log(res);
-      navigate("/dashboard");
+
+      const userProfile = await getUserProfile();
+
+      // Make the login page only accessible to admins
+      if (userProfile.user?.role !== "ADMIN") {
+        throw new Error("Invalid email or password");
+      }
+
+      // Set user context if role is ADMIN
+      setUser(userProfile.user);
+      navigate("/admin/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
@@ -53,10 +66,8 @@ function Login() {
   return (
     <div className="flex h-screen flex-col justify-center text-center">
       <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
-        <div>
-          {/* Replace with logo */}
-          <h1 className="text-2xl font-bold text-primary-100">// Logo</h1>
-          {/* <img src="" alt="logo" /> */}
+        <div className="mb-2">
+          <Logo />
         </div>
         <h1 className="text-xl font-bold">Admin Login</h1>
         <p className="mb-8 text-sm text-secondary-800">
@@ -91,7 +102,7 @@ function Login() {
             {error && <FormMessage>{error}</FormMessage>}
             <Button
               type="submit"
-              className="hover:bg-primary-200 w-full rounded-full bg-primary-100 font-bold text-secondary-900"
+              className="mt-10 w-full rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"
             >
               Login
             </Button>

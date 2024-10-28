@@ -51,19 +51,14 @@ function Login() {
 
       const userProfile = await getUserProfile();
 
-      // Set user context
-      if (userProfile.user) {
-        setUser(userProfile.user);
+      // Make the login page only accessible to users
+      if (userProfile.user?.role !== "USER") {
+        throw new Error("Invalid email or password");
       }
 
-      if (userProfile) {
-        // Navigate based on role
-        if (userProfile.user?.role === "ADMIN") {
-          navigate("/admin/dashboard");
-        } else {
-          navigate("/dashboard");
-        }
-      }
+      // Set user context if role is USER
+      setUser(userProfile.user);
+      navigate("/dashboard");
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
