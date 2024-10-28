@@ -67,6 +67,18 @@ function Login() {
     }
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      // Redirect to the Google OAuth2 endpoint
+      window.location.href = `${import.meta.env.VITE_API_URL}/auth/google`;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        setError(error.message);
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <div className="flex h-screen flex-col justify-center text-center">
       <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
@@ -137,6 +149,7 @@ function Login() {
             <Button
               type="button"
               className="w-full rounded-full border border-solid border-secondary-600 bg-secondary-100 text-secondary-700 hover:bg-secondary-200"
+              onClick={handleGoogleLogin}
             >
               <div className="scale-125">
                 <GoogleIcon />
