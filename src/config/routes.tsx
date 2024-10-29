@@ -22,30 +22,37 @@ import ProtectedRoute from "../components/ProtectedRoute";
 const userRoutes = [
   {
     path: "overview",
+    title: "Overview",
     element: <Overview />,
   },
   {
     path: "create",
+    title: "Create Event",
     element: <Create />,
   },
   {
     path: "preview",
+    title: "Preview",
     element: <Preview />,
   },
   {
     path: "events",
+    title: "Events",
     element: <EventList />,
   },
   {
     path: "calendar",
+    title: "Calendar",
     element: <Calendar />,
   },
   {
     path: "profile",
+    title: "Profile",
     element: <Profile />,
   },
   {
     path: "profile/edit",
+    title: "Edit Profile",
     element: <ProfileEdit />,
   },
 ];
@@ -53,17 +60,21 @@ const userRoutes = [
 const adminRoutes = [
   {
     path: "accounts",
+    title: "Accounts",
     element: <Accounts />,
   },
   {
     path: "accounts/create",
+    title: "Create Account",
     element: <AccountCreate />,
   },
   {
     path: "system-settings",
+    title: "System Settings",
     element: <SystemSettings />,
   },
-  ...userRoutes, // Include user routes in admin
+  // Combine user routes in admin routes
+  ...userRoutes,
 ];
 
 const router = createBrowserRouter([
@@ -89,7 +100,10 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: (
-      <ProtectedRoute element={<DashboardLayout />} requiredRoles={["USER"]} />
+      <ProtectedRoute
+        element={<DashboardLayout routes={userRoutes} />}
+        requiredRoles={["USER"]}
+      />
     ),
     errorElement: <Error />,
     children: [
@@ -113,7 +127,7 @@ const router = createBrowserRouter([
         path: "dashboard",
         element: (
           <ProtectedRoute
-            element={<DashboardLayout />}
+            element={<DashboardLayout routes={adminRoutes} />}
             requiredRoles={["ADMIN"]}
           />
         ),
