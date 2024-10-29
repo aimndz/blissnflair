@@ -61,15 +61,16 @@ function UserOverviewContent() {
   return (
     <>
       <OverviewSection sectionTitle="Upcoming events">
-        <div className="flex gap-3">
-          {upcomingEvents.length !== 0 ? (
-            upcomingEvents.map((event) => (
+        {upcomingEvents.length !== 0 ? (
+          <div className="flex gap-3">
+            {upcomingEvents.map((event) => (
               <Link
                 to={`/dashboard/events/${event.id}`}
                 className="w-full max-w-xs"
                 replace
+                key={event.id}
               >
-                <Card key={event.id}>
+                <Card>
                   <CardHeader className="pt-6 text-xl font-semibold">
                     <CardTitle className="truncate">{event.title}</CardTitle>
                   </CardHeader>
@@ -86,54 +87,59 @@ function UserOverviewContent() {
                   </CardContent>
                 </Card>
               </Link>
-            ))
-          ) : (
-            <p className="italic">
-              It looks like there are no upcoming events right now.
-            </p>
-          )}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="italic text-secondary-800">
+            It looks like there are no upcoming events right now.
+          </p>
+        )}
       </OverviewSection>
 
       <hr className="mb-6 mt-8" />
 
       <OverviewSection>
         <div className="flex gap-3">
-          <Carousel
-            opts={{
-              dragFree: true,
-            }}
-            orientation="vertical"
-          >
+          <div className="w-full max-w-80">
             <h2 className="mb-3 text-2xl font-medium">Pending events</h2>
-            <CarouselContent className="-ml-3 h-[500px]">
-              {pendingEvents.length !== 0 ? (
-                pendingEvents.map((event) => (
-                  <CarouselItem className="basis-1/4 pl-3">
-                    <Card className="w-full max-w-xs select-none border-secondary-600 bg-secondary-100 hover:cursor-default">
-                      <CardHeader>
-                        <CardTitle className="w-xs overflow-hidden text-ellipsis whitespace-nowrap">
-                          {event.title}
-                        </CardTitle>
-                        <CardDescription className="w-xs overflow-hidden text-ellipsis whitespace-nowrap font-normal">
-                          Your event is currently under review
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
-                          Edit event
-                        </Button>
-                      </CardContent>
-                    </Card>
-                  </CarouselItem>
-                ))
-              ) : (
-                <p className="italic">No pending events</p>
-              )}
-            </CarouselContent>
-            {/* <CarouselPrevious />
-            <CarouselNext /> */}
-          </Carousel>
+            {pendingEvents.length !== 0 ? (
+              <Carousel
+                opts={{
+                  dragFree: true,
+                }}
+                orientation="vertical"
+              >
+                <CarouselContent className="-ml-3 h-[500px]">
+                  {pendingEvents.map((event) => (
+                    <CarouselItem className="basis-1/4 pl-3" key={event.id}>
+                      <Card className="w-full max-w-xs select-none border-secondary-600 bg-secondary-100 hover:cursor-default">
+                        <CardHeader>
+                          <CardTitle className="w-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                            {event.title}
+                          </CardTitle>
+                          <CardDescription className="w-xs overflow-hidden text-ellipsis whitespace-nowrap font-normal">
+                            Your event is currently under review
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
+                            Edit event
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                {/* <CarouselPrevious />
+          <CarouselNext /> */}
+              </Carousel>
+            ) : (
+              <div className="text-center italic text-secondary-800">
+                <p>No pending events!</p>
+                <p>Ready to create your next event?</p>
+              </div>
+            )}
+          </div>
           <div className="mx-6 border border-l-0 border-solid border-secondary-600"></div>
           <div>
             <h2 className="mb-3 text-2xl font-medium">Calendar</h2>
