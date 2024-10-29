@@ -10,6 +10,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarTrigger,
 } from "./ui/sidebar";
 
 import {
@@ -72,8 +73,13 @@ export function AppSidebar() {
 
   return (
     <Sidebar>
-      <SidebarHeader className="mt-8 text-center">
-        <Logo />
+      <SidebarHeader className="mt-8 px-4 text-center">
+        <div className="relative">
+          <div className="absolute left-0 top-0">
+            <SidebarTrigger />
+          </div>
+          <Logo />
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
@@ -109,7 +115,7 @@ export function AppSidebar() {
                         className={
                           isActive
                             ? "bg-primary-100 text-secondary-900 hover:bg-primary-100 active:bg-primary-100"
-                            : "text-secondary-800"
+                            : "text-secondary-800 hover:bg-transparent active:bg-transparent"
                         }
                       >
                         <div className="flex items-center">

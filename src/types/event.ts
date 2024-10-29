@@ -8,4 +8,5 @@ export interface Event {
   endTime: string;
   status: string;
   userId: string;
+  daysLeft?: number;
 }
