@@ -58,3 +58,10 @@ export async function signUp({
 
   return { success: true, data: await res.json() };
 }
+
+export async function logout() {
+  await fetch(`${API_URL}/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
+}

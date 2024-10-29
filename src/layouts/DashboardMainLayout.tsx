@@ -9,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { useUser } from "../hooks/use-user";
+import { logout } from "../services/authApi";
 
 function DashboardMainLayout({
   children,
@@ -18,6 +19,11 @@ function DashboardMainLayout({
   title: string;
 }) {
   const { user } = useUser();
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.href = "/login";
+  };
 
   return (
     <div className="w-full">
@@ -52,7 +58,7 @@ function DashboardMainLayout({
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Profile Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Log out</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </header>
