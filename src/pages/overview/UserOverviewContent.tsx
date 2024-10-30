@@ -22,6 +22,7 @@ import {
   CarouselPrevious,
 } from "../../components/ui/carousel";
 import { Link } from "react-router-dom";
+import { Separator } from "../../components/ui/separator";
 
 function UserOverviewContent() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -96,10 +97,10 @@ function UserOverviewContent() {
         )}
       </OverviewSection>
 
-      <hr className="mb-6 mt-8" />
+      <Separator className="mb-6 mt-8" />
 
       <OverviewSection>
-        <div className="flex gap-3">
+        <div className="flex h-[500px] gap-3">
           <div className="w-full max-w-80">
             <h2 className="mb-3 text-2xl font-medium">Pending events</h2>
             {pendingEvents.length !== 0 ? (
@@ -140,7 +141,9 @@ function UserOverviewContent() {
               </div>
             )}
           </div>
-          <div className="mx-6 border border-l-0 border-solid border-secondary-600"></div>
+
+          <Separator className="mx-6" orientation="vertical" />
+
           <div>
             <h2 className="mb-3 text-2xl font-medium">Calendar</h2>
             <CalendarPreview
