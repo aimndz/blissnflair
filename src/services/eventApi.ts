@@ -1,4 +1,4 @@
-import { Event } from "../types/event";
+import { Event, CreateEventData } from "../types/event";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -39,7 +39,7 @@ export async function getAllEventById(id: string) {
 }
 
 //// CREATE EVENT
-export async function createEvent(event: Event) {
+export async function createEvent(event: CreateEventData) {
   const res = await fetch(`${API_URL}/event`, {
     method: "POST",
     headers: {

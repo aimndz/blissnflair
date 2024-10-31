@@ -6,7 +6,7 @@ import SignUp from "../pages/auth/SignUp";
 import Error from "../pages/Error";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Overview from "../pages/overview/Overview";
-import Create from "../pages/Create";
+import Create from "../pages/create/Create";
 import EventList from "../pages/EventList";
 import Calendar from "../pages/Calendar";
 import Profile from "../pages/Profile";
