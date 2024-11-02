@@ -45,12 +45,7 @@ function Preview() {
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <Calendar className="text-secondary-800" size={20} />
         <span className="mr-10">
-          {new Intl.DateTimeFormat("en-US", {
-            weekday: "short",
-            month: "long",
-            day: "numeric",
-            year: "numeric",
-          }).format(new Date(event.date))}
+          {format(new Date(event.date), "EEE, MMM d, yyyy")}
         </span>
         <span>
           {format(parseISO(event.startTime), "h:mm a")} -{" "}
