@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { cn } from "../../lib/utils";
 import { z } from "zod";
@@ -119,31 +119,84 @@ const timeValueToString = (time: Time) => {
 };
 
 const formatDateTime = (date: Date, time: string) => {
-  const dateObject = new Date(date);
-  const datePart = dateObject.toISOString().split("T")[0];
+  const utcDate = new Date(date);
+  const [hours, minutes] = time.split(":").map(Number);
 
-  return new Date(`${datePart}T${time}:00Z`).toISOString();
+  const adjustedHours = hours - 8;
+
+  const combinedDate = new Date(
+    Date.UTC(
+      utcDate.getUTCFullYear(),
+      utcDate.getUTCMonth(),
+      utcDate.getUTCDate(),
+      adjustedHours,
+      minutes,
+    ),
+  );
+
+  return combinedDate.toISOString();
+};
+
+const convertToLocalTime = (utcIsoString: string) => {
+  const utcDate = new Date(utcIsoString);
+
+  const utcPlus8Date = new Date(utcDate.getTime() + 8 * 60 * 60 * 1000);
+
+  const hours = String(utcPlus8Date.getUTCHours()).padStart(2, "0");
+  const minutes = String(utcPlus8Date.getUTCMinutes()).padStart(2, "0");
+
+  return `${hours}:${minutes}`;
 };
 
 function Create() {
   const navigate = useNavigate();
-  // const { setUser } = useUser();
+  const location = useLocation();
   const [error, setError] = useState("");
+
+  const [initialValues, setInitialValues] = useState({
+    title: "",
+    description: "",
+    expectedPax: 0,
+    date: new Date(),
+    startTime: "00:00",
+    endTime: "00:00",
+    category: "",
+    additionalServices: [],
+    additionalNotes: "",
+  });
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      expectedPax: 0,
-      date: undefined,
-      startTime: "00:00",
-      endTime: "00:00",
-      category: "",
-      additionalServices: [],
-      additionalNotes: "",
-    },
+    defaultValues: initialValues,
   });
+
+  useEffect(() => {
+    if (location.state && location.state.event) {
+      const event = location.state.event;
+      setInitialValues({
+        title: event.title,
+        description: event.description,
+        expectedPax: event.expectedPax,
+        date: new Date(event.date),
+        startTime: convertToLocalTime(event.startTime),
+        endTime: convertToLocalTime(event.endTime),
+        category: event.category,
+        additionalServices: event.additionalServices,
+        additionalNotes: event.additionalNotes,
+      });
+      form.reset({
+        title: event.title,
+        description: event.description,
+        expectedPax: event.expectedPax,
+        date: new Date(event.date),
+        startTime: convertToLocalTime(event.startTime),
+        endTime: convertToLocalTime(event.endTime),
+        category: event.category,
+        additionalServices: event.additionalServices,
+        additionalNotes: event.additionalNotes,
+      });
+    }
+  }, [location.state, form]);
 
   const handlePreviewButton = async (values: z.infer<typeof FormSchema>) => {
     try {
@@ -151,7 +204,7 @@ function Create() {
         title: values.title,
         description: values.description,
         expectedPax: Number(values.expectedPax),
-        date: new Date(values.date).toISOString(),
+        date: values.date.toISOString(),
         startTime: formatDateTime(values.date, values.startTime),
         endTime: formatDateTime(values.date, values.endTime),
         category: values.category,
@@ -362,13 +415,13 @@ function Create() {
                       >
                         <FormControl>
                           <Checkbox
-                            checked={field.value?.includes(item.id)}
+                            checked={field.value?.includes(item.label)}
                             onCheckedChange={(checked) => {
                               return checked
-                                ? field.onChange([...field.value, item.id])
+                                ? field.onChange([...field.value, item.label])
                                 : field.onChange(
                                     field.value?.filter(
-                                      (value) => value !== item.id,
+                                      (value) => value !== item.label,
                                     ),
                                   );
                             }}

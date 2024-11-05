@@ -8,7 +8,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Overview from "../pages/overview/Overview";
 import Create from "../pages/create/Create";
 import EventList from "../pages/eventList/EventList";
-import Calendar from "../pages/Calendar";
+import Calendar from "../pages/calendar/Calendar";
 import Profile from "../pages/Profile";
 import AdminLogin from "../pages/auth/AdminLogin";
 import Accounts from "../pages/Accounts";

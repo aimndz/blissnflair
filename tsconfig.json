@@ -7,11 +7,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@components/*": ["./src/components/*"],
+      "@shadcn-fullcalender/*": ["./src/shadcn-fullcalender/*"]
     }
-  },
-  "baseUrl": ".",
-  "paths": {
-    "@/*": ["./src/*"]
   }
 }
