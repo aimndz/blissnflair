@@ -15,7 +15,7 @@ function UserEventListContent() {
   const filter = searchParams.get("filter") || "scheduled";
 
   const pendingEvents = events.filter((event) => event.status === "PENDING");
-  const scheduledEvents = events.filter((event) => event.status === "UPCOMING");
+  const scheduledEvents = events.filter((event) => event.status === "APPROVED");
 
   useEffect(() => {
     const fetchEvents = async () => {
