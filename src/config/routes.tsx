@@ -18,6 +18,7 @@ import AccountCreate from "../pages/AccountCreate";
 import SystemSettings from "../pages/SystemSettings";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
+import Event from "../pages/eventDetails/Event";
 
 const userRoutes = [
   {
@@ -39,6 +40,11 @@ const userRoutes = [
     path: "events",
     title: "Events",
     element: <EventList />,
+  },
+  {
+    path: "events/:id",
+    title: "Event Details",
+    element: <Event />,
   },
   {
     path: "calendar",
