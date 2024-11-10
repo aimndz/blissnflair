@@ -9,7 +9,10 @@ interface EventCardProps {
 
 function EventCard({ event }: EventCardProps) {
   return (
-    <Link to={`/dashboard/event/${event.id}`}>
+    <Link
+      to={`/dashboard/events/${event.id}`}
+      state={{ from: location.pathname }}
+    >
       <div className="rounded-lg bg-secondary-300">
         <div className="h-28 rounded-t-lg bg-[linear-gradient(45deg,_#43A9C6,_#61DDFF)]"></div>
         <div className="p-3">

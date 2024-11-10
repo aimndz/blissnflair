@@ -9,7 +9,6 @@ import {
 import { Calendar as CalendarPreview } from "../../components/ui/calendar";
 import { Button } from "../../components/ui/button";
 import OverviewSection from "./OverviewSection";
-import { SidebarTrigger } from "../../components/ui/sidebar";
 import { useEffect, useState } from "react";
 import { getAllEvents } from "../../services/eventApi";
 import { Event } from "../../types/event";
@@ -18,8 +17,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "../../components/ui/carousel";
 import { Link } from "react-router-dom";
 import { Separator } from "../../components/ui/separator";
@@ -69,6 +66,7 @@ function UserOverviewContent() {
               <Link
                 to={`/dashboard/events/${event.id}`}
                 className="w-full max-w-xs"
+                state={{ from: location.pathname }}
                 replace
                 key={event.id}
               >
