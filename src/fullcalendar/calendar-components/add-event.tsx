@@ -10,8 +10,8 @@ import {
   CredenzaHeader,
   CredenzaTitle,
   CredenzaTrigger,
-} from "@shadcn-fullcalender/ui/credenza";
-import { Button } from "@shadcn-fullcalender/ui/button";
+} from "@fullcalendar/ui/credenza";
+import { Button } from "@fullcalendar/ui/button";
 
 type ButtonProps = {
   variant?: "default" | "secondary" | "primary"; // Optional variant type

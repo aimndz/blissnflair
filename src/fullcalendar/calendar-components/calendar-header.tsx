@@ -1,17 +1,17 @@
-// components/calender-components/CalenderHeader.tsx
+// components/calendar-components/CalendarHeader.tsx
 
-import { TabTypes } from "@shadcn-fullcalender/types/tabs";
+import { TabTypes } from "@fullcalendar/types/tabs";
 import { Dispatch, SetStateAction } from "react";
 import AddEvent from "./add-event";
 import { MonthHeader } from "./monthheader";
 import { Tabs } from "./tabs";
 import { YearHeader } from "./yearheader";
-import { CalendarProps } from "@shadcn-fullcalender/types/event";
-import { Button } from "@shadcn-fullcalender/ui/button";
+import { CalendarProps } from "@fullcalendar/types/event";
+import { Button } from "@fullcalendar/ui/button";
 import { Link } from "react-router-dom";
 import { AddCircle } from "iconsax-react";
 
-export interface CalenderHeaderProps {
+export interface CalendarHeaderProps {
   currentDate: Date;
   setCurrentDate: Dispatch<SetStateAction<Date>>;
   activeTab: TabTypes;
@@ -25,7 +25,7 @@ export interface CalenderHeaderProps {
   config?: CalendarProps["config"];
 }
 
-const CalenderHeader = (props: CalenderHeaderProps) => {
+const CalendarHeader = (props: CalendarHeaderProps) => {
   return (
     <header>
       {props.activeTab === "month" ? (
@@ -92,4 +92,4 @@ const CalenderHeader = (props: CalenderHeaderProps) => {
   );
 };
 
-export default CalenderHeader;
+export default CalendarHeader;

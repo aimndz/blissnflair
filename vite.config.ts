@@ -8,10 +8,7 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
       "@components": path.resolve(__dirname, "./src/components"),
-      "@shadcn-fullcalender": path.resolve(
-        __dirname,
-        "./src/shadcn-fullcalender",
-      ),
+      "@fullcalendar": path.resolve(__dirname, "./src/fullcalendar"),
     },
   },
 });

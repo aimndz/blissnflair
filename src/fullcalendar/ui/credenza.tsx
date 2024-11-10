@@ -13,7 +13,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@shadcn-fullcalender/ui/dialog";
+} from "@fullcalendar/ui/dialog";
 import {
   Drawer,
   DrawerClose,
@@ -23,7 +23,7 @@ import {
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
-} from "@shadcn-fullcalender/ui/drawer";
+} from "@fullcalendar/ui/drawer";
 
 interface BaseProps {
   children: React.ReactNode;

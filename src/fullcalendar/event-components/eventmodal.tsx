@@ -1,7 +1,7 @@
 "use client";
 
 import { CalendarAdd } from "iconsax-react";
-import EventForm from "@shadcn-fullcalender/calender-components/eventform";
+import EventForm from "@fullcalendar/calendar-components/eventform";
 import {
   Credenza,
   CredenzaBody,

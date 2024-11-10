@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@shadcn-fullcalender/ui/button";
-import { Calendar } from "@shadcn-fullcalender/ui/calendar";
+import { Button } from "@fullcalendar/ui/button";
+import { Calendar } from "@fullcalendar/ui/calendar";
 import {
   Form,
   FormControl,
@@ -9,22 +9,22 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@shadcn-fullcalender/ui/form";
-import { Input } from "@shadcn-fullcalender/ui/input";
+} from "@fullcalendar/ui/form";
+import { Input } from "@fullcalendar/ui/input";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@shadcn-fullcalender/ui/popover";
-import { ScrollArea } from "@shadcn-fullcalender/ui/scroll-area";
+} from "@fullcalendar/ui/popover";
+import { ScrollArea } from "@fullcalendar/ui/scroll-area";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@shadcn-fullcalender/ui/select"; // Fixed import path
-import { Textarea } from "@shadcn-fullcalender/ui/textarea";
+} from "@fullcalendar/ui/select"; // Fixed import path
+import { Textarea } from "@fullcalendar/ui/textarea";
 import { cn } from "@/lib/utils";
 import {
   Command,
@@ -33,7 +33,7 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "@shadcn-fullcalender/ui/command";
+} from "@fullcalendar/ui/command";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 
@@ -47,14 +47,14 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@shadcn-fullcalender/ui/alert-dialog"
+} from "@fullcalendar/ui/alert-dialog";
 
 import { Calendar as CalendarIcon, Check, ChevronsUpDown } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { Danger } from "iconsax-react";
-import { formSchema } from "@shadcn-fullcalender/validation/event";
+import { formSchema } from "@fullcalendar/validation/event";
 
 const halls = [
   {
@@ -110,54 +110,60 @@ const halls = [
 // Form schema with validation
 
 interface Event {
-  eventname?: string;      // Name of the event
-  name?: string;           // Name of the person organizing or associated with the event
-  description?: string;    // Brief description of the event
-  startdate?: Date;      // Start date in ISO 8601 format
-  starttime?: string;      // Start time in HH:mm format
-  enddate?: Date;        // End date in ISO 8601 format
-  endtime?: string;        // End time in HH:mm format
-  phonenumber?: number;    // Phone number as a string
-  email?: string;          // Email address as a string
-  hall?: string;           // Name of the hall or venue for the event
+  eventname?: string; // Name of the event
+  name?: string; // Name of the person organizing or associated with the event
+  description?: string; // Brief description of the event
+  startdate?: Date; // Start date in ISO 8601 format
+  starttime?: string; // Start time in HH:mm format
+  enddate?: Date; // End date in ISO 8601 format
+  endtime?: string; // End time in HH:mm format
+  phonenumber?: number; // Phone number as a string
+  email?: string; // Email address as a string
+  hall?: string; // Name of the hall or venue for the event
 }
-
-
-
 
 function DeleteEvent() {
-  return (<AlertDialog>
-    <AlertDialogTrigger asChild>
-      <Button variant="destructive" type="button">
-        <Danger className="mr-2 h-4 w-4" size={16} color="white" />
-        Delete Event
-      </Button>
-    </AlertDialogTrigger>
-    <AlertDialogContent>
-      <AlertDialogHeader>
-        <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-        <AlertDialogDescription>
-          This action cannot be undone. This will cancel your event
-          and remove it from the calendar.
-        </AlertDialogDescription>
-      </AlertDialogHeader>
-      <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
-        <AlertDialogAction asChild>
-          <Button variant="destructive" className="bg-red-500 hover:bg-red-400" type="button">
-            <Danger className="mr-2 h-4 w-4" size={16} color="white" />
-            Continue
-          </Button>
-        </AlertDialogAction>
-      </AlertDialogFooter>
-    </AlertDialogContent>
-  </AlertDialog>);
+  return (
+    <AlertDialog>
+      <AlertDialogTrigger asChild>
+        <Button variant="destructive" type="button">
+          <Danger className="mr-2 h-4 w-4" size={16} color="white" />
+          Delete Event
+        </Button>
+      </AlertDialogTrigger>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+          <AlertDialogDescription>
+            This action cannot be undone. This will cancel your event and remove
+            it from the calendar.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction asChild>
+            <Button
+              variant="destructive"
+              className="bg-red-500 hover:bg-red-400"
+              type="button"
+            >
+              <Danger className="mr-2 h-4 w-4" size={16} color="white" />
+              Continue
+            </Button>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
 }
 
-
-export default function EventForm({ values, currentDate }: { values?: Event, currentDate?: Date }) {
-
-
+export default function EventForm({
+  values,
+  currentDate,
+}: {
+  values?: Event;
+  currentDate?: Date;
+}) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -167,24 +173,26 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
       email: values?.email || "",
       phonenumber: values?.phonenumber || undefined,
       description: values?.description || "",
-      startdate: values?.startdate ? new Date(values.startdate) : currentDate ? new Date(currentDate) : new Date(), // Format startdate
+      startdate: values?.startdate
+        ? new Date(values.startdate)
+        : currentDate
+          ? new Date(currentDate)
+          : new Date(), // Format startdate
       starttime: values?.starttime || "", // Format starttime
       enddate: values?.enddate ? new Date(values.enddate) : undefined, // Format enddate
       endtime: values?.endtime || "",
     },
   });
 
-
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      console.log(values);
       toast(
         <div>
           <h2 className="text-lg font-semibold">Event Created</h2>
           <p className="text-sm font-normal text-muted-foreground">
             Your event has been successfully created.
           </p>
-        </div>
+        </div>,
       );
     } catch (error) {
       console.error("Form submission error", error);
@@ -195,7 +203,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-4 lg:py-0 py-4 w-full mx-auto px-2"
+        className="mx-auto w-full space-y-4 px-2 py-4 lg:py-0"
       >
         <div className="grid grid-cols-2 items-baseline gap-4">
           <div className="col-span-1">
@@ -218,7 +226,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
               control={form.control}
               name="hall"
               render={({ field }) => (
-                <FormItem className="flex flex-col w-full">
+                <FormItem className="flex w-full flex-col">
                   <FormLabel>Hall</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -228,12 +236,12 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                           role="combobox"
                           className={cn(
                             "w-full justify-between",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value
                             ? halls.find((hall) => hall.value === field.value)
-                              ?.label
+                                ?.label
                             : "Select hall"}
                           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
                         </Button>
@@ -259,7 +267,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                                     "mr-2 h-4 w-4",
                                     hall.value === field.value
                                       ? "opacity-100"
-                                      : "opacity-0"
+                                      : "opacity-0",
                                   )}
                                 />
                                 {hall.label}
@@ -326,7 +334,9 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                       {...field}
                       onChange={(e) => {
                         const value = e.target.value;
-                        field.onChange(value ? parseInt(value.replace(/\D/g, '')) : null); // Convert to number
+                        field.onChange(
+                          value ? parseInt(value.replace(/\D/g, "")) : null,
+                        ); // Convert to number
                       }}
                     />
                   </FormControl>
@@ -334,7 +344,6 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                 </FormItem>
               )}
             />
-
           </div>
         </div>
         <FormField
@@ -346,7 +355,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
               <FormControl>
                 <Textarea
                   placeholder="Enter event description"
-                  className="resize-none "
+                  className="resize-none"
                   {...field}
                 />
               </FormControl>
@@ -355,13 +364,13 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
           )}
         />
 
-        <div className="grid grid-cols-12 justify-center items-baseline gap-4">
+        <div className="grid grid-cols-12 items-baseline justify-center gap-4">
           <div className="col-span-6">
             <FormField
               control={form.control}
               name="startdate"
               render={({ field }) => (
-                <FormItem className="flex flex-col w-full">
+                <FormItem className="flex w-full flex-col">
                   <FormLabel>Start Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -370,7 +379,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value ? (
@@ -403,7 +412,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
               control={form.control}
               name="starttime"
               render={({ field }) => (
-                <FormItem className="flex flex-col h-full">
+                <FormItem className="flex h-full flex-col">
                   <FormLabel>Start Time</FormLabel>
                   <FormControl>
                     <Select
@@ -412,13 +421,14 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                         field.onChange(e); // change the time
                       }}
                     >
-                      <SelectTrigger className="font-normal focus:ring-0 h-full w-[120px]">
+                      <SelectTrigger className="h-full w-[120px] font-normal focus:ring-0">
                         <SelectValue placeholder="Select time" />
                       </SelectTrigger>
                       <SelectContent>
                         <ScrollArea className="h-[200px] w-[120px]">
                           {Array.from({ length: 24 }).map((_, index) => {
-                            const hour = index < 10 ? `0${index}:00` : `${index}:00`;
+                            const hour =
+                              index < 10 ? `0${index}:00` : `${index}:00`;
                             return (
                               <SelectItem value={hour} key={hour}>
                                 {hour}
@@ -442,7 +452,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
               control={form.control}
               name="enddate"
               render={({ field }) => (
-                <FormItem className="flex flex-col w-full">
+                <FormItem className="flex w-full flex-col">
                   <FormLabel>End Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
@@ -451,7 +461,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                           variant={"outline"}
                           className={cn(
                             "w-full pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground"
+                            !field.value && "text-muted-foreground",
                           )}
                         >
                           {field.value ? (
@@ -484,7 +494,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
               control={form.control}
               name="endtime"
               render={({ field }) => (
-                <FormItem className="flex flex-col h-full">
+                <FormItem className="flex h-full flex-col">
                   <FormLabel>End Time</FormLabel>
                   <FormControl>
                     <Select
@@ -493,7 +503,7 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
                         field.onChange(e); // change the time
                       }}
                     >
-                      <SelectTrigger className="font-normal focus:ring-0 h-full w-[120px]">
+                      <SelectTrigger className="h-full w-[120px] font-normal focus:ring-0">
                         <SelectValue placeholder="Select time" />
                       </SelectTrigger>
                       <SelectContent>
@@ -517,13 +527,9 @@ export default function EventForm({ values, currentDate }: { values?: Event, cur
             />
           </div>
         </div>
-        <div className="gap-4 flex">
-          <Button type="submit" >
-            Submit
-          </Button>
-          {
-            values && <DeleteEvent />
-          }
+        <div className="flex gap-4">
+          <Button type="submit">Submit</Button>
+          {values && <DeleteEvent />}
         </div>
       </form>
     </Form>

@@ -9,7 +9,7 @@ import {
   CredenzaTrigger,
 } from "@components/ui/credenza";
 import { Button } from "@components/ui/button";
-import AddEvent from "@shadcn-fullcalender/calender-components/add-event";
+import AddEvent from "@fullcalendar/calendar-components/add-event";
 import { CalendarAdd } from "iconsax-react";
 import EventModal from "./eventmodal"; // Importing EventModalProps type
 import { Eventyearviewbtn } from "./yearviewlist";

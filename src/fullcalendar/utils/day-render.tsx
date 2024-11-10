@@ -1,10 +1,10 @@
 import { addDays, format, parseISO } from "date-fns";
 
 import React from "react";
-import { Event } from "@shadcn-fullcalender/types/event";
-import EventModal from "@shadcn-fullcalender/event-components/eventmodal";
-import AddEvent from "@shadcn-fullcalender/calender-components/add-event";
-import ListAllEvents from "@shadcn-fullcalender/event-components/listallevents";
+import { Event } from "@fullcalendar/types/event";
+import EventModal from "@fullcalendar/event-components/eventmodal";
+import AddEvent from "@fullcalendar/calendar-components/add-event";
+import ListAllEvents from "@fullcalendar/event-components/listallevents";
 
 interface RenderDaysInMonthProps {
   currentDate: Date;

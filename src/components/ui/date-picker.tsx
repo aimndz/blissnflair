@@ -3,13 +3,13 @@
 import { format } from "date-fns";
 import * as React from "react";
 
-import { Button } from "@shadcn-fullcalender/ui/button";
-import { Calendar } from "@shadcn-fullcalender/ui/calendar";
+import { Button } from "@fullcalendar/ui/button";
+import { Calendar } from "@fullcalendar/ui/calendar";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@shadcn-fullcalender/ui/popover";
+} from "@fullcalendar/ui/popover";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 
@@ -23,7 +23,7 @@ export default function DatePicker() {
           variant={"outline"}
           className={cn(
             "w-[240px] justify-start text-left font-normal",
-            !date && "text-muted-foreground"
+            !date && "text-muted-foreground",
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />

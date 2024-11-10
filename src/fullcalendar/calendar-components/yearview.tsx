@@ -1,5 +1,5 @@
-import ListAllEvents from "@shadcn-fullcalender/event-components/listallevents";
-import { Event } from "@shadcn-fullcalender/types/event";
+import ListAllEvents from "@fullcalendar/event-components/listallevents";
+import { Event } from "@fullcalendar/types/event";
 import {
   addDays,
   eachDayOfInterval,
@@ -11,13 +11,10 @@ import {
 } from "date-fns";
 import React from "react";
 
-
 interface YearViewProps {
   currentDate: Date; // Current date
   events: Event[]; // Array of events
 }
-
-
 
 const YearView: React.FC<YearViewProps> = ({ currentDate, events }) => {
   // Define the color map for event types
@@ -35,18 +32,18 @@ const YearView: React.FC<YearViewProps> = ({ currentDate, events }) => {
     const leadingDays =
       startDayOfWeek > 0
         ? eachDayOfInterval({
-          start: subDays(start, startDayOfWeek),
-          end: subDays(start, 1),
-        })
+            start: subDays(start, startDayOfWeek),
+            end: subDays(start, 1),
+          })
         : [];
 
     // Calculate trailing days from the next month
     const trailingDays =
       endDayOfWeek < 6
         ? eachDayOfInterval({
-          start: addDays(end, 1),
-          end: addDays(end, 6 - endDayOfWeek),
-        })
+            start: addDays(end, 1),
+            end: addDays(end, 6 - endDayOfWeek),
+          })
         : [];
 
     // Combine leading days, current month's days, and trailing days
@@ -97,19 +94,21 @@ const YearView: React.FC<YearViewProps> = ({ currentDate, events }) => {
     });
   };
 
-
   return (
     <div className="mx-auto p-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3 lg:grid-cols-3">
         {months.map((month, index) => (
-          <div key={index} className="border rounded p-2">
-            <h3 className="text-xl font-semibold text-center mb-4">
+          <div key={index} className="rounded border p-2">
+            <h3 className="mb-4 text-center text-xl font-semibold">
               {month.monthName}
             </h3>
             {/* Render the days of the week once */}
-            <div className="grid grid-cols-7 gap-2 text-center mb-2">
+            <div className="mb-2 grid grid-cols-7 gap-2 text-center">
               {daysOfWeek.map((day, index) => (
-                <div key={`${day}-${index}`} className="h-6 font-semibold w-6 text-xs">
+                <div
+                  key={`${day}-${index}`}
+                  className="h-6 w-6 text-xs font-semibold"
+                >
                   {day}
                 </div>
               ))}
@@ -126,7 +125,9 @@ const YearView: React.FC<YearViewProps> = ({ currentDate, events }) => {
                     eventsForDate={eventsForDate}
                     isToday={isToday as any}
                     isCurrentMonth={isCurrentMonth as any}
-                    date={date} index={index} />
+                    date={date}
+                    index={index}
+                  />
                 );
               })}
             </div>

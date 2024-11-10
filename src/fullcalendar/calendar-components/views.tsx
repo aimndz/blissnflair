@@ -1,10 +1,10 @@
-// components/calender-components/Views.tsx
+// components/calendar-components/Views.tsx
 
 import { Card } from "@components/ui/card"; // shadcn Card for structure
 import { MonthView } from "./monthview";
 import YearView from "./yearview";
-import { TabTypes } from "@shadcn-fullcalender/types/tabs";
-import { CalendarProps } from "@shadcn-fullcalender/types/event";
+import { TabTypes } from "@fullcalendar/types/tabs";
+import { CalendarProps } from "@fullcalendar/types/event";
 
 export interface ViewsProps extends CalendarProps {
   activeTab: TabTypes;

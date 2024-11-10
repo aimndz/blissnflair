@@ -1,7 +1,7 @@
-import { daysOfWeek } from "@shadcn-fullcalender/constants";
-import { Event } from "@shadcn-fullcalender/types/event";
-import { renderDaysInMonth } from "@shadcn-fullcalender/utils/day-render";
-import { renderDaysOfWeek } from "@shadcn-fullcalender/utils/week-render";
+import { daysOfWeek } from "@fullcalendar/constants";
+import { Event } from "@fullcalendar/types/event";
+import { renderDaysInMonth } from "@fullcalendar/utils/day-render";
+import { renderDaysOfWeek } from "@fullcalendar/utils/week-render";
 import { getDay, startOfMonth, startOfWeek } from "date-fns";
 
 interface MonthViewProps {

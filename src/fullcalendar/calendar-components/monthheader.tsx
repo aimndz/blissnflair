@@ -3,11 +3,10 @@ import { YearBox } from "./yearbox";
 import { ChevronLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { Combobox } from "./combobox";
 import { format } from "date-fns";
-import { months } from "@shadcn-fullcalender/constants";
-import { Button } from "@shadcn-fullcalender/ui/button";
+import { months } from "@fullcalendar/constants";
+import { Button } from "@fullcalendar/ui/button";
 
 export function MonthHeader(props: any) {
-
   return (
     <div className="flex items-center space-x-1 sm:space-x-2">
       <Button
