@@ -23,6 +23,7 @@ import {
 } from "../../components/ui/carousel";
 import { Link } from "react-router-dom";
 import { Separator } from "../../components/ui/separator";
+import { ScrollArea } from "../../components/ui/scroll-area";
 
 function UserOverviewContent() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -100,46 +101,48 @@ function UserOverviewContent() {
       <Separator className="mb-6 mt-8" />
 
       <OverviewSection>
-        <div className="flex h-[500px] gap-3">
+        <div className="flex gap-3">
           <div className="w-full max-w-80">
             <h2 className="mb-3 text-2xl font-medium">Pending events</h2>
-            {pendingEvents.length !== 0 ? (
-              <Carousel
-                opts={{
-                  dragFree: true,
-                }}
-                orientation="vertical"
-              >
-                <CarouselContent className="-ml-3 h-[500px]">
-                  {pendingEvents.map((event) => (
-                    <CarouselItem className="basis-1/4 pl-3" key={event.id}>
-                      <Card className="w-full max-w-xs select-none border-secondary-600 bg-secondary-100 hover:cursor-default">
-                        <CardHeader>
-                          <CardTitle className="w-xs overflow-hidden text-ellipsis whitespace-nowrap">
-                            {event.title}
-                          </CardTitle>
-                          <CardDescription className="w-xs overflow-hidden text-ellipsis whitespace-nowrap font-normal">
-                            Your event is currently under review
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
-                            Edit event
-                          </Button>
-                        </CardContent>
-                      </Card>
-                    </CarouselItem>
-                  ))}
-                </CarouselContent>
-                {/* <CarouselPrevious />
+            <ScrollArea className="h-[500px] pr-3">
+              {pendingEvents.length !== 0 ? (
+                <Carousel
+                  opts={{
+                    dragFree: true,
+                  }}
+                  orientation="vertical"
+                >
+                  <CarouselContent className="-ml-3">
+                    {pendingEvents.map((event) => (
+                      <CarouselItem className="basis-1/4 pl-3" key={event.id}>
+                        <Card className="w-full max-w-xs select-none border-secondary-600 bg-secondary-100 hover:cursor-default">
+                          <CardHeader>
+                            <CardTitle className="w-xs overflow-hidden text-ellipsis whitespace-nowrap">
+                              {event.title}
+                            </CardTitle>
+                            <CardDescription className="w-xs overflow-hidden text-ellipsis whitespace-nowrap font-normal">
+                              Your event is currently under review
+                            </CardDescription>
+                          </CardHeader>
+                          <CardContent>
+                            <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
+                              Edit event
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      </CarouselItem>
+                    ))}
+                  </CarouselContent>
+                  {/* <CarouselPrevious />
           <CarouselNext /> */}
-              </Carousel>
-            ) : (
-              <div className="text-center italic text-secondary-800">
-                <p>No pending events!</p>
-                <p>Ready to create your next event?</p>
-              </div>
-            )}
+                </Carousel>
+              ) : (
+                <div className="text-center italic text-secondary-800">
+                  <p>No pending events!</p>
+                  <p>Ready to create your next event?</p>
+                </div>
+              )}
+            </ScrollArea>
           </div>
 
           <Separator className="mx-6" orientation="vertical" />
