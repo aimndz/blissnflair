@@ -21,7 +21,7 @@ export async function getAllEvents() {
 }
 
 //// GET EVENT BY ID
-export async function getAllEventById(id: string) {
+export async function getEventById(id: string) {
   const res = await fetch(`${API_URL}/event/${id}`, {
     method: "GET",
     headers: {
