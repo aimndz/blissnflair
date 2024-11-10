@@ -271,7 +271,6 @@ function Create() {
                         mode="single"
                         selected={field.value}
                         onSelect={(date) => field.onChange(date)}
-                        initialFocus
                       />
                     </PopoverContent>
                   </Popover>
@@ -293,6 +292,10 @@ function Create() {
                         onChange={(time) =>
                           field.onChange(timeValueToString(time))
                         }
+                        classNames={{
+                          segment: "focus:bg-secondary-300",
+                          inputWrapper: "hover:bg-secondary-100",
+                        }}
                         className="rounded-md border border-solid border-secondary-300 bg-secondary-100"
                       />
                     </FormControl>
@@ -314,6 +317,10 @@ function Create() {
                         onChange={(time) =>
                           field.onChange(timeValueToString(time))
                         }
+                        classNames={{
+                          segment: "focus:bg-secondary-300",
+                          inputWrapper: "hover:bg-secondary-100",
+                        }}
                         className="rounded-md border border-solid border-secondary-300 bg-secondary-100"
                       />
                     </FormControl>
