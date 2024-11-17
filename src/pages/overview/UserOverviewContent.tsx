@@ -26,7 +26,10 @@ function UserOverviewContent() {
   const [events, setEvents] = useState<Event[]>([]);
 
   const upcomingEvents = events
-    .filter((event) => new Date(event.date) > new Date())
+    .filter(
+      (event) =>
+        event.status === "APPROVED" && new Date(event.date) > new Date(),
+    )
     .map((event) => ({
       ...event,
       date: format(parseISO(event.date), "MMM dd yyyy"),
