@@ -5,7 +5,7 @@ function AddEventCard() {
   return (
     <Link
       to={"/dashboard/create"}
-      className="flex items-center justify-center rounded-lg bg-secondary-300"
+      className="flex h-48 items-center justify-center rounded-lg bg-secondary-300"
     >
       <Plus className="text-secondary-800" />
     </Link>
