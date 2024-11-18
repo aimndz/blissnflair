@@ -119,22 +119,14 @@ const timeValueToString = (time: Time) => {
 };
 
 const formatDateTime = (date: Date, time: string) => {
-  const utcDate = new Date(date);
+  const localDate = new Date(date);
   const [hours, minutes] = time.split(":").map(Number);
 
-  const adjustedHours = hours - 8;
+  // Combine date and time in local time zone
+  localDate.setHours(hours, minutes, 0, 0);
+  console.log("local date iso:", localDate.toISOString());
 
-  const combinedDate = new Date(
-    Date.UTC(
-      utcDate.getUTCFullYear(),
-      utcDate.getUTCMonth(),
-      utcDate.getUTCDate(),
-      adjustedHours,
-      minutes,
-    ),
-  );
-
-  return combinedDate.toISOString();
+  return localDate.toISOString();
 };
 
 const convertToLocalTime = (utcIsoString: string) => {
