@@ -9,7 +9,7 @@ import Overview from "../pages/overview/Overview";
 import Create from "../pages/create/Create";
 import EventList from "../pages/eventList/EventList";
 import Calendar from "../pages/calendar/Calendar";
-import Profile from "../pages/Profile";
+import Profile from "../pages/profile/Profile";
 import AdminLogin from "../pages/auth/AdminLogin";
 import Accounts from "../pages/Accounts";
 import Preview from "../pages/preview/Preview";

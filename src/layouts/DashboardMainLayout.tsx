@@ -10,6 +10,7 @@ import {
 } from "../components/ui/dropdown-menu";
 import { useUser } from "../hooks/use-user";
 import { logout } from "../services/authApi";
+import { Link } from "react-router-dom";
 
 function DashboardMainLayout({
   children,
@@ -55,7 +56,10 @@ function DashboardMainLayout({
               </p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
+            <DropdownMenuItem>
+              {" "}
+              <Link to={"/dashboard/profile"}> Profile </Link>{" "}
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
