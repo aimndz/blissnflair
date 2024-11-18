@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { getEventById } from "../../services/eventApi";
-import { ArrowLeft, Calendar, Image } from "lucide-react";
+import { ArrowLeft, Calendar, Image, TriangleAlert } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { Event as EventProps } from "../../types/event";
 import { Button } from "../../components/ui/button";
+import Countdown from "./Countdown";
 
 function Event() {
   const navigate = useNavigate();
@@ -45,12 +46,25 @@ function Event() {
         <ArrowLeft />
         <span>Back</span>
       </Button>
+      {event?.status === "APPROVED" ? (
+        event?.startTime && (
+          <Countdown
+            eventStartTime={event.startTime}
+            eventEndTime={event.endTime}
+          />
+        )
+      ) : (
+        <div className="mb-3 flex items-center gap-3 text-xl font-bold text-orange-500">
+          <TriangleAlert size={20} />{" "}
+          <span>Event is currently under review</span>
+        </div>
+      )}
       <div className="flex h-60 w-full items-center justify-center rounded-lg border border-solid border-secondary-600 bg-secondary-300">
         <Image className="text-secondary-100" size={40} />
       </div>
       <div className="mt-5 gap-3">
         <span className="text-xs text-secondary-800">{event?.category}</span>
-        <h2 className="text-2xl font-bold">{event?.title}</h2>{" "}
+        <h2 className="text-2xl font-bold">{event?.title}</h2>
       </div>
       <div className="mt-3 flex flex-wrap items-center gap-3">
         <Calendar className="text-secondary-800" size={20} />
@@ -63,7 +77,7 @@ function Event() {
         </span>
       </div>
       <div className="mt-8">
-        <h3 className="font-medium">Additional Services</h3>
+        <h3 className="font-medium">Additional Services:</h3>
         <div className="flex flex-wrap gap-3">
           {event?.additionalServices?.map((service: string) => (
             <span
