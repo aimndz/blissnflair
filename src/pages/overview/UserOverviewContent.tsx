@@ -41,8 +41,10 @@ function UserOverviewContent() {
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 4);
 
-  // const upcomingEvents = [];
-  // const pendingEvents = [];
+  // get all scheduled dates
+  const scheduledDates = upcomingEvents.map((event) => new Date(event.date));
+
+  // get all pending events
   const pendingEvents = events.filter((event) => event.status === "PENDING");
 
   useEffect(() => {
@@ -151,8 +153,10 @@ function UserOverviewContent() {
           <div>
             <h2 className="mb-3 text-2xl font-medium">Calendar</h2>
             <CalendarPreview
+              key={scheduledDates.length}
               mode="multiple"
-              selected={[new Date(2024, 10, 1), new Date(2024, 10, 2)]}
+              selected={scheduledDates}
+              onSelect={() => {}} // disable date selection
               className="rounded-md border bg-secondary-100 shadow"
             />
           </div>
