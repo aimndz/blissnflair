@@ -14,7 +14,7 @@ function Profile() {
   };
 
   return (
-    <div className="mx-auto w-full max-w-4xl">
+    <div className="mx-auto w-full max-w-5xl">
       <Button
         className="bg-transparent px-0 text-secondary-900 shadow-none hover:bg-transparent hover:text-secondary-800"
         onClick={handleGoBack}
@@ -22,15 +22,15 @@ function Profile() {
         <ArrowLeft />
         <span>Back</span>
       </Button>
-      <div className="mt-3 flex justify-center gap-3">
-        <div>
-          <div className="flex h-28 w-28 items-center justify-center rounded-full bg-secondary-300 text-secondary-100">
+      <div className="mt-3 flex flex-col justify-center gap-3 md:flex-row">
+        <div className="flex flex-col items-center justify-center rounded-xl bg-secondary-100 p-5 md:justify-start">
+          <div className="flex h-28 w-28 items-center justify-center rounded-full border border-solid border-secondary-600 bg-secondary-300 text-secondary-100">
             <UserIcon size={45} />
           </div>
           <button className="mx-auto block text-center">Upload</button>
         </div>
         <div className="w-full space-y-3">
-          <div className="rounded-xl bg-secondary-100 p-5">
+          <div className="rounded-xl bg-secondary-100 px-10 py-5">
             <h2 className="mb-3 text-xl font-medium">Personal Information</h2>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
@@ -61,8 +61,8 @@ function Profile() {
               Save
             </Button>
           </div>
-          <div className="rounded-xl bg-secondary-100 p-5">
-            <h2>Change password</h2>
+          <div className="rounded-xl bg-secondary-100 px-10 py-5">
+            <h2 className="mb-3 text-xl font-medium">Change password</h2>
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
                 <Label htmlFor="currentPassword">Current password</Label>
