@@ -20,12 +20,15 @@ function Home() {
     </p>
 
     {/* Login Button */}
-    <a
-      href="/login"
-      className="block w-full rounded-full bg-primary-100 px-6 py-3 font-bold text-secondary-900 hover:bg-primary-200 transition-colors"
-    >
+    <div className="flex space-x-4">
+    <a href="/login"
+      className="block w-full rounded-full bg-primary-100 px-6 py-3 font-bold text-secondary-900 hover:bg-primary-200 transition-colors">
       Login
     </a>
+      <a href="/sign-up"
+      className="block w-full rounded-full bg-primary-100 px-6 py-3 font-bold text-secondary-900 hover:bg-primary-200 transition-colors">
+      Sign-up
+    </a></div>
   </div>
 </div>
 
