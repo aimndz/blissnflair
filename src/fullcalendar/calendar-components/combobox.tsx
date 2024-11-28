@@ -47,7 +47,7 @@ export function Combobox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[200px] justify-between"
+          className="w-[200px] justify-between bg-secondary-100"
         >
           <CalendarIcon className="h-4 w-4 shrink-0" />
           <p

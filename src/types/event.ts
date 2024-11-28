@@ -12,6 +12,8 @@ export interface Event {
   status: string;
   userId: string;
   daysLeft?: number;
+  createdAt: string;
+  modifiedAt: string;
 }
 
 export type CreateEventData = Omit<Event, "id" | "status" | "userId">;

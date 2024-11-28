@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  CaretDownIcon,
-  CaretUpIcon
-} from "@radix-ui/react-icons";
+import { CaretDownIcon, CaretUpIcon } from "@radix-ui/react-icons";
 import { Button } from "@components/ui/button";
 import { Input } from "@components/ui/input";
 import {
@@ -21,12 +18,7 @@ interface ComboboxProps {
   setCurrentYear: React.Dispatch<React.SetStateAction<Date>>; // Updated type to `number`
 }
 
-export function YearBox({
-  isAnimating,
-  onSelect,
-  currentYear,
-
-}: ComboboxProps) {
+export function YearBox({ isAnimating, onSelect, currentYear }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
   const [inputValue, setInputValue] = React.useState(currentYear);
 
@@ -55,19 +47,20 @@ export function YearBox({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className=" justify-between"
+          className="justify-between bg-secondary-100"
         >
           <p
-            className={`transition-all duration-300 ease-in-out ${isAnimating
-              ? "opacity-0 -translate-y-1"
-              : " opacity-100 translate-y-0"
-              }`}
+            className={`transition-all duration-300 ease-in-out ${
+              isAnimating
+                ? "-translate-y-1 opacity-0"
+                : "translate-y-0 opacity-100"
+            }`}
           >
             {currentYear}
           </p>
         </Button>
       </PopoverTrigger>
-      <PopoverContent className=" w-[120px] space-y-2 p-2">
+      <PopoverContent className="w-[120px] space-y-2 p-2">
         <Button
           className="w-full"
           variant="ghost"

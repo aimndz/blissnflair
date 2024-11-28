@@ -17,7 +17,7 @@ type ColorScheme = "red" | "blue" | "green" | "default"; // Define the ColorSche
 
 type ButtonProps = {
   eventdetails: {
-    eventname: string;
+    title: string;
     description: string;
     colorScheme?: ColorScheme;
   };

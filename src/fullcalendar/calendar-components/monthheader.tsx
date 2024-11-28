@@ -11,6 +11,7 @@ export function MonthHeader(props: any) {
     <div className="flex items-center space-x-1 sm:space-x-2">
       <Button
         variant="outline"
+        className="border-secondary-600"
         onClick={() => {
           props.handleMonthChange("prev");
         }}
@@ -37,6 +38,7 @@ export function MonthHeader(props: any) {
       />
       <Button
         variant="outline"
+        className="border-secondary-600"
         onClick={() => {
           props.handleMonthChange("next");
         }}

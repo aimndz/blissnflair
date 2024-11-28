@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { newevents } from "./data";
+import { newevents } from "./event";
 import FullCalendar from "@fullcalendar/full-calendar";
 import { getAllEvents } from "../../services/eventApi";
 
@@ -24,7 +24,7 @@ function Calendar() {
   return (
     <div>
       <h1>
-        <FullCalendar events={newevents} />
+        <FullCalendar events={events} />
       </h1>
     </div>
   );

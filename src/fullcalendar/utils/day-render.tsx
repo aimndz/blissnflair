@@ -48,21 +48,16 @@ export const renderDaysInMonth = ({
         format(day, "yyyy") === todayYear;
 
       // Filter events for the specific day
+      // Filter events for the specific day
       const eventsForDay = events.filter((event) => {
-        const startDate = format(parseISO(event.startdate), "yyyy-MM-dd");
-        const endDate = format(parseISO(event.enddate), "yyyy-MM-dd");
-
-        if (startDate === endDate) {
-          return startDate === formattedDay;
-        } else {
-          return formattedDay >= startDate && formattedDay <= endDate;
-        }
+        const eventDate = format(new Date(event.startTime), "yyyy-MM-dd");
+        return eventDate === formattedDay;
       });
 
       days.push(
         <div
           key={day.toString()}
-          className={`group relative flex h-[80px] flex-col rounded border p-1 sm:h-[130px] sm:p-2 ${isCurrentMonth ? "" : "text-gray-400"}`} // Dim color for days outside the current month
+          className={`group relative flex h-[80px] flex-col rounded border p-1 sm:h-[130px] sm:p-2 ${isCurrentMonth ? "" : "text-gray-400"} `} // Dim color for days outside the current month
         >
           {/* Day number */}
           <div
