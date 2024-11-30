@@ -91,11 +91,11 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <NavLink to="create">
+                <NavLink to="create/select-venue">
                   {({ isActive }) => (
                     <SidebarMenuButton
                       asChild
-                      className={`border border-solid border-secondary-600 bg-[#D6D6D6] ${isActive ? "border-primary-100 bg-primary-100 text-secondary-900 hover:bg-primary-100 active:bg-primary-100" : "text-secondary-800 hover:bg-secondary-600 active:bg-secondary-600"}`}
+                      className={`border border-solid border-secondary-600 ${isActive ? "border-primary-100 bg-primary-100 text-secondary-900 hover:bg-primary-100 active:bg-primary-100" : "text-secondary-800 hover:bg-secondary-300 active:bg-secondary-300"}`}
                     >
                       <div className="flex items-center">
                         <PlusIcon />
