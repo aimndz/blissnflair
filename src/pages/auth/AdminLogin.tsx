@@ -66,7 +66,7 @@ function Login() {
   return (
     <div className="flex h-screen flex-col justify-center text-center">
       <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
-        <div className="mb-2">
+        <div className="w-10 justify-center flex mx-auto">
           <Logo />
         </div>
         <h1 className="text-xl font-bold">Admin Login</h1>

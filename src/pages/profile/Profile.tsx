@@ -4,10 +4,14 @@ import { Label } from "../../components/ui/label";
 import { Button } from "../../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../hooks/use-user";
+import { updateAccount } from "../../services/accountApi";
+import { id } from "date-fns/locale";
 
 function Profile() {
   const navigate = useNavigate();
   const { user } = useUser();
+
+console.log(user)
 
   const handleGoBack = () => {
     navigate(-1);
@@ -55,7 +59,7 @@ function Profile() {
               </div>
             </div>
             <Button
-              // onClick={handleEventSubmit}
+              // onClick={updateAccount() }
               className="mt-3 rounded-full bg-primary-100 px-10 text-secondary-900 hover:bg-primary-200"
             >
               Save

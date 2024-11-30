@@ -77,8 +77,13 @@ export function AppSidebar() {
         <div className="relative">
           <div className="absolute left-0 top-0">
             <SidebarTrigger />
+          </div >
+          <div className="w-10 flex justify-center mx-auto">
+            <Logo />
           </div>
-          <Logo />
+          <div className=" mb-6 text-2xl font-bold">
+        <span>BLISS & FLAIR</span>
+        </div>
         </div>
       </SidebarHeader>
       <SidebarContent>
