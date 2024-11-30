@@ -1,5 +1,7 @@
+import logo from "./logo.png"
+
 function Logo() {
-  return <div className="text-3xl font-bold text-primary-100">Occasia</div>;
+  return <img src={logo} alt="" />;
 }
 
 export default Logo;

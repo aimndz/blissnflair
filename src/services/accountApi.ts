@@ -4,7 +4,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 //// GET ALL ACCOUNTS
 export async function getAllAccounts() {
-  const res = await fetch(`${API_URL}/accounts`, {
+  const res = await fetch(`${API_URL}/account`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -21,7 +21,7 @@ export async function getAllAccounts() {
 
 //// GET ACCOUNT BY ID
 export async function getAccountById(id: string) {
-  const res = await fetch(`${API_URL}/accounts/${id}`, {
+  const res = await fetch(`${API_URL}/account/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export async function getAccountById(id: string) {
 
 //// CREATE ACCOUNT
 export async function createAccount(account: Account) {
-  const res = await fetch(`${API_URL}/accounts`, {
+  const res = await fetch(`${API_URL}/account`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -56,7 +56,7 @@ export async function createAccount(account: Account) {
 
 //// UPDATE ACCOUNT
 export async function updateAccount(id: string, account: Account) {
-  const res = await fetch(`${API_URL}/accounts/${id}`, {
+  const res = await fetch(`${API_URL}/account/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -74,7 +74,7 @@ export async function updateAccount(id: string, account: Account) {
 
 //// DELETE ACCOUNT
 export async function deleteAccount(id: string) {
-  const res = await fetch(`${API_URL}/accounts/${id}`, {
+  const res = await fetch(`${API_URL}/account/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
