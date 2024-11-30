@@ -74,7 +74,7 @@ export async function updateAccount(id: string, account: Account) {
 
 //// DELETE ACCOUNT
 export async function deleteAccount(id: string) {
-  const res = await fetch(`${API_URL}/accounts/${id}`, {
+  const res = await fetch(`${API_URL}/account/${id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
