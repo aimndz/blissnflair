@@ -6,16 +6,73 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../hooks/use-user";
 import { updateAccount } from "../../services/accountApi";
 import { id } from "date-fns/locale";
+import React from "react";
+import { getUserProfile } from "../../services/utilsApi";
 
 function Profile() {
   const navigate = useNavigate();
   const { user } = useUser();
-
-console.log(user)
-
+  console.log(getUserProfile)
   const handleGoBack = () => {
     navigate(-1);
   };
+
+  const [form, setForm] = React.useState({
+    id: user?.id || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    role: user?.role || "",
+  });
+
+  const handleChange = (e: { target: { id: any; value: any } }) => {
+    setForm({ ...form, [e.target.id]: e.target.value });
+  };
+
+  const handleUpdateAccount = async () => {
+    try {
+      const id = user?.id as string;
+      const response = await updateAccount(id, form);
+
+      if (response.success) {
+        alert("Profile updated successfully");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile");
+    }
+  };
+
+  // const handleChangePassword = async () => {
+  //   const userProfile = await getUserProfile;
+  //   const currentPassword = document.getElementById("currentPassword").value;
+  //   const newPassword = document.getElementById("password").value;
+  //   try {
+  //     await Login
+  //   }
+  //   const isPasswordValid = await (currentPassword); // Assume a helper function to validate the password
+  // if (!isPasswordValid) {
+  //   alert("The current password is incorrect.");
+  //   return;
+  // }
+
+  //   if (!currentPassword || !newPassword) {
+  //     alert("Please fill in both password fields.");
+  //     return;
+  //   }
+
+  //   try {
+  //     const id = user?.id as string;
+  //     const response = await updateAccount({id , newPassword });
+  //     if (response.success) {
+  //       alert("Password updated successfully");
+  //     }
+  //   } catch (error) {
+  //     console.error("Error changing password:", error);
+  //     alert("Failed to update password");
+  //   }
+  // };
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -40,26 +97,42 @@ console.log(user)
               <div>
                 <Label htmlFor="firstName">First name</Label>
                 <Input
-                  type="firstName"
+                  type="text"
                   id="firstName"
-                  value={user?.firstName}
+                  value={form.firstName}
+                  onChange={handleChange}
                 />
               </div>
               <div>
                 <Label htmlFor="lastName">Last name</Label>
-                <Input type="lastName" id="lastName" value={user?.lastName} />
+                <Input
+                  type="text"
+                  id="lastName"
+                  value={form.lastName}
+                  onChange={handleChange}
+                />
               </div>
               <div>
                 <Label htmlFor="email">Email address</Label>
-                <Input type="email" id="email" value={user?.email} />
+                <Input
+                  type="email"
+                  id="email"
+                  value={form.email}
+                  onChange={handleChange}
+                />
               </div>
               <div>
                 <Label htmlFor="phone">Phone number</Label>
-                <Input type="phone" id="phone" value={user?.phoneNumber} />
+                <Input
+                  type="tel"
+                  id="phone"
+                  value={form.phoneNumber}
+                  onChange={handleChange}
+                />
               </div>
             </div>
             <Button
-              // onClick={updateAccount() }
+              onClick={handleUpdateAccount}
               className="mt-3 rounded-full bg-primary-100 px-10 text-secondary-900 hover:bg-primary-200"
             >
               Save
@@ -70,7 +143,7 @@ console.log(user)
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
                 <Label htmlFor="currentPassword">Current password</Label>
-                <Input type="currentPassword" id="currentPassword" />
+                <Input type="password" id="currentPassword" />
               </div>
               <div>
                 <Label htmlFor="password">New password</Label>
@@ -78,7 +151,7 @@ console.log(user)
               </div>
             </div>
             <Button
-              // onClick={handleEventSubmit}
+              // onClick={handleChangePassword}
               className="mt-3 rounded-full bg-primary-100 px-10 text-secondary-900 hover:bg-primary-200"
             >
               Save
