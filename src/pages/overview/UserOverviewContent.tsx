@@ -79,6 +79,7 @@ function UserOverviewContent() {
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 4);
 
+  console.log(countdownDetails);
   // get all scheduled dates
   const scheduledDates = upcomingEvents.map((event) => new Date(event.date));
 
@@ -236,7 +237,8 @@ function UserOverviewContent() {
                     </div>
                     <div className="rounded-md border border-secondary-600 bg-secondary-200 text-center">
                       <div
-                        className={`w-[${event.percentagePassed}%] rounded-md bg-primary-100 p-3 hover:bg-primary-200`}
+                        className="rounded-md bg-primary-100 p-3 hover:bg-primary-200"
+                        style={{ width: `${event.percentagePassed}%` }}
                       ></div>
                     </div>
                   </Link>
