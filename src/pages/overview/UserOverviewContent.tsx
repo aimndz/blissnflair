@@ -19,7 +19,6 @@ import {
   CarouselItem,
 } from "../../components/ui/carousel";
 import { Link } from "react-router-dom";
-import { Separator } from "../../components/ui/separator";
 import { ScrollArea } from "../../components/ui/scroll-area";
 import { ClockIcon } from "@radix-ui/react-icons";
 import StatisticsChart from "./StatisticsChart";
@@ -85,19 +84,6 @@ function UserOverviewContent() {
 
   // get all pending events
   const pendingEvents = events.filter((event) => event.status === "PENDING");
-
-  const eventStatusCounts = events.reduce(
-    (acc, event) => {
-      const existing = acc.find((item) => item.status === event.status);
-      if (existing) {
-        existing.count += 1;
-      } else {
-        acc.push({ status: event.status, count: 1 });
-      }
-      return acc;
-    },
-    [] as { status: string; count: number }[],
-  );
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -213,7 +199,7 @@ function UserOverviewContent() {
           <CarouselNext /> */}
                 </Carousel>
               ) : (
-                <div className="text-center italic text-secondary-800">
+                <div className="italic text-secondary-800">
                   <p>No pending events!</p>
                   <p>Ready to create your next event?</p>
                 </div>
@@ -223,31 +209,50 @@ function UserOverviewContent() {
 
           <div className="text flex w-full gap-3 rounded-lg border border-secondary-600 p-5">
             <div className="w-full">
-              <h2 className="mb-3 text-2xl font-medium">10 days Countdown</h2>
-              <div className="space-y-3 rounded-lg bg-secondary-100 p-5">
-                {countdownDetails.map((event) => (
-                  <Link
-                    to={`/dashboard/events/${event.id}`}
-                    className="block"
-                    key={event.id}
-                  >
-                    <div className="flex justify-between">
-                      <p className="font-medium">{event.title}</p>
-                      <p className="text-xs">{event.daysLeft} days left</p>
-                    </div>
-                    <div className="rounded-md border border-secondary-600 bg-secondary-200 text-center">
-                      <div
-                        className="rounded-md bg-primary-100 p-3 hover:bg-primary-200"
-                        style={{ width: `${event.percentagePassed}%` }}
-                      ></div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+              <h2 className="mb-3 text-2xl font-medium">
+                10 days Countdown{" "}
+                <span className="text-lg font-light">
+                  ( {countdownDetails.length} )
+                </span>
+              </h2>
+              {countdownDetails.length > 0 ? (
+                <div className="space-y-3 rounded-lg bg-secondary-100 p-5">
+                  {countdownDetails.map((event) => (
+                    <Link
+                      to={`/dashboard/events/${event.id}`}
+                      className="block"
+                      key={event.id}
+                    >
+                      <div className="flex justify-between">
+                        <p className="font-medium">{event.title}</p>
+                        <p className="text-xs">{event.daysLeft} days left</p>
+                      </div>
+                      <div className="rounded-md border border-secondary-600 bg-secondary-200 text-center">
+                        <div
+                          className="rounded-md bg-primary-100 p-3 hover:bg-primary-200"
+                          style={{ width: `${event.percentagePassed}%` }}
+                        ></div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <p className="max-w-96 italic text-secondary-800">
+                  No countdown to show right now. Add an event soon to start the
+                  10-day countdown!
+                </p>
+              )}
             </div>
             <div className="w-full">
               <h2 className="mb-3 text-2xl font-medium">Statistics</h2>
-              <StatisticsChart events={events} />
+              {events.length > 0 ? (
+                <StatisticsChart events={events} />
+              ) : (
+                <p className="my-auto max-w-96 italic text-secondary-800">
+                  We don't have any data to show statistics yet. Book an event
+                  to see detailed stats!
+                </p>
+              )}
             </div>
           </div>
 
