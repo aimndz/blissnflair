@@ -143,6 +143,9 @@ const convertToLocalTime = (utcIsoString: string) => {
 function Create() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { spaceName } = location.state || {};
+
+  console.log(spaceName);
   const [error, setError] = useState("");
 
   const [initialValues, setInitialValues] = useState({

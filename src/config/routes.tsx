@@ -7,6 +7,7 @@ import Error from "../pages/Error";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Overview from "../pages/overview/Overview";
 import Create from "../pages/create/Create";
+import Venue from "../pages/create/Venue";
 import EventList from "../pages/eventList/EventList";
 import Calendar from "../pages/calendar/Calendar";
 import Profile from "../pages/profile/Profile";
@@ -19,6 +20,7 @@ import SystemSettings from "../pages/SystemSettings";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Event from "../pages/eventDetails/Event";
+import Catering from "../pages/create/Catering";
 
 const userRoutes = [
   {
@@ -27,9 +29,19 @@ const userRoutes = [
     element: <Overview />,
   },
   {
-    path: "create",
+    path: "create/event-info",
     title: "Create Event",
     element: <Create />,
+  },
+  {
+    path: "create/select-venue",
+    title: "Create Event",
+    element: <Venue />,
+  },
+  {
+    path: "create/catering",
+    title: "Create Event",
+    element: <Catering />,
   },
   {
     path: "preview",
