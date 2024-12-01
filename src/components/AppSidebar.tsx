@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Logo from "./icons/Logo";
 import {
@@ -77,13 +77,15 @@ export function AppSidebar() {
         <div className="relative">
           <div className="absolute left-0 top-0">
             <SidebarTrigger />
-          </div >
-          <div className="w-10 flex justify-center mx-auto">
-            <Logo />
           </div>
-          <div className=" mb-6 text-2xl font-bold">
-        <span>BLISS & FLAIR</span>
-        </div>
+          <Link to="/">
+            <div className="mx-auto flex w-10 justify-center">
+              <Logo />
+            </div>
+            <div className="mb-6 text-2xl font-bold">
+              <span>BLISS & FLAIR</span>
+            </div>
+          </Link>
         </div>
       </SidebarHeader>
       <SidebarContent>
