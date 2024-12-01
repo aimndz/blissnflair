@@ -10,7 +10,7 @@ import {
 } from "../components/ui/dropdown-menu";
 import { useUser } from "../hooks/use-user";
 import { logout } from "../services/authApi";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function DashboardMainLayout({
   children,
@@ -20,10 +20,14 @@ function DashboardMainLayout({
   title: string;
 }) {
   const { user } = useUser();
-
+  const navigate = useNavigate();
   const handleLogout = async () => {
     await logout();
-    window.location.href = "/login";
+    navigate("/");
+  };
+
+  const handleProfile = () => {
+    navigate("/dashboard/profile");
   };
 
   return (
@@ -56,10 +60,7 @@ function DashboardMainLayout({
               </p>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              {" "}
-              <Link to={"/dashboard/profile"}> Profile </Link>{" "}
-            </DropdownMenuItem>
+            <DropdownMenuItem onClick={handleProfile}>Profile</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>

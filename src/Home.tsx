@@ -26,7 +26,7 @@ function Home() {
         {/* Login and Sign-up Buttons */}
         <div className="mx-auto mb-12 flex max-w-sm content-center space-x-4">
           <a
-            href="/login"
+            href="/dashboard"
             className="block w-full rounded-full bg-primary-100 px-6 py-3 font-bold text-secondary-900 transition-colors hover:bg-primary-200"
           >
             Login
@@ -59,7 +59,7 @@ function Home() {
             {/* Email: */}
             <a
               href="mailto:blissnflaircommercialbuilding@gmail.com"
-              className="ml-1 font-normal underline hover:text-primary-200 "
+              className="ml-1 font-normal underline hover:text-primary-200"
             >
               blissnflaircommercialbuilding@gmail.com
             </a>
@@ -67,25 +67,23 @@ function Home() {
           <p className="mb-2 flex items-center text-sm font-normal">
             <Phone className="mr-2 text-primary-200" />
             {/* Phone: */}
-            <span
-              className="ml-1 font-normal "
-            >
-              0917-422-2807
-            </span>
+            <span className="ml-1 font-normal">0917-422-2807</span>
           </p>
           <p className="mb-S flex items-center text-sm font-normal">
-            <Facebook className="text-primary-200"/>
+            <Facebook className="text-primary-200" />
             <a
               href="https://www.facebook.com/profile.php?id=61555826162270"
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-3  font-normal underline hover:text-primary-200"
+              className="ml-3 font-normal underline hover:text-primary-200"
             >
               Bliss & Flair Commercial Building
             </a>
-            
           </p>
-          <p className="text-sm mt-4">&copy; {new Date().getFullYear()} Bliss and Flair. All rights reserved.</p>
+          <p className="mt-4 text-sm">
+            &copy; {new Date().getFullYear()} Bliss and Flair. All rights
+            reserved.
+          </p>
         </div>
       </div>
     </div>
