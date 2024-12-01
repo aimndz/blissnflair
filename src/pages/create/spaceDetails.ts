@@ -8,6 +8,7 @@ const eventServices = [
   {
     id: 1,
     name: "Lounge Hall",
+    value: "lounge hall",
     image: privateRoomImg,
     floorLevel: "Ground Floor",
     floorArea: "78",
@@ -54,6 +55,7 @@ const eventServices = [
   {
     id: 2,
     name: "Private Room",
+    value: "private room",
     image: privateRoomImg,
     floorLevel: "Ground Floor",
     floorArea: "0",
@@ -108,6 +110,7 @@ const eventServices = [
   {
     id: 3,
     name: "Function Hall",
+    value: "function hall",
     image: functionHallImg,
     floorLevel: "2nd Floor",
     floorArea: "277",
@@ -154,6 +157,7 @@ const eventServices = [
   {
     id: 4,
     name: "Al Fresco",
+    value: "al fresco",
     image: alFrescoImg,
     floorLevel: "3rd Floor",
     floorArea: "0",

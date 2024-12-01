@@ -3,11 +3,11 @@ import { ToggleGroup, ToggleGroupItem } from "../../components/ui/toggle-group";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import spaceDetails from "./spaceDetails";
-
-import SpaceDetailsSidebar from "./spaceDetailsSidebar";
+import SpaceDetailsSidebar from "./SpaceDetailsSidebar";
 
 interface Space {
   name: string;
+  value: string;
   image: string;
   floorLevel: string;
   floorArea: string;
@@ -46,7 +46,7 @@ function Venue() {
   const handleEventInfo = () => {
     if (selectedSpace) {
       navigate("/dashboard/create/event-info", {
-        state: { spaceName: selectedSpace?.name },
+        state: { spaceName: selectedSpace?.value },
       });
     }
   };
