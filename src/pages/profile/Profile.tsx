@@ -7,12 +7,12 @@ import { useUser } from "../../hooks/use-user";
 import { updateAccount } from "../../services/accountApi";
 import { id } from "date-fns/locale";
 import React from "react";
-import { getUserProfile } from "../../services/utilsApi";
+import { Account } from "../../types/account";
+
 
 function Profile() {
   const navigate = useNavigate();
   const { user } = useUser();
-  console.log(getUserProfile)
   const handleGoBack = () => {
     navigate(-1);
   };
@@ -24,17 +24,19 @@ function Profile() {
     email: user?.email || "",
     phoneNumber: user?.phoneNumber || "",
     role: user?.role || "",
+    password: "",
+    currentPassword: "",
   });
 
   const handleChange = (e: { target: { id: any; value: any } }) => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
+  
 
   const handleUpdateAccount = async () => {
     try {
       const id = user?.id as string;
       const response = await updateAccount(id, form);
-
       if (response.success) {
         alert("Profile updated successfully");
       }
@@ -44,35 +46,34 @@ function Profile() {
     }
   };
 
-  // const handleChangePassword = async () => {
-  //   const userProfile = await getUserProfile;
-  //   const currentPassword = document.getElementById("currentPassword").value;
-  //   const newPassword = document.getElementById("password").value;
-  //   try {
-  //     await Login
-  //   }
-  //   const isPasswordValid = await (currentPassword); // Assume a helper function to validate the password
-  // if (!isPasswordValid) {
-  //   alert("The current password is incorrect.");
-  //   return;
-  // }
+  const handleChangePassword = async () => {
+    try {
+      const { password, currentPassword } = form;
+      console.log(form)
+      if (!currentPassword || !password) {
+        alert("Please fill in both password fields.");
+        return;
+      }
 
-  //   if (!currentPassword || !newPassword) {
-  //     alert("Please fill in both password fields.");
-  //     return;
-  //   }
-
-  //   try {
-  //     const id = user?.id as string;
-  //     const response = await updateAccount({id , newPassword });
-  //     if (response.success) {
-  //       alert("Password updated successfully");
-  //     }
-  //   } catch (error) {
-  //     console.error("Error changing password:", error);
-  //     alert("Failed to update password");
-  //   }
-  // };
+      if (password.length < 8) {
+        alert("The new password must be at least 8 characters long.");
+        return;
+      }
+      
+      const id = user?.id as string;
+      const response = await updateAccount(id, form);
+  
+      if (response.success) {
+        alert("Password updated successfully");
+      } else {
+        alert("Failed to update password");
+      }
+    } catch (error) {
+      console.error("Error changing password:", error);
+      alert("An unexpected error occurred while updating the password.");
+    }
+  };
+  
 
   return (
     <div className="mx-auto w-full max-w-5xl">
@@ -125,7 +126,7 @@ function Profile() {
                 <Label htmlFor="phone">Phone number</Label>
                 <Input
                   type="tel"
-                  id="phone"
+                  id="phoneNumber"
                   value={form.phoneNumber}
                   onChange={handleChange}
                 />
@@ -143,15 +144,15 @@ function Profile() {
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
                 <Label htmlFor="currentPassword">Current password</Label>
-                <Input type="password" id="currentPassword" />
+                <Input type="password" id="currentPassword" value={form.currentPassword} onChange={handleChange}/>
               </div>
               <div>
                 <Label htmlFor="password">New password</Label>
-                <Input type="password" id="password" />
+                <Input type="password" id="password" value={form.password} onChange={handleChange}/>
               </div>
             </div>
             <Button
-              // onClick={handleChangePassword}
+              onClick={handleChangePassword}
               className="mt-3 rounded-full bg-primary-100 px-10 text-secondary-900 hover:bg-primary-200"
             >
               Save
