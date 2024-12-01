@@ -49,17 +49,22 @@ function Home() {
             <div>
               <HouseIcon className="mr-3 mt-1 text-2xl text-primary-200" />
             </div>
-            <span className="text-start">
-              Block 11 Lot 9, 11, 13 Greenbreeze Avenue, Greenbreeze Village 1,
-              Barangay Langkaan 2, Dasmariñas, Philippines, 4114
-            </span>
+            <a
+              href="https://maps.app.goo.gl/nMNhBdcmohAJextKA"
+              className="text-start underline hover:text-primary-200 hover:no-underline"
+            >
+              <span>
+                Green Breeze Village, Block 11 Lot 9, Green Breeze Ave, 1
+                Langkaan 2, Dasmariñas, 4114 Cavite
+              </span>
+            </a>
           </p>
           <p className="mb-2 flex items-center text-sm font-normal">
             <Mail className="mr-2 text-primary-200" />
             {/* Email: */}
             <a
               href="mailto:blissnflaircommercialbuilding@gmail.com"
-              className="ml-1 font-normal underline hover:text-primary-200"
+              className="ml-1 font-normal underline hover:text-primary-200 hover:no-underline"
             >
               blissnflaircommercialbuilding@gmail.com
             </a>
@@ -75,7 +80,7 @@ function Home() {
               href="https://www.facebook.com/profile.php?id=61555826162270"
               target="_blank"
               rel="noopener noreferrer"
-              className="ml-3 font-normal underline hover:text-primary-200"
+              className="ml-3 font-normal underline hover:text-primary-200 hover:no-underline"
             >
               Bliss & Flair Commercial Building
             </a>
