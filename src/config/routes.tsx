@@ -44,7 +44,7 @@ const userRoutes = [
     element: <Catering />,
   },
   {
-    path: "preview",
+    path: "create/preview",
     title: "Preview",
     element: <Preview />,
   },
