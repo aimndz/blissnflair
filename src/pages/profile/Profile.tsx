@@ -5,9 +5,7 @@ import { Button } from "../../components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../hooks/use-user";
 import { updateAccount } from "../../services/accountApi";
-import { id } from "date-fns/locale";
 import React from "react";
-import { Account } from "../../types/account";
 
 
 function Profile() {
@@ -17,7 +15,7 @@ function Profile() {
     navigate(-1);
   };
 
-  const [form, setForm] = React.useState({
+  const [passForm, setpassForm] = React.useState({
     id: user?.id || "",
     firstName: user?.firstName || "",
     lastName: user?.lastName || "",
@@ -26,6 +24,14 @@ function Profile() {
     role: user?.role || "",
     password: "",
     currentPassword: "",
+  });
+  const [form, setForm] = React.useState({
+    id: user?.id || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    role: user?.role || "",
   });
 
   const handleChange = (e: { target: { id: any; value: any } }) => {
@@ -48,7 +54,7 @@ function Profile() {
 
   const handleChangePassword = async () => {
     try {
-      const { password, currentPassword } = form;
+      const { password, currentPassword } = passForm;
       console.log(form)
       if (!currentPassword || !password) {
         alert("Please fill in both password fields.");
@@ -61,7 +67,7 @@ function Profile() {
       }
       
       const id = user?.id as string;
-      const response = await updateAccount(id, form);
+      const response = await updateAccount(id, passForm);
   
       if (response.success) {
         alert("Password updated successfully");
@@ -144,11 +150,11 @@ function Profile() {
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
                 <Label htmlFor="currentPassword">Current password</Label>
-                <Input type="password" id="currentPassword" value={form.currentPassword} onChange={handleChange}/>
+                <Input type="password" id="currentPassword" value={passForm.currentPassword} onChange={handleChange}/>
               </div>
               <div>
                 <Label htmlFor="password">New password</Label>
-                <Input type="password" id="password" value={form.password} onChange={handleChange}/>
+                <Input type="password" id="password" value={passForm.password} onChange={handleChange}/>
               </div>
             </div>
             <Button
