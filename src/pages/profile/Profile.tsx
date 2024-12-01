@@ -15,6 +15,15 @@ function Profile() {
     navigate(-1);
   };
 
+  
+  const [form, setForm] = React.useState({
+    id: user?.id || "",
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    phoneNumber: user?.phoneNumber || "",
+    role: user?.role || "",
+  });
   const [passForm, setpassForm] = React.useState({
     id: user?.id || "",
     firstName: user?.firstName || "",
@@ -25,19 +34,9 @@ function Profile() {
     password: "",
     currentPassword: "",
   });
-  const [form, setForm] = React.useState({
-    id: user?.id || "",
-    firstName: user?.firstName || "",
-    lastName: user?.lastName || "",
-    email: user?.email || "",
-    phoneNumber: user?.phoneNumber || "",
-    role: user?.role || "",
-  });
-
   const handleChange = (e: { target: { id: any; value: any } }) => {
     setForm({ ...form, [e.target.id]: e.target.value });
   };
-  
 
   const handleUpdateAccount = async () => {
     try {
@@ -52,6 +51,9 @@ function Profile() {
     }
   };
 
+  const passhandleChange = (e: { target: { id: any; value: any } }) => {
+    setpassForm({ ...passForm, [e.target.id]: e.target.value });
+  };
   const handleChangePassword = async () => {
     try {
       const { password, currentPassword } = passForm;
@@ -150,11 +152,11 @@ function Profile() {
             <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <div>
                 <Label htmlFor="currentPassword">Current password</Label>
-                <Input type="password" id="currentPassword" value={passForm.currentPassword} onChange={handleChange}/>
+                <Input type="password" id="currentPassword" value={passForm.currentPassword} onChange={passhandleChange}/>
               </div>
               <div>
                 <Label htmlFor="password">New password</Label>
-                <Input type="password" id="password" value={passForm.password} onChange={handleChange}/>
+                <Input type="password" id="password" value={passForm.password} onChange={passhandleChange}/>
               </div>
             </div>
             <Button
