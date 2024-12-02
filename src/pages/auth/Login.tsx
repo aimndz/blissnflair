@@ -82,12 +82,14 @@ function Login() {
   return (
     <div className="flex h-screen flex-col justify-center text-center">
       <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
-        <div className="w-10 flex justify-center mx-auto">
-          <Logo />
-        </div>
-        <div className="mb-6 text-2xl font-bold">
-        <span>BLISS & FLAIR</span>
-        </div>
+        <Link to="/">
+          <div className="mx-auto flex w-10 justify-center">
+            <Logo />
+          </div>
+          <div className="mb-6 text-2xl font-bold">
+            <span>BLISS & FLAIR</span>
+          </div>
+        </Link>
         <h1 className="text-xl font-bold">Login</h1>
         <p className="mb-8 text-sm text-secondary-800">
           Welcome back! Please login to continue.
