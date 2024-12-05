@@ -1,24 +1,40 @@
-import { ArrowLeft, Calendar, Image } from "lucide-react";
+import { ArrowLeft, Calendar, Image, MapPin } from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { createEvent } from "../../services/eventApi";
 import { format, parseISO } from "date-fns";
+import eventServices from "../create/spaceDetails";
 
 function Preview() {
   const location = useLocation();
   const { event } = location.state || {};
   const navigate = useNavigate();
 
-  const handleGoBack = () => {
-    navigate("/dashboard/create", { state: { event } });
+  const getEventServiceByValue = (value: string) => {
+    return eventServices.find((service) => service.value === value);
   };
 
+  const handleGoBack = () => {
+    navigate("/dashboard/create/catering", { state: { event } });
+  };
+
+  const eventSpace = getEventServiceByValue(event.spaceName);
+  console.log(event);
+
   const handleEventSubmit = async () => {
-    const res = await createEvent(event);
+    // Set default values for missing properties
+    const eventWithDefaults = {
+      ...event,
+      expectedPax: event.expectedPax || 50,
+      hasInHouseCatering: event.hasInHouseCatering ?? false,
+      additionalHours: event.additionalHours || 0,
+      additionalServices: event.additionalServices || [],
+    };
+
+    const res = await createEvent(eventWithDefaults);
 
     if (res.success) {
       // TODO: Show success message
-      // Show alert message
       console.log("Event created successfully");
       navigate("/dashboard");
     } else {
@@ -52,7 +68,11 @@ function Preview() {
           {format(parseISO(event.endTime), "h:mm a")}
         </span>
       </div>
-      <div className="mt-8">
+      <p className="mt-3 flex gap-3">
+        <MapPin className="text-secondary-800" size={20} />
+        <span>{eventSpace?.name}</span>
+      </p>
+      {/* <div className="mt-8">
         <h3 className="font-medium">Additional Services</h3>
         <div className="flex flex-wrap gap-3">
           {event.additionalServices.map((service: string) => (
@@ -64,7 +84,7 @@ function Preview() {
             </span>
           ))}
         </div>
-      </div>
+      </div> */}
       <div className="mt-8">
         <h3 className="font-medium">Description:</h3>
         <p>{event.description}</p>
@@ -72,7 +92,7 @@ function Preview() {
       <div className="mt-8">
         {event.additionalNotes.trim() !== "" && (
           <div>
-            <h3 className="font-medium">Note:</h3>
+            <h3 className="font-medium">Additional note:</h3>
             <p>{event.additionalNotes}</p>
           </div>
         )}
