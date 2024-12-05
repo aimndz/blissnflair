@@ -24,7 +24,8 @@ const Views = (props: ViewsProps) => {
         {props.activeTab === "month" ? (
           <MonthView currentDate={props.currentDate} events={props.events} />
         ) : (
-          <YearView currentDate={props.currentDate} events={props.events} />
+          ""
+          // <YearView currentDate={props.currentDate} events={props.events} />
         )}
       </div>
     </Card>

@@ -23,7 +23,7 @@ const EventColoredButton = forwardRef<HTMLButtonElement, ColoredButtonProps>(
   (
     {
       eventdetails,
-      colorScheme = "default", // Default color scheme
+      colorScheme = "blue", // Default color scheme
       onClick, // Include onClick prop
     },
     ref,
@@ -60,19 +60,17 @@ const EventColoredButton = forwardRef<HTMLButtonElement, ColoredButtonProps>(
         type="button"
         onClick={onClick} // Use onClick passed from the parent
         ref={ref} // Forward the ref to the Button
-        className={`mb-1 flex h-full w-full cursor-pointer flex-col items-start justify-center rounded border-opacity-70 p-1 text-[8px] transition-colors duration-200 sm:text-xs ${parseISO(eventdetails.startTime) > new Date("2024-11-15") ? bgColor : "bg-secondary-200"} text-secondary-900 ${borderColor} hover:bg-opacity-85 dark:hover:bg-opacity-40`}
+        className={`mb-1 flex w-full cursor-pointer ${textColor} justify-between rounded border-opacity-70 text-[8px] transition-colors duration-200 sm:text-xs ${parseISO(eventdetails.startTime) > new Date("2024-11-15") ? bgColor : "bg-secondary-200"} text-secondary-900 ${borderColor} hover:bg-opacity-85 dark:hover:bg-opacity-40`}
       >
         <div className="w-full max-w-md truncate">
-          <h2 className="truncate font-semibold">{eventdetails.title}</h2>
+          <h2 className="truncate text-start font-semibold">
+            {eventdetails.title}
+          </h2>
         </div>
-        <div className="hidden w-full max-w-md truncate sm:block">
-          <p className="truncate font-light">{eventdetails.description}</p>
-        </div>
-        <div className="flex w-full justify-center">
-          <ClockIcon className="mr-1 h-4 w-4" />
+        <div className="flex w-full justify-end">
+          {/* <ClockIcon className="mr-1 h-4 w-4" /> */}
           <div className="whitespace-nowrap">
-            {format(parseISO(eventdetails.startTime), "h:mm a")} -{" "}
-            {format(parseISO(eventdetails.endTime), "h:mm a")}
+            {format(parseISO(eventdetails.startTime), "h:mm a")}
           </div>
         </div>
       </Button>

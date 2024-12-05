@@ -40,7 +40,7 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
             handleYearChange={props.handleYearChange}
           />
           <div className="flex items-center justify-between gap-4">
-            <Link to="/dashboard/create">
+            <Link to="/dashboard/create/select-venue">
               {" "}
               <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
                 <AddCircle className="mr-1" /> Add Event

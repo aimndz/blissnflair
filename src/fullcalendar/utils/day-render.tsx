@@ -72,27 +72,26 @@ export const renderDaysInMonth = ({
 
           {/* Events list */}
           <div className="flex-grow overflow-hidden">
-            {/* {eventsForDay.length === 0 && (
+            {eventsForDay.length === 0 && (
               <AddEvent variant="secondary" currentDate={day} />
-            )} */}
+            )}
             {eventsForDay.length === 1 && (
               <>
                 <EventModal eventdetails={eventsForDay[0]} />
-                {/* Can't add event if there's already an event */}
-                {/* <AddEvent variant="secondary" currentDate={day} /> */}
+                <AddEvent variant="secondary" currentDate={day} />
               </>
             )}
             {eventsForDay.length > 1 && (
               <>
                 <EventModal eventdetails={eventsForDay[0]} />
-                {eventsForDay.length > 2 && (
-                  <ListAllEvents
-                    view="day"
-                    date={day}
-                    eventsForDay={eventsForDay}
-                  />
-                )}
               </>
+            )}
+            {eventsForDay.length > 1 && (
+              <ListAllEvents
+                view="day"
+                date={day}
+                eventsForDay={eventsForDay}
+              />
             )}
           </div>
         </div>,

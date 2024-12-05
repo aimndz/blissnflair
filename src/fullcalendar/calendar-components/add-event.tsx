@@ -12,6 +12,7 @@ import {
   CredenzaTrigger,
 } from "@fullcalendar/ui/credenza";
 import { Button } from "@fullcalendar/ui/button";
+import { Link } from "react-router-dom";
 
 type ButtonProps = {
   variant?: "default" | "secondary" | "primary"; // Optional variant type
@@ -41,21 +42,25 @@ function AddEvent({
             <span className="hidden lg:block">{buttonText}</span>
           </Button>
         ) : variant === "secondary" ? (
-          <Button
-            variant="ghost"
-            className="inline-flex h-1/2 w-full items-center justify-center gap-2 truncate whitespace-nowrap rounded-md px-0.5 text-[8px] font-medium text-muted-foreground ring-offset-background transition-opacity hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:px-2 sm:text-xs sm:opacity-0 sm:group-hover:opacity-100 lg:py-5"
-          >
-            {icon}
-            <span className="hidden lg:block">{buttonText}</span>
-          </Button>
+          <Link to="/dashboard/create/event-info">
+            <Button
+              variant="ghost"
+              className="inline-flex h-1/2 w-full items-center justify-center gap-2 truncate whitespace-nowrap rounded-md px-0.5 text-[8px] font-medium text-muted-foreground ring-offset-background transition-opacity hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:px-2 sm:text-xs sm:opacity-0 sm:group-hover:opacity-100 lg:py-5"
+            >
+              {icon}
+              <span className="hidden lg:block">{buttonText}</span>
+            </Button>
+          </Link>
         ) : (
-          <Button
-            variant="ghost"
-            className="inline-flex h-1/2 w-full items-center justify-center gap-2 truncate whitespace-nowrap rounded-md bg-slate-100 px-0.5 text-[8px] font-medium text-muted-foreground ring-offset-background transition-all hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:px-2 sm:text-xs lg:py-5"
-          >
-            {icon}
-            <span className="hidden lg:block">{buttonText}</span>
-          </Button>
+          <Link to="/dashboard/create/event-info">
+            <Button
+              variant="ghost"
+              className="inline-flex h-1/2 w-full items-center justify-center gap-2 truncate whitespace-nowrap rounded-md bg-slate-100 px-0.5 text-[8px] font-medium text-muted-foreground ring-offset-background transition-all hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 sm:px-2 sm:text-xs lg:py-5"
+            >
+              {icon}
+              <span className="hidden lg:block">{buttonText}</span>
+            </Button>
+          </Link>
         )}
       </CredenzaTrigger>
 

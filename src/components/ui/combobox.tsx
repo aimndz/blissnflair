@@ -23,10 +23,11 @@ interface ComboboxProps {
   items: Item[];
   label: string;
   value: string;
+  className?: string;
   onChange: (value: string) => void;
 }
 
-function Combobox({ items, label, value, onChange }: ComboboxProps) {
+function Combobox({ items, label, value, className, onChange }: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
@@ -37,7 +38,7 @@ function Combobox({ items, label, value, onChange }: ComboboxProps) {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[240px] justify-between border-secondary-600 bg-secondary-100"
+            className={`w-[240px] justify-between border-secondary-600 bg-secondary-100 ${className}`}
           >
             {value ? items.find((item) => item.value === value)?.label : label}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />

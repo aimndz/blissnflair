@@ -216,7 +216,7 @@ function UserOverviewContent() {
                 </span>
               </h2>
               {countdownDetails.length > 0 ? (
-                <div className="space-y-3 rounded-lg bg-secondary-100 p-5">
+                <div className="space-y-3 rounded-lg border border-secondary-600 bg-secondary-100 p-5">
                   {countdownDetails.map((event) => (
                     <Link
                       to={`/dashboard/events/${event.id}`}
