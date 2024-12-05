@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { getEventById } from "../../services/eventApi";
-import { ArrowLeft, Calendar, Image, TriangleAlert } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Image,
+  MapPin,
+  TriangleAlert,
+} from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { Event as EventProps } from "../../types/event";
 import { Button } from "../../components/ui/button";
 import Countdown from "./Countdown";
+import eventServices from "../create/spaceDetails";
 
 function Event() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const [event, setEvent] = useState<EventProps | null>(null);
+
+  const getEventServiceByValue = (value: string) => {
+    return eventServices.find((service) => service.value === value);
+  };
 
   const handleGoBack = () => {
     if (location.state?.from) {
@@ -20,6 +31,11 @@ function Event() {
       navigate("/dashboard/overview"); // Default if no previous path is stored
     }
   };
+
+  // console.log(event);
+
+  const eventSpace = getEventServiceByValue(event?.venue || "");
+  // console.log(event);
 
   useEffect(() => {
     const fetchEvent = async () => {
@@ -76,6 +92,10 @@ function Event() {
           {event?.endTime && format(parseISO(event.endTime), "h:mm a")}
         </span>
       </div>
+      <p className="mt-3 flex gap-3">
+        <MapPin className="text-secondary-800" size={20} />
+        <span>{eventSpace?.name}</span>
+      </p>
       <div className="mt-8">
         <h3 className="font-medium">Additional Services:</h3>
         <div className="flex flex-wrap gap-3">
