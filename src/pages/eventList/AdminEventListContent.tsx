@@ -14,7 +14,7 @@ import { Event } from "../../types/event"; // Assuming you have a User type
 import { parseISO, format } from "date-fns";
 import { CalendarX, CheckIcon, XIcon } from "lucide-react";
 import Combobox from "../../components/ui/combobox";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 
@@ -166,9 +166,13 @@ function AdminEventListContent() {
           <TableBody>
             {filteredEvents.map((event) => (
               <TableRow key={event.id}>
-                <TableCell className="cursor-pointer transition-all delay-75 hover:underline">
-                  {event.title}
-                </TableCell>
+                <Link to={`/admin/dashboard/events/${event.id}`}>
+                  {" "}
+                  <TableCell className="cursor-pointer transition-all delay-75 hover:underline">
+                    {event.title}
+                  </TableCell>
+                </Link>
+
                 <TableCell>{event.venue}</TableCell>
                 <TableCell>{event.date}</TableCell>
                 <TableCell>
