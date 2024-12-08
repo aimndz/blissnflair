@@ -26,6 +26,7 @@ import { ArrowRight, CalendarIcon } from "lucide-react";
 import { Calendar } from "../../components/ui/calendar";
 import { Textarea } from "../../components/ui/textarea";
 import Combobox from "../../components/ui/combobox";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 const venue = [
   {
@@ -96,6 +97,7 @@ const convertToLocalTime = (utcIsoString: string) => {
 
 function VenueInfo() {
   const navigate = useNavigate();
+  const routePrefix = useRoutePrefix();
   const [error, setError] = useState("");
   const location = useLocation();
 
@@ -210,7 +212,7 @@ function VenueInfo() {
 
       console.log(event);
 
-      navigate("/dashboard/create/catering", { state: { event } });
+      navigate(`/${routePrefix}/create/catering`, { state: { event } });
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);

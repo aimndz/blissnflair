@@ -13,9 +13,11 @@ import { Event as EventProps } from "../../types/event";
 import { Button } from "../../components/ui/button";
 import Countdown from "./Countdown";
 import eventServices from "../create/spaceDetails";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 function Event() {
   const navigate = useNavigate();
+  const routePrefix = useRoutePrefix();
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const [event, setEvent] = useState<EventProps | null>(null);
@@ -28,7 +30,7 @@ function Event() {
     if (location.state?.from) {
       navigate(location.state.from); // Go back to the originating page
     } else {
-      navigate("/dashboard/overview"); // Default if no previous path is stored
+      navigate(`/${routePrefix}/overview`); // Default if no previous path is stored
     }
   };
 

@@ -4,22 +4,23 @@ import { Button } from "../../components/ui/button";
 import { createEvent } from "../../services/eventApi";
 import { format, parseISO } from "date-fns";
 import eventServices from "../create/spaceDetails";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 function Preview() {
   const location = useLocation();
   const { event } = location.state || {};
   const navigate = useNavigate();
+  const routePrefix = useRoutePrefix();
 
   const getEventServiceByValue = (value: string) => {
     return eventServices.find((service) => service.value === value);
   };
 
   const handleGoBack = () => {
-    navigate("/dashboard/create/catering", { state: { event } });
+    navigate(`/${routePrefix}/create/catering`, { state: { event } });
   };
 
   const eventSpace = getEventServiceByValue(event.spaceName);
-  console.log(event);
 
   const handleEventSubmit = async () => {
     // Set default values for missing properties
@@ -36,7 +37,7 @@ function Preview() {
     if (res.success) {
       // TODO: Show success message
       console.log("Event created successfully");
-      navigate("/dashboard");
+      navigate(`/${routePrefix}`);
     } else {
       console.error("Failed to create event");
     }

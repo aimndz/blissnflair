@@ -4,6 +4,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import spaceDetails from "./spaceDetails";
 import SpaceDetailsSidebar from "./SpaceDetailsSidebar";
+import { useUser } from "../../hooks/use-user";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 interface Space {
   name: string;
@@ -41,11 +43,13 @@ interface Space {
 
 function Venue() {
   const [selectedSpace, setSelectedSpace] = useState<Space | null>(null);
+  const routePrefix = useRoutePrefix();
+
   const navigate = useNavigate();
 
   const handleEventInfo = () => {
     if (selectedSpace) {
-      navigate("/dashboard/create/event-info", {
+      navigate(`/${routePrefix}/create/event-info`, {
         state: { spaceName: selectedSpace?.value },
       });
     }

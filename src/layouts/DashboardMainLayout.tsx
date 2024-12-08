@@ -11,6 +11,7 @@ import {
 import { useUser } from "../hooks/use-user";
 import { logout } from "../services/authApi";
 import { Link, useNavigate } from "react-router-dom";
+import { useRoutePrefix } from "../hooks/useRoutePrefix";
 
 function DashboardMainLayout({
   children,
@@ -21,13 +22,14 @@ function DashboardMainLayout({
 }) {
   const { user } = useUser();
   const navigate = useNavigate();
+  const routePrefix = useRoutePrefix();
   const handleLogout = async () => {
     await logout();
     navigate("/");
   };
 
   const handleProfile = () => {
-    navigate("/dashboard/profile");
+    navigate(`/${routePrefix}/profile`);
   };
 
   return (

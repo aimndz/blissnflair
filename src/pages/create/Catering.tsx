@@ -9,22 +9,24 @@ import {
 import InHouseCatering from "./InHouseCatering";
 import ExternalCatering from "./ExternalCatering";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 function Catering() {
   const location = useLocation();
   const navigate = useNavigate();
+  const routePrefix = useRoutePrefix();
 
   const { event } = location.state || {};
 
   console.log(event);
 
   const handleGoBack = () => {
-    navigate("/dashboard/create/event-info", { state: { event } });
+    navigate(`/${routePrefix}/create/event-info`, { state: { event } });
   };
 
   const handlePreviewButton = () => {
     if (event) {
-      navigate("/dashboard/create/preview", { state: { event } });
+      navigate(`/${routePrefix}/create/preview`, { state: { event } });
     }
   };
 
