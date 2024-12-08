@@ -12,7 +12,7 @@ import EventList from "../pages/eventList/EventList";
 import Calendar from "../pages/calendar/Calendar";
 import Profile from "../pages/profile/Profile";
 import AdminLogin from "../pages/auth/AdminLogin";
-import Accounts from "../pages/Accounts";
+import Accounts from "../pages/accounts/Accounts";
 import Preview from "../pages/preview/Preview";
 import ProfileEdit from "../pages/ProfileEdit";
 import AccountCreate from "../pages/AccountCreate";
