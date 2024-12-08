@@ -8,8 +8,8 @@ export async function getAllAccounts() {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      credentials: "include",
     },
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -26,8 +26,8 @@ export async function getAccountById(id: string) {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      credentials: "include",
     },
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -81,8 +81,8 @@ export async function deleteAccount(id: string) {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
-      credentials: "include",
     },
+    credentials: "include",
   });
 
   if (!res.ok) {
