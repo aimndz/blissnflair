@@ -45,6 +45,7 @@ function AdminEventListContent() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const filter = searchParams.get("filter") || "all";
   const venue = searchParams.get("venue") || "all";
@@ -52,13 +53,29 @@ function AdminEventListContent() {
   const currentFilterLabel =
     eventStatus.find((status) => status.value === filter)?.label || "All";
 
+  // Update the filtered events based on search query and filters
   const filteredEvents = events
     .filter((event) => {
       const matchesFilter =
         filter === "all" || event.status.toUpperCase() === filter.toUpperCase();
       const matchesVenue =
-        venue === "all" || event.venue.toLowerCase() === venue.toLowerCase(); // Compare case-insensitively
-      return matchesFilter && matchesVenue;
+        venue === "all" || event.venue.toLowerCase() === venue.toLowerCase();
+
+      // Check if the event matches the search query (title, venue, status, booked by)
+      const matchesSearch =
+        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        users
+          .find((user) => user.id === event.userId)
+          ?.firstName.toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
+        users
+          .find((user) => user.id === event.userId)
+          ?.lastName.toLowerCase()
+          .includes(searchQuery.toLowerCase());
+
+      return matchesFilter && matchesVenue && matchesSearch;
     })
     .map((event) => {
       const user = users.find((user) => user.id === event.userId);
@@ -118,6 +135,10 @@ function AdminEventListContent() {
     });
   };
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <div className="mx-auto max-w-6xl">
       <div className="mb-3 flex items-end justify-between">
@@ -137,11 +158,13 @@ function AdminEventListContent() {
             className="w-48"
           />
         </div>
-        <div className="relative w-full max-w-72">
+        <div className="relative w-full max-w-96">
           <Input
             type="search"
-            placeholder="Search by an event title..."
+            placeholder="Search by title, venue, status, or booked by..."
             className="w-full pr-10"
+            value={searchQuery}
+            onChange={handleSearchChange}
           />
           <MagnifyingGlassIcon className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500" />
         </div>
