@@ -101,7 +101,7 @@ function VenueInfo() {
   const [error, setError] = useState("");
   const location = useLocation();
 
-  const { spaceName } = location.state || {};
+  const { spaceName, currentDate } = location.state || {};
   const [additionalHours, setAdditionalHours] = useState(0);
 
   const incrementHours = () => {
@@ -130,7 +130,7 @@ function VenueInfo() {
   const [initialValues, setInitialValues] = useState({
     title: "",
     description: "",
-    date: new Date(),
+    date: currentDate || new Date(),
     venue: spaceName || "",
     startTime: "00:00",
     endTime: "00:00",
