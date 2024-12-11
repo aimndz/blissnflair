@@ -13,6 +13,7 @@ import {
 } from "@components/ui/credenza";
 import EventColoredButton from "./event-colored-button";
 import { Link } from "react-router-dom";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 type ColorScheme = "red" | "blue" | "green" | "default"; // Define the ColorScheme type
 
@@ -25,10 +26,12 @@ type ButtonProps = {
 };
 
 function EventModal({ eventdetails }: ButtonProps) {
+  const routePrefix = useRoutePrefix();
+
   return (
     <Credenza>
       <CredenzaTrigger className="w-full" asChild>
-        <Link to={`/dashboard/events/${eventdetails.id}`}>
+        <Link to={`/${routePrefix}/events/${eventdetails.id}`}>
           <EventColoredButton
             eventdetails={eventdetails}
             colorScheme={eventdetails?.colorScheme}

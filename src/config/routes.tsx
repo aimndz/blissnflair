@@ -15,7 +15,7 @@ import AdminLogin from "../pages/auth/AdminLogin";
 import Accounts from "../pages/accounts/Accounts";
 import Preview from "../pages/preview/Preview";
 import ProfileEdit from "../pages/ProfileEdit";
-import AccountCreate from "../pages/AccountCreate";
+import AccountCreate from "../pages/accounts/AccountCreate";
 import SystemSettings from "../pages/SystemSettings";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../components/ProtectedRoute";

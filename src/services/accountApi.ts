@@ -1,4 +1,4 @@
-import { Account } from "../types/account";
+import { Account, AccountCreate } from "../types/account";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -39,12 +39,13 @@ export async function getAccountById(id: string) {
 }
 
 //// CREATE ACCOUNT
-export async function createAccount(account: Account) {
+export async function createAccount(account: AccountCreate) {
   const res = await fetch(`${API_URL}/account`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
+    credentials: "include",
     body: JSON.stringify(account),
   });
 

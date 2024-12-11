@@ -9,6 +9,16 @@ export interface Account {
   confirmPassword?: string;
 }
 
+export interface AccountCreate {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber?: string;
+  role: string;
+  password: string;
+  confirmPassword: string;
+}
+
 export interface AccountProfile {
   id: string;
   firstName: string;

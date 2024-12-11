@@ -24,9 +24,11 @@ import { Button } from "../../components/ui/button";
 import StatisticsChart from "./StatisticsChart";
 import { Calendar as CalendarPreview } from "../../components/ui/calendar";
 import { Separator } from "../../components/ui/separator";
+import { getAllAccounts } from "../../services/accountApi";
 
 function AdminOverviewContent() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [account, setAccounts] = useState([]);
 
   const upcomingEvents = events
     .filter(
@@ -98,10 +100,16 @@ function AdminOverviewContent() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await getAllEvents();
-        const data = res.data;
+        const [events, accounts] = await Promise.all([
+          getAllEvents(),
+          getAllAccounts(),
+        ]);
 
-        setEvents(data);
+        const eventsData = events.data;
+        const accountsData = accounts.data;
+
+        setEvents(eventsData);
+        setAccounts(accountsData);
       } catch (error) {
         console.error(error);
       }
@@ -118,7 +126,10 @@ function AdminOverviewContent() {
         </h2>
         <div className="grid grid-cols-4 gap-3">
           <SummaryCard title="Total Events" value={events.length} />
-          <SummaryCard title="Upcoming Events" value={upcomingEvents.length} />
+          <SummaryCard
+            title="Total Registered Accounts"
+            value={account.length}
+          />
           <SummaryCard
             title="Pending Events"
             value={events.filter((event) => event.status === "PENDING").length}

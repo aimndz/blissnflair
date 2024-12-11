@@ -14,6 +14,7 @@ import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Button } from "../../components/ui/button";
 import { CalendarX, Plus } from "lucide-react";
+import { Link } from "react-router-dom";
 
 function Accounts() {
   const [users, setUsers] = useState<Account[]>([]);
@@ -50,9 +51,11 @@ function Accounts() {
   return (
     <div className="mx-auto max-w-6xl">
       <div className="mb-3 flex items-end justify-between">
-        <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
-          <Plus /> Add account
-        </Button>
+        <Link to={`/admin/dashboard/accounts/create`}>
+          <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
+            <Plus /> Add account
+          </Button>
+        </Link>
         <div className="relative w-full max-w-96">
           <Input
             type="search"
