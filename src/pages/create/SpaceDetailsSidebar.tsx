@@ -1,5 +1,6 @@
 import { CubeIcon, PersonIcon } from "@radix-ui/react-icons";
 import { ScrollArea } from "../../components/ui/scroll-area";
+import { Separator } from "../../components/ui/separator";
 
 interface Space {
   name: string;
@@ -65,16 +66,30 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
             </p>
           </div>
         </div>
+        <Separator className="my-3" />
         {selectedSpace.rates && (
           <div className="rounded-lg">
             <h3 className="font-bold">Rates</h3>
-            <p className="mb-3">{selectedSpace.rates?.title}:</p>
+            {/* <p className="mb-3">{selectedSpace.rates?.title}:</p> */}
             <div className="space-y-5">
-              {selectedSpace.rates["mon-thurs"] > 0 && (
-                <div>
-                  <p>
-                    Mon-Thurs:{" "}
-                    <span className="font-semibold">
+              <div className="flex justify-center gap-3">
+                {selectedSpace.rates["mon-thurs"] > 0 && (
+                  <div className="w-full rounded-lg border border-secondary-600 p-3 text-center">
+                    <p className="text-center text-xs font-medium">Mon-Thurs</p>
+                    <p className="text-xl">
+                      <span className="font-semibold">
+                        {new Intl.NumberFormat("en-PH", {
+                          style: "currency",
+                          currency: "PHP",
+                        }).format(
+                          selectedSpace.rates["mon-thurs"] +
+                            selectedSpace.rates["mon-thurs"] *
+                              selectedSpace.rates.additionalVAT,
+                        )}
+                      </span>
+                    </p>
+                    {/* <p>
+                    <span>
                       {new Intl.NumberFormat("en-PH", {
                         style: "currency",
                         currency: "PHP",
@@ -83,8 +98,11 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
                   </p>
                   {selectedSpace.rates.additionalVAT > 0 && (
                     <p>
-                      Additional VAT{" "}
-                      <span>{selectedSpace.rates.additionalVAT * 100}%</span>:{" "}
+                      Add. VAT{" "}
+                      <span>
+                        {selectedSpace.rates.additionalVAT * 100}%
+                      </span>
+                      :{" "}
                       <span className="font-semibold">
                         {new Intl.NumberFormat("en-PH", {
                           style: "currency",
@@ -95,119 +113,132 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
                         )}
                       </span>
                     </p>
-                  )}
-                  <p>
-                    Total:{" "}
-                    <span className="font-semibold">
-                      {new Intl.NumberFormat("en-PH", {
-                        style: "currency",
-                        currency: "PHP",
-                      }).format(
-                        selectedSpace.rates["mon-thurs"] +
-                          selectedSpace.rates["mon-thurs"] *
-                            selectedSpace.rates.additionalVAT,
-                      )}
-                    </span>
-                  </p>
-                </div>
-              )}
-              {selectedSpace.rates["fri-sun"] > 0 && (
-                <div>
-                  <p>
-                    Fri-Sun:{" "}
-                    <span className="font-semibold">
-                      {new Intl.NumberFormat("en-PH", {
-                        style: "currency",
-                        currency: "PHP",
-                      }).format(selectedSpace.rates["fri-sun"])}
-                    </span>
-                  </p>
-                  {selectedSpace.rates.additionalVAT > 0 && (
-                    <p>
-                      Additional VAT{" "}
-                      <span>{selectedSpace.rates.additionalVAT * 100}%</span>:{" "}
+                  )} */}
+                    <p className="text-xs text-secondary-800">
+                      {selectedSpace.rates?.title}
+                    </p>
+                  </div>
+                )}
+                {selectedSpace.rates["fri-sun"] > 0 && (
+                  <div className="w-full rounded-lg border border-secondary-600 p-3 text-center">
+                    <p className="text-center text-xs font-medium">
+                      Fri-Sun
+                      {/* <span className="font-semibold">
+                        {new Intl.NumberFormat("en-PH", {
+                          style: "currency",
+                          currency: "PHP",
+                        }).format(selectedSpace.rates["fri-sun"])}
+                      </span> */}
+                    </p>
+                    <p className="text-xl">
                       <span className="font-semibold">
                         {new Intl.NumberFormat("en-PH", {
                           style: "currency",
                           currency: "PHP",
                         }).format(
-                          selectedSpace.rates["fri-sun"] *
-                            selectedSpace.rates.additionalVAT,
+                          selectedSpace.rates["fri-sun"] +
+                            selectedSpace.rates["fri-sun"] *
+                              selectedSpace.rates.additionalVAT,
                         )}
                       </span>
                     </p>
-                  )}
-                  <p>
-                    Total:{" "}
-                    <span className="font-semibold">
-                      {new Intl.NumberFormat("en-PH", {
-                        style: "currency",
-                        currency: "PHP",
-                      }).format(
-                        selectedSpace.rates["fri-sun"] +
-                          selectedSpace.rates["fri-sun"] *
-                            selectedSpace.rates.additionalVAT,
-                      )}
-                    </span>
-                  </p>
-                </div>
+
+                    <p className="text-xs text-secondary-800">
+                      {selectedSpace.rates?.title}
+                    </p>
+                    {/* {selectedSpace.rates.additionalVAT > 0 && (
+                      <p>
+                        Add. VAT{" "}
+                        <span>{selectedSpace.rates.additionalVAT * 100}%</span>:{" "}
+                        <span className="font-semibold">
+                          {new Intl.NumberFormat("en-PH", {
+                            style: "currency",
+                            currency: "PHP",
+                          }).format(
+                            selectedSpace.rates["fri-sun"] *
+                              selectedSpace.rates.additionalVAT,
+                          )}
+                        </span>
+                      </p>
+                    )} */}
+                  </div>
+                )}
+              </div>
+              {(selectedSpace.rates.additionalPerHour > 0 ||
+                selectedSpace.rates.cleaningFee > 0 ||
+                selectedSpace.rates.corkageFee > 0) && (
+                <h3 className="font-bold">Additional</h3>
               )}
-              {selectedSpace.rates.additionalPerHour > 0 && (
-                <div>
-                  <p>
-                    Additional Per Hour:{" "}
-                    <span className="font-semibold">
-                      {new Intl.NumberFormat("en-PH", {
-                        style: "currency",
-                        currency: "PHP",
-                      }).format(selectedSpace.rates.additionalPerHour)}
-                    </span>
-                  </p>
-                </div>
-              )}
-              {selectedSpace.rates.cleaningFee > 0 && (
-                <div>
-                  <p>
-                    Cleaning Fee:{" "}
-                    <span className="font-semibold">
-                      {new Intl.NumberFormat("en-PH", {
-                        style: "currency",
-                        currency: "PHP",
-                      }).format(selectedSpace.rates.cleaningFee)}
-                    </span>
-                  </p>
-                </div>
-              )}
-              {selectedSpace.rates.corkageFee > 0 && (
-                <div>
-                  <p>
-                    Corkage Fee:{" "}
-                    <span className="font-semibold">
-                      {new Intl.NumberFormat("en-PH", {
-                        style: "currency",
-                        currency: "PHP",
-                      }).format(selectedSpace.rates.corkageFee)}
-                    </span>
-                  </p>
-                </div>
-              )}
+
+              <div className="flex justify-center gap-3">
+                {selectedSpace.rates.additionalPerHour > 0 && (
+                  <div className="rounded-lg border border-secondary-600 p-3 text-center">
+                    <p className="text-xl">
+                      <span className="font-semibold">
+                        {new Intl.NumberFormat("en-PH", {
+                          style: "currency",
+                          currency: "PHP",
+                        }).format(selectedSpace.rates.additionalPerHour)}
+                      </span>
+                    </p>
+                    <p className="text-center text-xs font-medium">
+                      Additional Per Hour
+                    </p>
+                  </div>
+                )}
+                {selectedSpace.rates.cleaningFee > 0 && (
+                  <div className="rounded-lg border border-secondary-600 p-3 text-center">
+                    <p className="text-xl">
+                      <span className="font-semibold">
+                        {new Intl.NumberFormat("en-PH", {
+                          style: "currency",
+                          currency: "PHP",
+                        }).format(selectedSpace.rates.cleaningFee)}
+                      </span>
+                    </p>
+                    <p className="text-center text-xs font-medium">
+                      Cleaning Fee
+                    </p>
+                  </div>
+                )}
+                {selectedSpace.rates.corkageFee > 0 && (
+                  <div className="rounded-lg border border-secondary-600 p-3 text-center">
+                    <p className="text-xl">
+                      <span className="font-semibold">
+                        {new Intl.NumberFormat("en-PH", {
+                          style: "currency",
+                          currency: "PHP",
+                        }).format(selectedSpace.rates.corkageFee)}
+                      </span>
+                    </p>
+                    <p className="text-center text-xs font-medium">
+                      Corkage Fee
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         )}
         {selectedSpace.packages && (
           <div>
             <h3 className="font-bold">Package Rates</h3>
-            <div className="space-y-3">
+            <div className="grid grid-cols-2 gap-3">
               {selectedSpace.packages.packageRates.map((packageRate, index) =>
                 packageRate.price > 0 ? (
-                  <div key={index}>
-                    <p>{packageRate.title}</p>
-                    <p>{packageRate.Description}</p>
-                    <p className="font-semibold">
+                  <div
+                    key={index}
+                    className="rounded-lg border border-secondary-600 p-3 text-center"
+                  >
+                    <p className="text-xs font-medium">{packageRate.title}</p>
+                    <p className="text-xl font-semibold">
                       {new Intl.NumberFormat("en-PH", {
                         style: "currency",
                         currency: "PHP",
                       }).format(packageRate.price)}
+                    </p>
+                    <p className="text-xs text-secondary-800">
+                      {packageRate.Description}
                     </p>
                   </div>
                 ) : null,
