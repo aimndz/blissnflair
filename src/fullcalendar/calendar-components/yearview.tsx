@@ -83,13 +83,13 @@ const YearView: React.FC<YearViewProps> = ({ currentDate, events }) => {
     const formattedDate = format(date, "yyyy-MM-dd");
 
     return events.filter((event: Event) => {
-      const startDate = format(parseISO(event.startdate), "yyyy-MM-dd");
-      const endDate = format(parseISO(event.enddate), "yyyy-MM-dd");
+      const startTime = format(parseISO(event.startTime), "yyyy-MM-dd");
+      const endTime = format(parseISO(event.endTime), "yyyy-MM-dd");
 
-      if (startDate === endDate) {
-        return startDate === formattedDate;
+      if (startTime === endTime) {
+        return startTime === formattedDate;
       } else {
-        return formattedDate >= startDate && formattedDate <= endDate;
+        return formattedDate >= startTime && formattedDate <= endTime;
       }
     });
   };

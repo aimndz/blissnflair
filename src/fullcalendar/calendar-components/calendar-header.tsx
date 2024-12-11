@@ -57,9 +57,9 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
               activeTab={props.activeTab}
               setActiveTab={props.setActiveTab}
             />
-            <Button variant="outline" onClick={props.handleToday}>
+            {/* <Button variant="outline" onClick={props.handleToday}>
               Today
-            </Button>
+            </Button> */}
           </div>
         </div>
       ) : (
@@ -71,20 +71,26 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
             handleYearChange={props.handleYearChange}
           />
           <div className="flex items-center justify-center gap-4">
-            <AddEvent
+            <Link to="/dashboard/create/select-venue">
+              {" "}
+              <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
+                <AddCircle className="mr-1" /> Add Event
+              </Button>{" "}
+            </Link>
+            {/* <AddEvent
               CustomForm={props.config?.addEventConfig?.customForm}
               buttonText={props.config?.addEventConfig?.buttonText}
               formDescription={props.config?.addEventConfig?.formDescription}
               formTitle={props.config?.addEventConfig?.formTitle}
               icon={props.config?.addEventConfig?.icon}
-            />
+            /> */}
             <Tabs
               activeTab={props.activeTab}
               setActiveTab={props.setActiveTab}
             />
-            <Button variant="outline" onClick={props.handleToday}>
+            {/* <Button variant="outline" onClick={props.handleToday}>
               This Year
-            </Button>
+            </Button> */}
           </div>
         </div>
       )}
