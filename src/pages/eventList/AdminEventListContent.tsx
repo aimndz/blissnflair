@@ -50,10 +50,6 @@ function AdminEventListContent() {
   const filter = searchParams.get("filter") || "all";
   const venue = searchParams.get("venue") || "all";
 
-  const currentFilterLabel =
-    eventStatus.find((status) => status.value === filter)?.label || "All";
-
-  // Update the filtered events based on search query and filters
   const filteredEvents = events
     .filter((event) => {
       const matchesFilter =
@@ -91,6 +87,24 @@ function AdminEventListContent() {
         endTime: endTimeFormatted,
         bookedBy: user ? `${user.firstName} ${user.lastName}` : "Unknown",
       };
+    })
+    .sort((a, b) => {
+      // Prioritize "pending" status if filter is "all"
+      if (filter === "all") {
+        if (
+          a.status.toUpperCase() === "PENDING" &&
+          b.status.toUpperCase() !== "PENDING"
+        ) {
+          return -1; // a should come before b
+        }
+        if (
+          a.status.toUpperCase() !== "PENDING" &&
+          b.status.toUpperCase() === "PENDING"
+        ) {
+          return 1; // b should come before a
+        }
+      }
+      return 0; // no change to order
     });
 
   const getStatusBadgeClass = (status: string) => {
