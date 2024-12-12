@@ -102,7 +102,7 @@ function Event() {
             <MapPin className="text-secondary-800" size={20} />
             <span>{eventSpace?.name}</span>
           </p>
-          {event?.additionalServices.length > 0 && (
+          {event?.additionalServices && event.additionalServices.length > 0 && (
             <div className="mt-8">
               <h3 className="font-medium">Additional Services:</h3>
               <div className="flex flex-wrap gap-3">
