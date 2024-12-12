@@ -25,6 +25,7 @@ import StatisticsChart from "./StatisticsChart";
 import { Calendar as CalendarPreview } from "../../components/ui/calendar";
 import { Separator } from "../../components/ui/separator";
 import { getAllAccounts } from "../../services/accountApi";
+import { getPast7DaysAccountData, getPast7DaysData } from "./chartData";
 
 function AdminOverviewContent() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -74,8 +75,6 @@ function AdminOverviewContent() {
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 4);
 
-  console.log(countdownDetails);
-  // get all scheduled dates
   const scheduledDates = upcomingEvents.map((event) => new Date(event.date));
 
   // get all pending events
@@ -96,6 +95,15 @@ function AdminOverviewContent() {
         daysLeft,
       };
     });
+
+  const totalEventsChart = getPast7DaysData(events);
+  const totalAccountsChart = getPast7DaysAccountData(account);
+  const activeEventsChart = getPast7DaysData(
+    events.filter((event) => event.status === "APPROVED"),
+  );
+  const pendingEventsChart = getPast7DaysData(
+    events.filter((event) => event.status === "PENDING"),
+  );
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -124,19 +132,29 @@ function AdminOverviewContent() {
         <h2 className="mb-3 flex items-center gap-3 text-2xl font-medium">
           Summary
         </h2>
+
         <div className="grid grid-cols-4 gap-3">
-          <SummaryCard title="Total Events" value={events.length} />
+          <SummaryCard
+            title="No. of Active Events"
+            value={events.filter((event) => event.status === "APPROVED").length}
+            chartData={activeEventsChart}
+          />
+
+          <SummaryCard
+            title="No. of Pending Events"
+            value={events.filter((event) => event.status === "PENDING").length}
+            chartData={pendingEventsChart}
+          />
           <SummaryCard
             title="Total Registered Accounts"
             value={account.length}
+            chartData={totalAccountsChart}
+            dataKey="accounts"
           />
           <SummaryCard
-            title="Pending Events"
-            value={events.filter((event) => event.status === "PENDING").length}
-          />
-          <SummaryCard
-            title="Approved Events"
-            value={events.filter((event) => event.status === "APPROVED").length}
+            title="Total Events"
+            value={events.length}
+            chartData={totalEventsChart}
           />
         </div>
       </OverviewSection>
