@@ -14,9 +14,11 @@ import { Button } from "../../components/ui/button";
 import Countdown from "./Countdown";
 import eventServices from "../create/spaceDetails";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
+import Loading from "../../components/LoadingSpinner";
 
 function Event() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const routePrefix = useRoutePrefix();
   const { id } = useParams<{ id: string }>();
   const location = useLocation();
@@ -49,11 +51,17 @@ function Event() {
         }
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchEvent();
   }, [id]);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="mx-auto max-w-5xl">

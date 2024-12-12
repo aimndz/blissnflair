@@ -17,6 +17,7 @@ import Combobox from "../../components/ui/combobox";
 import { Link, useSearchParams } from "react-router-dom";
 import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import Loading from "../../components/LoadingSpinner";
 
 interface User {
   id: string;
@@ -43,6 +44,7 @@ const venues = [
 
 function AdminEventListContent() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -135,6 +137,8 @@ function AdminEventListContent() {
         setUsers(userRes.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -152,6 +156,10 @@ function AdminEventListContent() {
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="mx-auto max-w-6xl">

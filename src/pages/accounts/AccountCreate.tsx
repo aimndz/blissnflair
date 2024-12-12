@@ -60,6 +60,7 @@ function AccountCreate({
   onFormSubmit: (user: AccountProfile) => void;
 }) {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const form = useForm<z.infer<typeof FormSchema>>({

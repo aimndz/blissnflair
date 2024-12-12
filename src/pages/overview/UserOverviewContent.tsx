@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import { ScrollArea } from "../../components/ui/scroll-area";
 import { ClockIcon } from "@radix-ui/react-icons";
 import StatisticsChart from "./StatisticsChart";
+import Loading from "../../components/LoadingSpinner";
 
 const availableServices = [
   "Floral Arrangement Services",
@@ -33,6 +34,7 @@ const availableServices = [
 
 function UserOverviewContent() {
   const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const upcomingEvents = events
     .filter(
@@ -94,11 +96,17 @@ function UserOverviewContent() {
         setEvents(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchEvents();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>

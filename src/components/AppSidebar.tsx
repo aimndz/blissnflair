@@ -67,10 +67,6 @@ export function AppSidebar() {
     }
   }, [userContext]);
 
-  if (!userContext) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Sidebar>
       <SidebarHeader className="mt-8 px-4 text-center">

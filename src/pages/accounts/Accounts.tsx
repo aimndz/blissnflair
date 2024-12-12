@@ -32,12 +32,13 @@ import {
 import AccountCreate from "./AccountCreate";
 import AccountEdit from "./AccountEdit";
 import { useUser } from "../../hooks/use-user";
+import Loading from "../../components/LoadingSpinner";
 
 function Accounts() {
   const user = useUser();
 
   const loggedInUserId = user.user?.id;
-
+  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<Account[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
@@ -65,6 +66,8 @@ function Accounts() {
         setUsers(users.data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -106,6 +109,10 @@ function Accounts() {
   const handleCreateClick = () => {
     setOpenCreateDialog(true);
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="mx-auto max-w-6xl">

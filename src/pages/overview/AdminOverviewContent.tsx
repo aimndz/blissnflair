@@ -1,8 +1,7 @@
-import { Calendar, CheckIcon, ClockIcon, XIcon } from "lucide-react";
+import { Calendar, CheckIcon, XIcon } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
@@ -26,10 +25,14 @@ import { Calendar as CalendarPreview } from "../../components/ui/calendar";
 import { Separator } from "../../components/ui/separator";
 import { getAllAccounts } from "../../services/accountApi";
 import { getPast7DaysAccountData, getPast7DaysData } from "./chartData";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
+import Loading from "../../components/LoadingSpinner";
 
 function AdminOverviewContent() {
+  const routePrefix = useRoutePrefix();
   const [events, setEvents] = useState<Event[]>([]);
   const [account, setAccounts] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state to manage the fetching process
 
   const upcomingEvents = events
     .filter(
@@ -120,11 +123,17 @@ function AdminOverviewContent() {
         setAccounts(accountsData);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchEvents();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -313,7 +322,7 @@ function AdminOverviewContent() {
                 <div className="space-y-3 rounded-lg border border-secondary-600 bg-secondary-100 p-5">
                   {countdownDetails.map((event) => (
                     <Link
-                      to={`/dashboard/events/${event.id}`}
+                      to={`/${routePrefix}/events/${event.id}`}
                       className="block"
                       key={event.id}
                     >

@@ -8,24 +8,22 @@ interface ProtectedRouteProps {
 }
 
 function ProtectedRoute({ element, requiredRoles = [] }: ProtectedRouteProps) {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState<boolean | null>(null); // Use null to indicate "unknown"
   const [userRole, setUserRole] = useState<string | null>(null);
 
   useEffect(() => {
     const checkAuth = async () => {
       const userProfile = await getUserProfile();
-
       setIsAuth(userProfile.authenticated);
       setUserRole(userProfile.user?.role);
-      setIsLoading(false);
     };
 
     checkAuth();
   }, []);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+  // If auth state is still unknown, render nothing or a placeholder (optional)
+  if (isAuth === null) {
+    return null; // Or you could show a placeholder like <div>Loading...</div>
   }
 
   // If user is authenticated and has the required role
@@ -36,6 +34,7 @@ function ProtectedRoute({ element, requiredRoles = [] }: ProtectedRouteProps) {
     return element;
   }
 
+  // Optionally, redirect to a specific page, but not immediately
   return <Navigate to="/login" replace />;
 }
 
