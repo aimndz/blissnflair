@@ -8,17 +8,55 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { getAllAccounts } from "../../services/accountApi"; // API function
-import { Account } from "../../types/account"; // Type definition
+import { deleteAccount, getAllAccounts } from "../../services/accountApi"; // API function
+import { Account, AccountProfile } from "../../types/account"; // Type definition
 import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Button } from "../../components/ui/button";
-import { CalendarX, Plus } from "lucide-react";
+import { CalendarX, Edit, EllipsisVertical, Plus, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+} from "../../components/ui/dialog";
+import AccountCreate from "./AccountCreate";
+import AccountEdit from "./AccountEdit";
+import { useUser } from "../../hooks/use-user";
 
 function Accounts() {
+  const user = useUser();
+
+  const loggedInUserId = user.user?.id;
+
   const [users, setUsers] = useState<Account[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [editUserData, setEditUserData] = useState<Account | null>(null);
+
+  const handleAddUser = (newUser: AccountProfile) => {
+    setUsers((prevUsers) => [...prevUsers, newUser]);
+  };
+
+  const handleEditUser = (updatedUser: AccountProfile) => {
+    setUsers((prevUsers) =>
+      prevUsers.map((user) =>
+        user.id === updatedUser.id ? updatedUser : user,
+      ),
+    );
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,7 +75,6 @@ function Accounts() {
     setSearchTerm(event.target.value.toLowerCase());
   };
 
-  // Filter the users based on the search term
   const filteredUsers = users.filter((user) => {
     return (
       user.id.toString().toLowerCase().includes(searchTerm) ||
@@ -48,14 +85,37 @@ function Accounts() {
     );
   });
 
+  const handleDeleteClick = (id: string) => {
+    setSelectedUserId(id);
+    setOpenDeleteDialog(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedUserId) {
+      deleteAccount(selectedUserId);
+      setUsers(users.filter((user) => user.id !== selectedUserId));
+      setOpenDeleteDialog(false);
+    }
+  };
+
+  const handleEditClick = (user: Account) => {
+    setEditUserData(user);
+    setOpenEditDialog(true);
+  };
+
+  const handleCreateClick = () => {
+    setOpenCreateDialog(true);
+  };
+
   return (
     <div className="mx-auto max-w-6xl">
       <div className="mb-3 flex items-end justify-between">
-        <Link to={`/admin/dashboard/accounts/create`}>
-          <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
-            <Plus /> Add account
-          </Button>
-        </Link>
+        <Button
+          className="bg-primary-100 text-secondary-900 hover:bg-primary-200"
+          onClick={handleCreateClick}
+        >
+          <Plus /> Add account
+        </Button>
         <div className="relative w-full max-w-96">
           <Input
             type="search"
@@ -79,6 +139,7 @@ function Accounts() {
               <TableHead>Email</TableHead>
               <TableHead>Phone No.</TableHead>
               <TableHead>Role</TableHead>
+              <TableHead></TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -92,6 +153,34 @@ function Accounts() {
                 <TableCell>{user.email}</TableCell>
                 <TableCell>{user.phoneNumber}</TableCell>
                 <TableCell>{user.role}</TableCell>
+                <TableCell className="flex justify-center">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger>
+                      <EllipsisVertical className="w-5 cursor-pointer text-secondary-800" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem onClick={() => handleEditClick(user)}>
+                        <Edit className="mr-2 w-4" />
+                        Edit
+                      </DropdownMenuItem>
+                      <DropdownMenuItem
+                        className={`${
+                          user.id === loggedInUserId
+                            ? "cursor-not-allowed opacity-50"
+                            : "text-red-600"
+                        }`}
+                        disabled={user.id === loggedInUserId}
+                        onClick={() =>
+                          user.id !== loggedInUserId &&
+                          handleDeleteClick(user.id)
+                        }
+                      >
+                        <Trash className="mr-2 w-4" />
+                        Delete
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -109,6 +198,61 @@ function Accounts() {
           </div>
         </div>
       )}
+
+      {/* Create account dialog */}
+      <Dialog open={openCreateDialog} onOpenChange={setOpenCreateDialog}>
+        <DialogContent className="bg-secondary-100">
+          <AccountCreate
+            onFormSubmit={(user: AccountProfile) => {
+              handleAddUser(user);
+              setOpenCreateDialog(false);
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit Dialog */}
+      <Dialog open={openEditDialog} onOpenChange={setOpenEditDialog}>
+        <DialogContent className="bg-secondary-100">
+          {editUserData && (
+            <AccountEdit
+              userData={editUserData}
+              onFormSubmit={(updatedUser: AccountProfile) => {
+                handleEditUser(updatedUser);
+                setOpenEditDialog(false);
+              }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog open={openDeleteDialog} onOpenChange={setOpenDeleteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this user? This action cannot be
+              undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setOpenDeleteDialog(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              className="bg-red-600 hover:bg-red-700"
+              onClick={confirmDelete}
+            >
+              Delete
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
