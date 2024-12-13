@@ -26,6 +26,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "../../components/ui/dialog";
+import Loading from "../../components/LoadingSpinner";
 
 interface User {
   id: string;
@@ -52,6 +53,7 @@ const venues = [
 
 function AdminEventListContent() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -174,8 +176,14 @@ function AdminEventListContent() {
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    <Loading />;
+  }
 
   return (
     <div className="mx-auto max-w-6xl">
