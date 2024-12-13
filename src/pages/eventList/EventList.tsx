@@ -5,13 +5,9 @@ import UserEventListContent from "./UserEventListContent";
 function EventList() {
   const { user } = useUser();
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div>
-      {user.role === "ADMIN" ? (
+      {user?.role === "ADMIN" ? (
         <AdminEventListContent />
       ) : (
         <UserEventListContent />

@@ -4,6 +4,7 @@ import FullCalendar from "@fullcalendar/full-calendar";
 import { getAllEvents } from "../../services/eventApi";
 import { useSearchParams } from "react-router-dom";
 import Combobox from "../../components/ui/combobox";
+import Loading from "../../components/LoadingSpinner";
 
 const eventStatus = [
   {
@@ -30,6 +31,7 @@ const eventStatus = [
 
 function Calendar() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState(newevents);
 
   const filter = searchParams.get("filter") || "approved";
@@ -66,6 +68,8 @@ function Calendar() {
         setEvents(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -75,6 +79,10 @@ function Calendar() {
   const handleFilterChange = (value: string) => {
     setSearchParams({ filter: value });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div>

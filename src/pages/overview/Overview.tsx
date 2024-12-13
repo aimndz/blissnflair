@@ -5,13 +5,9 @@ import UserOverviewContent from "./UserOverviewContent";
 function Overview() {
   const { user } = useUser();
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div>
-      {user.role === "ADMIN" ? (
+      {user?.role === "ADMIN" ? (
         <AdminOverviewContent />
       ) : (
         <UserOverviewContent />

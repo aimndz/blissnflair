@@ -1,8 +1,7 @@
-import { Calendar, CheckIcon, ClockIcon, XIcon } from "lucide-react";
+import { Calendar, CheckIcon, XIcon } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "../../components/ui/card";
@@ -25,10 +24,15 @@ import StatisticsChart from "./StatisticsChart";
 import { Calendar as CalendarPreview } from "../../components/ui/calendar";
 import { Separator } from "../../components/ui/separator";
 import { getAllAccounts } from "../../services/accountApi";
+import { getPast7DaysAccountData, getPast7DaysData } from "./chartData";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
+import Loading from "../../components/LoadingSpinner";
 
 function AdminOverviewContent() {
+  const routePrefix = useRoutePrefix();
   const [events, setEvents] = useState<Event[]>([]);
   const [account, setAccounts] = useState([]);
+  const [loading, setLoading] = useState(true); // Loading state to manage the fetching process
 
   const upcomingEvents = events
     .filter(
@@ -74,8 +78,6 @@ function AdminOverviewContent() {
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 4);
 
-  console.log(countdownDetails);
-  // get all scheduled dates
   const scheduledDates = upcomingEvents.map((event) => new Date(event.date));
 
   // get all pending events
@@ -97,6 +99,15 @@ function AdminOverviewContent() {
       };
     });
 
+  const totalEventsChart = getPast7DaysData(events);
+  const totalAccountsChart = getPast7DaysAccountData(account);
+  const activeEventsChart = getPast7DaysData(
+    events.filter((event) => event.status === "APPROVED"),
+  );
+  const pendingEventsChart = getPast7DaysData(
+    events.filter((event) => event.status === "PENDING"),
+  );
+
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -112,11 +123,17 @@ function AdminOverviewContent() {
         setAccounts(accountsData);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchEvents();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -124,19 +141,29 @@ function AdminOverviewContent() {
         <h2 className="mb-3 flex items-center gap-3 text-2xl font-medium">
           Summary
         </h2>
+
         <div className="grid grid-cols-4 gap-3">
-          <SummaryCard title="Total Events" value={events.length} />
+          <SummaryCard
+            title="No. of Active Events"
+            value={events.filter((event) => event.status === "APPROVED").length}
+            chartData={activeEventsChart}
+          />
+
+          <SummaryCard
+            title="No. of Pending Events"
+            value={events.filter((event) => event.status === "PENDING").length}
+            chartData={pendingEventsChart}
+          />
           <SummaryCard
             title="Total Registered Accounts"
             value={account.length}
+            chartData={totalAccountsChart}
+            dataKey="accounts"
           />
           <SummaryCard
-            title="Pending Events"
-            value={events.filter((event) => event.status === "PENDING").length}
-          />
-          <SummaryCard
-            title="Approved Events"
-            value={events.filter((event) => event.status === "APPROVED").length}
+            title="Total Events"
+            value={events.length}
+            chartData={totalEventsChart}
           />
         </div>
       </OverviewSection>
@@ -295,7 +322,7 @@ function AdminOverviewContent() {
                 <div className="space-y-3 rounded-lg border border-secondary-600 bg-secondary-100 p-5">
                   {countdownDetails.map((event) => (
                     <Link
-                      to={`/dashboard/events/${event.id}`}
+                      to={`/${routePrefix}/events/${event.id}`}
                       className="block"
                       key={event.id}
                     >

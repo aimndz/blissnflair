@@ -6,6 +6,7 @@ import EventCard from "./EventCard";
 import NoEventsMessage from "./NoEventsMessage";
 import AddEventCard from "./AddEventCard";
 import Combobox from "../../components/ui/combobox";
+import Loading from "../../components/LoadingSpinner";
 
 const eventStatus = [
   {
@@ -33,6 +34,7 @@ const eventStatus = [
 function UserEventListContent() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const filter = searchParams.get("filter") || "approved";
 
@@ -71,6 +73,8 @@ function UserEventListContent() {
         setEvents(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -80,6 +84,10 @@ function UserEventListContent() {
   const handleFilterChange = (value: string) => {
     setSearchParams({ filter: value });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div>

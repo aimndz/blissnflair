@@ -6,7 +6,6 @@ const UserContext = createContext<UserContextType | undefined>(undefined);
 
 function UserProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<AccountProfile | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -17,8 +16,6 @@ function UserProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error("Failed to fetch user profile:", error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -27,7 +24,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      {loading ? <div>Loading...</div> : children}
+      {children}
     </UserContext.Provider>
   );
 }
