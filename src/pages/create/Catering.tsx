@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "../../components/ui/button";
 import {
   Tabs,
@@ -10,6 +10,8 @@ import InHouseCatering from "./InHouseCatering";
 import ExternalCatering from "./ExternalCatering";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
+import { Separator } from "../../components/ui/separator";
+import { Card } from "../../components/ui/card";
 
 function Catering() {
   const location = useLocation();
@@ -39,49 +41,61 @@ function Catering() {
         <ArrowLeft />
         <span>Back</span>
       </Button>
-      <div className="text-center">
-        <p className="font-semibold">
-          Do you like to avail our in-house catering package?
-        </p>
-      </div>
-      <div>
-        <Tabs className="mt-12 w-full" defaultValue="internalCatering">
-          <div className="flex justify-center">
-            <TabsList className="flex w-full max-w-2xl space-x-4 bg-transparent p-0">
-              <TabsTrigger
-                value="internalCatering"
-                className="h-24 w-full rounded border border-secondary-600 bg-secondary-300 px-4 py-2 data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
-              >
-                Yes, I’d like to avail
-              </TabsTrigger>
-              <TabsTrigger
-                value="externalCatering"
-                className="flex h-24 w-full flex-col rounded border border-secondary-600 bg-secondary-300 px-4 py-2 text-secondary-900 data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
-              >
-                <p>No, I prefer external catering</p>
-                <p className="text-secondary-800">(with corkage fee)</p>
-              </TabsTrigger>
-            </TabsList>
+      <div className="mx-auto max-w-4xl">
+        <div>
+          <Tabs className="w-full" defaultValue="internalCatering">
+            {/* Triggers Card */}
+            <Card className="mb-3">
+              <div className="flex h-60 flex-col justify-center p-6">
+                <div className="text-center">
+                  <p className="text-xl font-semibold">
+                    Do you like to avail our in-house catering package?
+                  </p>
+                </div>
+                <div className="mt-4 flex justify-center">
+                  <TabsList className="flex h-24 w-full max-w-2xl space-x-4 bg-transparent p-0">
+                    <TabsTrigger
+                      value="internalCatering"
+                      className="h-24 w-full flex-col rounded-lg border border-secondary-600 px-4 py-2 font-semibold data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
+                    >
+                      <ThumbsUp className="mb-1" />
+                      <p>Yes, I’d like to avail</p>
+                      <p className="font-normal">
+                        (Hassle-free and fully catered)
+                      </p>
+                    </TabsTrigger>
+                    <TabsTrigger
+                      value="externalCatering"
+                      className="bg-secondary-2 00 flex h-24 w-full flex-col rounded-lg border border-secondary-600 px-4 py-2 font-semibold text-secondary-900 data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
+                    >
+                      <ThumbsDown className="mb-1" />
+                      <p>No, I prefer external catering</p>
+                      <p className="font-normal">(with corkage fee)</p>
+                    </TabsTrigger>
+                  </TabsList>
+                </div>
+              </div>
+            </Card>
+
+            {/* Content Card */}
+
+            <TabsContent value="internalCatering">
+              <InHouseCatering />
+            </TabsContent>
+            <TabsContent value="externalCatering">
+              <ExternalCatering />
+            </TabsContent>
+          </Tabs>
+
+          <div className="flex justify-end">
+            <Button
+              type="button"
+              className="mt-5 w-full max-w-20 rounded-full bg-primary-100 px-20 font-semibold text-secondary-900 hover:bg-primary-200"
+              onClick={handlePreviewButton}
+            >
+              Preview <ArrowRight />
+            </Button>
           </div>
-
-          {/* Internal Catering */}
-          <TabsContent value="internalCatering">
-            <InHouseCatering />
-          </TabsContent>
-
-          {/* External Catering */}
-          <TabsContent value="externalCatering">
-            <ExternalCatering />
-          </TabsContent>
-        </Tabs>
-        <div className="flex justify-end">
-          <Button
-            type="button"
-            className="mt-5 w-full max-w-20 rounded-full bg-primary-100 px-20 font-semibold text-secondary-900 hover:bg-primary-200"
-            onClick={handlePreviewButton}
-          >
-            Preview <ArrowRight />
-          </Button>
         </div>
       </div>
     </div>
