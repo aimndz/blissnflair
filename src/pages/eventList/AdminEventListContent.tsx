@@ -17,6 +17,15 @@ import Combobox from "../../components/ui/combobox";
 import { Link, useSearchParams } from "react-router-dom";
 import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { updateEvent } from "../../services/eventApi";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "../../components/ui/dialog";
 import Loading from "../../components/LoadingSpinner";
 
 interface User {
@@ -79,14 +88,15 @@ function AdminEventListContent() {
       const user = users.find((user) => user.id === event.userId);
 
       // Format startTime and endTime
-      const startTimeFormatted = format(parseISO(event.startTime), "hh:mm a");
-      const endTimeFormatted = format(parseISO(event.endTime), "hh:mm a");
+      // const startTimeFormatted = format(parseISO(event.startTime), "hh:mm a");
+      // const endTimeFormatted = format(parseISO(event.endTime), "hh:mm a");
 
       return {
         ...event,
-        date: format(parseISO(event.date), "MMM dd yyyy"),
-        startTime: startTimeFormatted,
-        endTime: endTimeFormatted,
+        // date: format(parseISO(event.date), "MMM dd yyyy"),
+        // startTime: startTimeFormatted,
+        // endTime: endTimeFormatted,
+
         bookedBy: user ? `${user.firstName} ${user.lastName}` : "Unknown",
       };
     })
@@ -137,8 +147,6 @@ function AdminEventListContent() {
         setUsers(userRes.data);
       } catch (error) {
         console.error(error);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -157,8 +165,24 @@ function AdminEventListContent() {
     setSearchQuery(event.target.value);
   };
 
+  const handleUpdateEvent = async (id: string, event: Event) => {
+    try {
+      console.log("Id", id);
+      console.log("Event", event);
+      const response = await updateEvent(id, event);
+      if (response.success) {
+        alert("Profile updated successfully");
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (loading) {
-    return <Loading />;
+    <Loading />;
   }
 
   return (
@@ -219,9 +243,12 @@ function AdminEventListContent() {
                 </Link>
 
                 <TableCell>{event.venue}</TableCell>
-                <TableCell>{event.date}</TableCell>
                 <TableCell>
-                  {event.startTime} - {event.endTime}
+                  {format(parseISO(event.date), "MMM dd yyyy")}
+                </TableCell>
+                <TableCell>
+                  {format(parseISO(event.startTime), "hh:mm a")} -{" "}
+                  {format(parseISO(event.endTime), "hh:mm a")}
                 </TableCell>
                 <TableCell>{event.bookedBy}</TableCell>
                 <TableCell>
@@ -234,12 +261,56 @@ function AdminEventListContent() {
                 {event.status === "PENDING" && (
                   <TableCell>
                     <div className="flex justify-end gap-1">
-                      <button className="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-full bg-red-500 transition-all delay-75 hover:bg-red-600">
-                        <XIcon className="h-5 w-5 text-red-800" />
-                      </button>
-                      <button className="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-full bg-primary-100 transition-all delay-75 hover:bg-primary-200">
-                        <CheckIcon className="h-5 w-5 text-green-800" />
-                      </button>
+                      <Dialog>
+                        <DialogTrigger>
+                          <button className="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-full bg-red-500 transition-all delay-75 hover:bg-red-600">
+                            <XIcon className="h-5 w-5 text-red-800" />
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Are you sure?</DialogTitle>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <button
+                              onClick={() =>
+                                handleUpdateEvent(event.id, {
+                                  ...event,
+                                  status: "REJECTED",
+                                })
+                              }
+                              className="boarder"
+                            >
+                              Yes
+                            </button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
+                      <Dialog>
+                        <DialogTrigger>
+                          <button className="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-full bg-primary-100 transition-all delay-75 hover:bg-primary-200">
+                            <CheckIcon className="h-5 w-5 text-green-800" />
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Are you sure?</DialogTitle>
+                          </DialogHeader>
+                          <DialogFooter>
+                            <button
+                              onClick={() =>
+                                handleUpdateEvent(event.id, {
+                                  ...event,
+                                  status: "APPROVED",
+                                })
+                              }
+                              className="boarder"
+                            >
+                              Yes
+                            </button>
+                          </DialogFooter>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                   </TableCell>
                 )}
