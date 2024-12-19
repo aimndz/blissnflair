@@ -23,7 +23,6 @@ function Preview() {
   const eventSpace = getEventServiceByValue(event.spaceName);
 
   const handleEventSubmit = async () => {
-    // Set default values for missing properties
     const eventWithDefaults = {
       ...event,
       expectedPax: event.expectedPax || 50,
@@ -32,10 +31,36 @@ function Preview() {
       additionalServices: event.additionalServices || [],
     };
 
-    const res = await createEvent(eventWithDefaults);
+    const { eventImage, ...restEventWithDefaults } = eventWithDefaults;
+
+    const formData = new FormData();
+
+    // Append all non-file fields to FormData (excluding eventImage)
+    Object.keys(restEventWithDefaults).forEach((key) => {
+      const value = restEventWithDefaults[key];
+
+      // Handle array type
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          formData.append(key, item);
+        });
+      }
+      // Handle boolean type
+      else if (typeof value === "boolean") {
+        formData.append(key, value.toString());
+      } else if (value !== undefined) {
+        formData.append(key, value);
+      }
+    });
+
+    // appended eventImage to the FormData
+    if (eventImage) {
+      formData.append("eventImage", eventImage);
+    }
+
+    const res = await createEvent(formData);
 
     if (res.success) {
-      // TODO: Show success message
       console.log("Event created successfully");
       navigate(`/${routePrefix}`);
     } else {

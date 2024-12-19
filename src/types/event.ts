@@ -1,6 +1,7 @@
 export interface Event {
   id: string;
   title: string;
+  imageUrl: string;
   description: string;
   expectedPax: number;
   category: string;

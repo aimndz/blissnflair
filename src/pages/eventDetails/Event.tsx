@@ -87,7 +87,15 @@ function Event() {
       )}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <div className="col-span-1 flex aspect-square items-center justify-center rounded-lg border border-solid border-secondary-600 bg-secondary-300">
-          <Image className="text-secondary-100" size={40} />
+          {event?.imageUrl ? (
+            <img
+              src={event?.imageUrl}
+              alt="Event Image"
+              className="h-full w-full rounded-lg object-cover"
+            />
+          ) : (
+            <Image className="text-secondary-100" size={40} />
+          )}
         </div>
         <div className="col-span-2">
           <div>

@@ -45,6 +45,21 @@ const venue = [
 
 const FormSchema = z.object({
   title: z.string().min(1, { message: "Event title is required" }),
+  eventImage: z
+    .any()
+    .refine(
+      (file) =>
+        !file || (file instanceof File && file.type.startsWith("image/")),
+      {
+        message: "File must be a valid image",
+      },
+    )
+    .refine(
+      (file) => !file || (file.size > 0 && file.size <= 5 * 1024 * 1024),
+      {
+        message: "File size must be less than 5 MB",
+      },
+    ),
   date: z
     .date()
     .refine((date) => date !== null, { message: "Date is required" })
@@ -129,6 +144,7 @@ function VenueInfo() {
 
   const [initialValues, setInitialValues] = useState({
     title: "",
+    eventImage: undefined,
     description: "",
     date: currentDate || new Date(),
     venue: spaceName || "",
@@ -157,6 +173,7 @@ function VenueInfo() {
 
       setInitialValues({
         title: event.title,
+        eventImage: event.eventImage,
         description: event.description,
         date: new Date(event.date),
         startTime: convertToLocalTime(event.startTime),
@@ -168,6 +185,7 @@ function VenueInfo() {
       });
       form.reset({
         title: event.title,
+        eventImage: event.eventImage,
         description: event.description,
         date: new Date(event.date),
         venue: event.venue,
@@ -195,6 +213,7 @@ function VenueInfo() {
     try {
       const event = {
         title: values.title,
+        eventImage: values.eventImage,
         description: values.description,
         date: values.date.toISOString(),
         venue: values.venue,
@@ -228,22 +247,44 @@ function VenueInfo() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleCateringButton)}>
           <section className="w-full space-y-5">
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Event title</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="e.g., John's 25th Birthday"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="grid grid-cols-2 gap-3">
+              <FormField
+                control={form.control}
+                name="title"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Event title</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="e.g., John's 25th Birthday"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="eventImage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Event image</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="file"
+                        placeholder="e.g., John's 25th Birthday"
+                        onChange={(e) => field.onChange(e.target.files?.[0])}
+                        onBlur={field.onBlur}
+                        name={field.name}
+                        ref={field.ref}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name="category"

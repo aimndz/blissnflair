@@ -39,18 +39,16 @@ export async function getEventById(id: string) {
 }
 
 //// CREATE EVENT
-export async function createEvent(event: CreateEventData) {
+export async function createEvent(event: FormData) {
   const res = await fetch(`${API_URL}/event`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
     credentials: "include",
-    body: JSON.stringify(event),
+    body: event,
   });
 
   if (!res.ok) {
     const error = await res.json();
+    console.log(error);
     return { success: false, errors: error.errors };
   }
 
