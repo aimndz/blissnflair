@@ -8,13 +8,13 @@ import {
   FormMessage,
 } from "../../components/ui/form";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "../../components/ui/toggle-group";
 import { mapValidationErrors } from "../../utils/mapValidationErrors";
 import { updateAccount } from "../../services/accountApi";
-
 import { Account } from "../../types/account";
 
 const FormSchema = z.object({
@@ -34,6 +34,16 @@ const FormSchema = z.object({
       message: "Invalid phone number format. Use +639XXXXXXXXX.",
     }),
   role: z.enum(["USER", "ADMIN"], { message: "Role is required" }),
+  avatarImage: z
+    .any()
+    .optional()
+    .refine(
+      (file) =>
+        !file || (file.size <= 2 * 1024 * 1024 && /image\/.*/.test(file.type)),
+      {
+        message: "Image must be a valid format and less than 2MB.",
+      },
+    ),
 });
 
 function AccountEdit({
@@ -44,6 +54,9 @@ function AccountEdit({
   onFormSubmit: (newUser: Account) => void;
 }) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [previewImage, setPreviewImage] = useState<string | null>(
+    userData?.imageUrl ?? null,
+  );
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -53,20 +66,49 @@ function AccountEdit({
       email: userData.email,
       phoneNumber: userData.phoneNumber,
       role: userData.role as "USER" | "ADMIN",
+      avatarImage: null,
     },
   });
 
   const handleUpdate = async (values: z.infer<typeof FormSchema>) => {
-    const res = await updateAccount(userData.id, {
-      ...values,
-      id: userData.id,
-    });
+    const formData = new FormData();
+    formData.append("id", userData.id);
+    formData.append("firstName", values.firstName);
+    formData.append("lastName", values.lastName);
+    formData.append("email", values.email);
+    if (values.phoneNumber) formData.append("phoneNumber", values.phoneNumber);
+    formData.append("role", values.role);
+
+    if (values.avatarImage) formData.append("avatarImage", values.avatarImage);
+
+    const res = await updateAccount(userData.id, formData);
 
     if (res.success) {
       onFormSubmit(res.data.user);
     } else {
       const fieldErrors = mapValidationErrors(res.errors);
       setErrors(fieldErrors);
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0] || null;
+    if (file) {
+      const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+
+      if (!allowedTypes.includes(file.type)) {
+        toast.error("Please select a valid image file.");
+        return;
+      }
+
+      //5 MB
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("Image size must be less than 5 MB.");
+        return;
+      }
+
+      setPreviewImage(URL.createObjectURL(file));
+      form.setValue("avatarImage", file);
     }
   };
 
@@ -77,8 +119,49 @@ function AccountEdit({
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleUpdate)}
-            className="space-y-5"
+            className="flex flex-col space-y-5"
           >
+            <div className="flex items-center justify-center">
+              <FormField
+                control={form.control}
+                name="avatarImage"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col items-center">
+                    <label className="text-sm font-medium">
+                      Profile Picture
+                    </label>
+                    <FormControl>
+                      <div
+                        className={`mt-2 flex h-20 w-20 cursor-pointer items-center justify-center overflow-hidden rounded-full ${previewImage ? "border-0" : "border-2 border-dashed"} `}
+                        onClick={() =>
+                          document.getElementById("avatarInput")?.click()
+                        }
+                      >
+                        {previewImage ? (
+                          <img
+                            src={previewImage}
+                            alt="Preview"
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-gray-400">+</span>
+                        )}
+                      </div>
+                      {/* Move Input outside FormControl */}
+                    </FormControl>
+                    <Input
+                      id="avatarInput"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
               name="role"
@@ -174,7 +257,6 @@ function AccountEdit({
                 </FormItem>
               )}
             />
-
             <Button
               type="submit"
               className="w-full rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"
