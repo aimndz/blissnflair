@@ -20,9 +20,7 @@ import { useUser } from "../../hooks/use-user";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address" }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 8 characters" }),
+  password: z.string().min(6, { message: "" }),
 });
 
 function Login() {
@@ -66,7 +64,7 @@ function Login() {
   return (
     <div className="flex h-screen flex-col justify-center text-center">
       <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
-        <div className="w-10 justify-center flex mx-auto">
+        <div className="mx-auto flex w-10 justify-center">
           <Logo />
         </div>
         <h1 className="text-xl font-bold">Admin Login</h1>
