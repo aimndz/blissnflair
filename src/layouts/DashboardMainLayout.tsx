@@ -43,8 +43,9 @@ function DashboardMainLayout({
           <DropdownMenuTrigger>
             <Avatar>
               <AvatarImage
-                src="https://avatars.githubusercontent.com/u/112063710?v=4"
+                src={user?.imageUrl}
                 alt="@shadcn"
+                className="object-cover"
               />
               <AvatarFallback className="uppercase">
                 {user?.firstName?.[0]}

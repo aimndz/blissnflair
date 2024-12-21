@@ -26,6 +26,7 @@ export interface AccountProfile {
   email: string;
   phoneNumber?: string;
   role: string;
+  imageUrl?: string;
 }
 
 export interface UserContextType {

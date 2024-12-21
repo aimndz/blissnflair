@@ -58,18 +58,16 @@ export async function createAccount(account: AccountCreate) {
 }
 
 //// UPDATE ACCOUNT
-export async function updateAccount(id: string, account: Account) {
+export async function updateAccount(id: string, account: FormData) {
   const res = await fetch(`${API_URL}/account/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(account),
+    body: account,
     credentials: "include",
   });
 
   if (!res.ok) {
     const error = await res.json();
+    console.log(error);
     return { success: false, errors: error.errors };
   }
 

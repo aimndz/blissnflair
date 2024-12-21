@@ -8,11 +8,12 @@ export async function getUserProfile() {
 
   if (res.ok) {
     const data = await res.json();
-    const { id, email, firstName, lastName, role } = data.user;
+    const { id, email, firstName, lastName, phoneNumber, role, imageUrl } =
+      data.user;
 
     return {
       authenticated: true,
-      user: { id, email, firstName, lastName, role },
+      user: { id, email, firstName, lastName, phoneNumber, role, imageUrl },
     };
   } else {
     return { authenticated: false };
