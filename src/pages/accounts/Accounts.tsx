@@ -13,7 +13,7 @@ import { Account, AccountProfile } from "../../types/account"; // Type definitio
 import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Button } from "../../components/ui/button";
-import { CalendarX, Edit, EllipsisVertical, Plus, Trash } from "lucide-react";
+import { CalendarX, Edit, Ellipsis, Plus, Trash } from "lucide-react";
 import { Link } from "react-router-dom";
 import {
   DropdownMenu,
@@ -33,6 +33,11 @@ import AccountCreate from "./AccountCreate";
 import AccountEdit from "./AccountEdit";
 import { useUser } from "../../hooks/use-user";
 import Loading from "../../components/LoadingSpinner";
+import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+} from "../../components/ui/avatar";
 
 function Accounts() {
   const user = useUser();
@@ -115,7 +120,7 @@ function Accounts() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto">
       <div className="mb-3 flex items-end justify-between">
         <Button
           className="bg-primary-100 text-secondary-900 hover:bg-primary-200"
@@ -157,36 +162,51 @@ function Accounts() {
                 </TableCell>
                 <TableCell>{user.firstName}</TableCell>
                 <TableCell>{user.lastName}</TableCell>
-                <TableCell>{user.email}</TableCell>
+                <TableCell className="flex items-center gap-3">
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage
+                      src={user?.imageUrl}
+                      alt="@shadcn"
+                      className="object-cover"
+                    />
+                    <AvatarFallback className="text-xs uppercase">
+                      {user?.firstName?.[0]}
+                      {user?.lastName?.[0]}
+                    </AvatarFallback>
+                  </Avatar>
+                  {user.email}
+                </TableCell>
                 <TableCell>{user.phoneNumber}</TableCell>
                 <TableCell>{user.role}</TableCell>
-                <TableCell className="flex justify-center">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger>
-                      <EllipsisVertical className="w-5 cursor-pointer text-secondary-800" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem onClick={() => handleEditClick(user)}>
-                        <Edit className="mr-2 w-4" />
-                        Edit
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className={`${
-                          user.id === loggedInUserId
-                            ? "cursor-not-allowed opacity-50"
-                            : "text-red-600"
-                        }`}
-                        disabled={user.id === loggedInUserId}
-                        onClick={() =>
-                          user.id !== loggedInUserId &&
-                          handleDeleteClick(user.id)
-                        }
-                      >
-                        <Trash className="mr-2 w-4" />
-                        Delete
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+                <TableCell>
+                  <div className="flex items-center justify-center">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger>
+                        <Ellipsis className="w-5 cursor-pointer text-secondary-800" />
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem onClick={() => handleEditClick(user)}>
+                          <Edit className="mr-2 w-4" />
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className={`${
+                            user.id === loggedInUserId
+                              ? "cursor-not-allowed opacity-50"
+                              : "text-red-600"
+                          }`}
+                          disabled={user.id === loggedInUserId}
+                          onClick={() =>
+                            user.id !== loggedInUserId &&
+                            handleDeleteClick(user.id)
+                          }
+                        >
+                          <Trash className="mr-2 w-4" />
+                          Delete
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
                 </TableCell>
               </TableRow>
             ))}

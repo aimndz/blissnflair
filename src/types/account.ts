@@ -7,6 +7,7 @@ export interface Account {
   role: string;
   password?: string;
   confirmPassword?: string;
+  imageUrl?: string;
 }
 
 export interface AccountCreate {
