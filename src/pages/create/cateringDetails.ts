@@ -2,52 +2,82 @@ const cateringDetails = {
   title: "Flair Catering Services",
   mainDishesPerPrice: [
     {
-      numberOfDish: 2,
       packages: [
         {
+          numberOfDish: 2,
           title: "Package 1",
           price: 720,
-          pax: "1-69 pax",
+          pax: {
+            min: 1,
+            max: 69,
+          },
         },
         {
+          numberOfDish: 2,
           title: "Package 2",
           price: 560,
-          pax: "70-99 pax",
+          pax: {
+            min: 70,
+            max: 99,
+          },
         },
         {
+          numberOfDish: 2,
           title: "Package 3",
           price: 470,
-          pax: "100-149 pax",
+          pax: {
+            min: 100,
+            max: 149,
+          },
         },
         {
+          numberOfDish: 2,
           title: "Package 4",
           price: 375,
-          pax: "150-200 pax",
+          pax: {
+            min: 150,
+            max: 200,
+          },
         },
       ],
     },
     {
-      numberOfDish: 3,
       packages: [
         {
+          numberOfDish: 3,
           title: "Package 1",
           price: 850,
-          pax: "1-69 pax",
+          pax: {
+            min: 1,
+            max: 69,
+          },
         },
         {
+          numberOfDish: 3,
           title: "Package 2",
           price: 650,
-          pax: "70-99 pax",
+          pax: {
+            min: 70,
+            max: 99,
+          },
         },
         {
+          numberOfDish: 3,
           title: "Package 3",
           price: 520,
-          pax: "100-149 pax",
+          pax: {
+            min: 100,
+            max: 149,
+          },
         },
         {
+          numberOfDish: 3,
           title: "Package 4",
           price: 450,
-          pax: "150-200 pax",
+          pax: {
+            min: 150,
+            max: 200,
+          },
         },
       ],
     },

@@ -10,7 +10,6 @@ import InHouseCatering from "./InHouseCatering";
 import ExternalCatering from "./ExternalCatering";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
-import { Separator } from "../../components/ui/separator";
 import { Card } from "../../components/ui/card";
 
 function Catering() {
@@ -19,8 +18,6 @@ function Catering() {
   const routePrefix = useRoutePrefix();
 
   const { event } = location.state || {};
-
-  console.log(event);
 
   const handleGoBack = () => {
     navigate(`/${routePrefix}/create/event-info`, { state: { event } });
@@ -33,7 +30,7 @@ function Catering() {
   };
 
   return (
-    <div className="mx-auto max-w-4xl">
+    <div className="mx-auto mb-20 max-w-4xl">
       <Button
         className="bg-transparent px-0 text-secondary-900 shadow-none hover:bg-transparent hover:text-secondary-800"
         onClick={handleGoBack}
@@ -61,7 +58,7 @@ function Catering() {
                       <ThumbsUp className="mb-1" />
                       <p>Yes, I’d like to avail</p>
                       <p className="font-normal">
-                        (Hassle-free and fully catered)
+                        (hassle-free and fully catered)
                       </p>
                     </TabsTrigger>
                     <TabsTrigger
