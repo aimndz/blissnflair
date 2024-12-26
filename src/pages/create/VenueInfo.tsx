@@ -27,6 +27,7 @@ import { Calendar } from "../../components/ui/calendar";
 import { Textarea } from "../../components/ui/textarea";
 import Combobox from "../../components/ui/combobox";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
+import { useUser } from "../../hooks/use-user";
 
 const venue = [
   {
@@ -43,40 +44,54 @@ const venue = [
   },
 ];
 
-const FormSchema = z.object({
-  title: z.string().min(1, { message: "Event title is required" }),
-  eventImage: z
-    .any()
-    .refine(
-      (file) =>
-        !file || (file instanceof File && file.type.startsWith("image/")),
-      {
-        message: "File must be a valid image",
+const createFormSchema = (userRole: string) => {
+  return z.object({
+    title: z.string().min(1, { message: "Event title is required" }),
+    eventImage: z
+      .any()
+      .refine(
+        (file) =>
+          !file || (file instanceof File && file.type.startsWith("image/")),
+        {
+          message: "File must be a valid image",
+        },
+      )
+      .refine(
+        (file) => !file || (file.size > 0 && file.size <= 5 * 1024 * 1024),
+        {
+          message: "File size must be less than 5 MB",
+        },
+      ),
+    date: z
+      .date()
+      .refine((date) => date !== null, { message: "Date is required" })
+      .refine(
+        (date) =>
+          date >= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+        {
+          message: "Event date should be at least 7 days from now",
+        },
+      ),
+    venue: z.string().min(1, { message: "Event venue is required" }),
+    organizer: z.string().refine(
+      (val) => {
+        // Make it required if userRole is ADMIN
+        if (userRole === "ADMIN") {
+          return val.length > 0;
+        }
+        return true;
       },
-    )
-    .refine(
-      (file) => !file || (file.size > 0 && file.size <= 5 * 1024 * 1024),
-      {
-        message: "File size must be less than 5 MB",
-      },
+      { message: "Organizer name is required" },
     ),
-  date: z
-    .date()
-    .refine((date) => date !== null, { message: "Date is required" })
-    .refine(
-      (date) =>
-        date >= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
-      {
-        message: "Event date should be at least 7 days from now",
-      },
-    ),
-  venue: z.string().min(1, { message: "Event venue is required" }),
-  startTime: z.string().min(1, { message: "Start time is required" }),
-  endTime: z.string().min(1, { message: "End time is required" }),
-  category: z.string().min(1, { message: "Event category is required" }),
-  description: z.string().min(1, { message: "Event description is required" }),
-  additionalNotes: z.string(),
-});
+    startTime: z.string().min(1, { message: "Start time is required" }),
+    endTime: z.string().min(1, { message: "End time is required" }),
+    category: z.string().min(1, { message: "Event category is required" }),
+    description: z
+      .string()
+      .min(1, { message: "Event description is required" }),
+    additionalNotes: z.string(),
+  });
+};
 
 const stringToTimeValue = (timeString: string) => {
   const [hours, minutes] = timeString.split(":").map(Number);
@@ -115,6 +130,10 @@ function VenueInfo() {
   const routePrefix = useRoutePrefix();
   const [error, setError] = useState("");
   const location = useLocation();
+  const { user } = useUser();
+
+  const userRole = user?.role || "USER";
+  const FormSchema = createFormSchema(userRole);
 
   const { spaceName, currentDate } = location.state || {};
   const [additionalHours, setAdditionalHours] = useState(0);
@@ -145,6 +164,7 @@ function VenueInfo() {
   const [initialValues, setInitialValues] = useState({
     title: "",
     eventImage: undefined,
+    organizer: "",
     description: "",
     date: currentDate || new Date(),
     venue: spaceName || "",
@@ -174,6 +194,7 @@ function VenueInfo() {
       setInitialValues({
         title: event.title,
         eventImage: event.eventImage,
+        organizer: event.organizer,
         description: event.description,
         date: new Date(event.date),
         startTime: convertToLocalTime(event.startTime),
@@ -186,6 +207,7 @@ function VenueInfo() {
       form.reset({
         title: event.title,
         eventImage: event.eventImage,
+        organizer: event.organizer,
         description: event.description,
         date: new Date(event.date),
         venue: event.venue,
@@ -214,6 +236,7 @@ function VenueInfo() {
       const event = {
         title: values.title,
         eventImage: values.eventImage,
+        organizer: values.organizer,
         description: values.description,
         date: values.date.toISOString(),
         venue: values.venue,
@@ -228,8 +251,6 @@ function VenueInfo() {
         additionalHours,
         spaceName,
       };
-
-      console.log(event);
 
       navigate(`/${routePrefix}/create/catering`, { state: { event } });
     } catch (error: unknown) {
@@ -285,6 +306,19 @@ function VenueInfo() {
                 )}
               />
             </div>
+            <FormField
+              control={form.control}
+              name="organizer"
+              render={({ field }) => (
+                <FormItem className={userRole !== "ADMIN" ? "hidden" : ""}>
+                  <FormLabel>Organizer name</FormLabel>
+                  <FormControl>
+                    <Input placeholder="e.g., John Doe" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               control={form.control}
               name="category"
