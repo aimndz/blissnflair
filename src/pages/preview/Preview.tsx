@@ -36,20 +36,12 @@ function Preview() {
   const eventSpace = getEventServiceByValue(event.spaceName);
 
   const handleEventSubmit = async () => {
-    const eventWithDefaults = {
-      ...event,
-      expectedPax: event.expectedPax || 50,
-      hasInHouseCatering: event.hasInHouseCatering ?? false,
-      additionalHours: event.additionalHours || 0,
-      additionalServices: event.additionalServices || [],
-    };
-
-    const { eventImage, ...restEventWithDefaults } = eventWithDefaults;
+    const { eventImage, ...eventInfo } = event;
 
     const formData = new FormData();
 
-    Object.keys(restEventWithDefaults).forEach((key) => {
-      const value = restEventWithDefaults[key];
+    Object.keys(eventInfo).forEach((key) => {
+      const value = eventInfo[key];
 
       if (Array.isArray(value)) {
         value.forEach((item) => {
