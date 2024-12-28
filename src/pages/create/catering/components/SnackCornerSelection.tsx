@@ -30,7 +30,7 @@ function SnackCornerSelection() {
     {},
   );
 
-  const handleSandwichSelection = (selectedSandWiches: string) => {
+  const handleSandwichSelection = (selectedSandWiches: SnackCorner) => {
     if (sandwiches.includes(selectedSandWiches)) {
       setSandwiches(sandwiches.filter((item) => item !== selectedSandWiches)); // Deselect if already selected
     } else {
@@ -38,7 +38,7 @@ function SnackCornerSelection() {
     }
   };
 
-  const handleFruitSelection = (selectedFruit: string) => {
+  const handleFruitSelection = (selectedFruit: SnackCorner) => {
     if (fruits.includes(selectedFruit)) {
       setFruits(fruits.filter((item) => item !== selectedFruit)); // Deselect if already selected
     } else if (fruits.length < 2) {
@@ -46,7 +46,7 @@ function SnackCornerSelection() {
     }
   };
 
-  const handleSaladSelection = (selectedSalad: string) => {
+  const handleSaladSelection = (selectedSalad: SnackCorner) => {
     if (salad.includes(selectedSalad)) {
       setSalad(salad.filter((item) => item !== selectedSalad)); // Deselect if already selected
     } else {
@@ -73,24 +73,24 @@ function SnackCornerSelection() {
                         id={`${category}-${dishIndex}`}
                         checked={
                           category === "Sandwich"
-                            ? sandwiches.includes(dish.id)
+                            ? sandwiches.includes(dish)
                             : category === "Fruit"
-                              ? fruits.includes(dish.id)
-                              : salad.includes(dish.id)
+                              ? fruits.includes(dish)
+                              : salad.includes(dish)
                         }
                         onClick={() => {
                           if (category === "Sandwich") {
-                            handleSandwichSelection(dish.id);
+                            handleSandwichSelection(dish);
                           } else if (category === "Fruit") {
-                            handleFruitSelection(dish.id);
+                            handleFruitSelection(dish);
                           } else if (category === "Salad Dressing") {
-                            handleSaladSelection(dish.id);
+                            handleSaladSelection(dish);
                           }
                         }}
                         disabled={
                           category === "Fruit" &&
                           fruits.length >= 2 &&
-                          !fruits.includes(dish.id)
+                          !fruits.includes(dish)
                         }
                       />
                       <label

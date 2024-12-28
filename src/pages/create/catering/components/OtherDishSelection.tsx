@@ -35,7 +35,7 @@ function OtherDishSelection() {
     {},
   );
 
-  const handleDrinkSelection = (selectedDrink: string) => {
+  const handleDrinkSelection = (selectedDrink: MainDish) => {
     if (drinks.includes(selectedDrink)) {
       setDrinks(drinks.filter((item) => item !== selectedDrink)); // Deselect if already selected
     } else {
@@ -43,7 +43,7 @@ function OtherDishSelection() {
     }
   };
 
-  const handleDessertSelection = (selectedDessert: string) => {
+  const handleDessertSelection = (selectedDessert: MainDish) => {
     if (desserts.includes(selectedDessert)) {
       setDesserts(desserts.filter((item) => item !== selectedDessert)); // Deselect if already selected
     } else {
@@ -51,7 +51,7 @@ function OtherDishSelection() {
     }
   };
 
-  const handlePastaSelection = (selectedPasta: string) => {
+  const handlePastaSelection = (selectedPasta: MainDish) => {
     if (pastas.includes(selectedPasta)) {
       setPastas(pastas.filter((item) => item !== selectedPasta)); // Deselect if already selected
     } else {
@@ -78,32 +78,32 @@ function OtherDishSelection() {
                       id={`${category}-${index}`}
                       checked={
                         category === "Drink"
-                          ? drinks.includes(dish.id)
+                          ? drinks.includes(dish)
                           : category === "Dessert"
-                            ? desserts.includes(dish.id)
+                            ? desserts.includes(dish)
                             : category === "Pasta"
-                              ? pastas.includes(dish.id)
-                              : selectedDishes.includes(dish.id) // Fallback for other categories
+                              ? pastas.includes(dish)
+                              : selectedDishes.includes(dish) // Fallback for other categories
                       }
                       onClick={() => {
                         if (category === "Drink") {
-                          handleDrinkSelection(dish.id);
+                          handleDrinkSelection(dish);
                         } else if (category === "Dessert") {
-                          handleDessertSelection(dish.id);
+                          handleDessertSelection(dish);
                         } else if (category === "Pasta") {
-                          handlePastaSelection(dish.id);
+                          handlePastaSelection(dish);
                         }
                       }}
                       disabled={
                         (category === "Drink" &&
                           drinks.length >= 1 &&
-                          !drinks.includes(dish.id)) ||
+                          !drinks.includes(dish)) ||
                         (category === "Dessert" &&
                           desserts.length >= 1 &&
-                          !desserts.includes(dish.id)) ||
+                          !desserts.includes(dish)) ||
                         (category === "Pasta" &&
                           pastas.length >= 1 &&
-                          !pastas.includes(dish.id))
+                          !pastas.includes(dish))
                       }
                     />
                     <label htmlFor={`${category}-${index}`} className="text-sm">

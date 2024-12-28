@@ -12,13 +12,15 @@ function MainDishSelection() {
   const { mainDishes, maxDishes, selectedDishes, setSelectedDishes } =
     useCatering();
 
-  const handleDishSelection = (dish: string) => {
-    const isSelected = selectedDishes.includes(dish);
+  const handleDishSelection = (dish: MainDish) => {
+    const isSelected = selectedDishes.some(
+      (selectedDish) => selectedDish.id === dish.id,
+    );
 
     if (!isSelected && selectedDishes.length < maxDishes) {
       setSelectedDishes([...selectedDishes, dish]);
     } else if (isSelected) {
-      setSelectedDishes(selectedDishes.filter((item) => item !== dish));
+      setSelectedDishes(selectedDishes.filter((item) => item.id !== dish.id));
     }
   };
 
@@ -54,12 +56,12 @@ function MainDishSelection() {
                     <Checkbox
                       value={dish.id}
                       id={`${category}-${index}`}
-                      checked={selectedDishes.includes(dish.id)}
-                      onClick={() => handleDishSelection(dish.id)}
+                      checked={selectedDishes.includes(dish)}
+                      onClick={() => handleDishSelection(dish)}
                       disabled={
-                        dish.dishType === "MAIN" && // Only disable if the dish type is MAIN
+                        dish.dishType === "MAIN" &&
                         selectedDishes.length >= maxDishes &&
-                        !selectedDishes.includes(dish.id)
+                        !selectedDishes.includes(dish)
                       }
                     />
                     <label htmlFor={`${category}-${index}`} className="text-sm">

@@ -18,16 +18,16 @@ function CateringProvider({ children }: { children: React.ReactNode }) {
   const [expectedPax, setExpectedPax] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const [maxDishes, setMaxDishes] = useState(3);
-  const [selectedDishes, setSelectedDishes] = useState<string[]>([]);
+  const [selectedDishes, setSelectedDishes] = useState<MainDish[]>([]);
   const [numberOfMainDishes, setNumberOfMainDishes] = useState(3);
   const [selectedPackage, setSelectedPackage] =
     useState<MainDishPackage | null>(null);
-  const [drinks, setDrinks] = useState<string[]>([]);
-  const [desserts, setDesserts] = useState<string[]>([]);
-  const [pastas, setPastas] = useState<string[]>([]);
-  const [sandwiches, setSandwiches] = useState<string[]>([]);
-  const [fruits, setFruits] = useState<string[]>([]);
-  const [salad, setSalad] = useState<string[]>([]);
+  const [drinks, setDrinks] = useState<MainDish[]>([]);
+  const [desserts, setDesserts] = useState<MainDish[]>([]);
+  const [pastas, setPastas] = useState<MainDish[]>([]);
+  const [sandwiches, setSandwiches] = useState<SnackCorner[]>([]);
+  const [fruits, setFruits] = useState<SnackCorner[]>([]);
+  const [salad, setSalad] = useState<SnackCorner[]>([]);
   const [foodCarts, setFoodCarts] = useState<AddOn[]>([]);
   const [technicals, setTechnicals] = useState<AddOn[]>([]);
   const [mainDishPackages, setMainDishPackages] = useState<MainDishPackage[]>(
