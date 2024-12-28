@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ArrowLeft, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import {
   Tabs,
@@ -13,36 +13,24 @@ import { useRoutePrefix } from "../../../hooks/useRoutePrefix";
 import { Card } from "../../../components/ui/card";
 import { useState } from "react";
 import { useCatering } from "../../../hooks/use-catering";
+import { toast } from "sonner";
+import SummaryCard from "./components/SummaryCard";
 
 function Catering() {
   const location = useLocation();
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
-  const [isInternalCatering, setIsInternalCatering] = useState(false);
-
+  const [isInternalCatering, setIsInternalCatering] = useState(true);
   const { event } = location.state || {};
-
-  const handleGoBack = () => {
-    navigate(`/${routePrefix}/create/event-info`, { state: { event } });
-  };
-
-  const handlePreviewButton = () => {
-    if (event) {
-      navigate(`/${routePrefix}/create/preview`, {
-        state: { event, isInternalCatering },
-      }); // Pass the state if needed
-    }
-  };
-
-  const handleTabChange = (value: string) => {
-    setIsInternalCatering(value === "internalCatering");
-  };
 
   const {
     expectedPax,
     totalAmount,
     selectedDishes,
     numberOfMainDishes,
+    drinks,
+    desserts,
+    pastas,
     selectedPackage,
     sandwiches,
     fruits,
@@ -51,22 +39,53 @@ function Catering() {
     technicals,
   } = useCatering();
 
-  console.log({
+  const catering = {
     expectedPax,
     totalAmount,
     numberOfMainDishes,
-    eventId: "`1234",
-    mainDishPackage: selectedPackage ? selectedPackage.id : null,
-    mainDishes: selectedDishes,
+    packageId: selectedPackage,
+    mainDishes: [...selectedDishes, ...drinks, ...desserts, ...pastas],
     pickASnackCorner: [...sandwiches, ...fruits, ...salad],
-    addOns: [
-      ...foodCarts.map((food) => food.id),
-      ...technicals.map((tech) => tech.id),
-    ],
-  });
+    addOns: [...foodCarts, ...technicals],
+  };
+
+  const handleGoBack = () => {
+    navigate(`/${routePrefix}/create/event-info`, { state: { event } });
+  };
+
+  const handlePreviewButton = () => {
+    if (event) {
+      if (isInternalCatering) {
+        navigate(`/${routePrefix}/create/preview`, {
+          state: { event, catering },
+        });
+      } else {
+        navigate(`/${routePrefix}/create/preview`, {
+          state: { event },
+        });
+      }
+    } else {
+      toast.error("Please fill out the event details first.");
+    }
+  };
+
+  const handleTabChange = (value: string) => {
+    setIsInternalCatering(value === "internalCatering");
+  };
+
+  // console.log({
+  //   expectedPax,
+  //   totalAmount,
+  //   numberOfMainDishes,
+  //   eventId: "`1234",
+  //   mainDishPackage: selectedPackage,
+  //   mainDishes: selectedDishes,
+  //   pickASnackCorner: [...sandwiches, ...fruits, ...salad],
+  //   addOns: [...foodCarts, ...technicals],
+  // });
 
   return (
-    <div className="mx-auto mb-20 max-w-4xl">
+    <div className="mx-auto mb-20 max-w-7xl">
       <Button
         className="bg-transparent px-0 text-secondary-900 shadow-none hover:bg-transparent hover:text-secondary-800"
         onClick={handleGoBack}
@@ -74,10 +93,10 @@ function Catering() {
         <ArrowLeft />
         <span>Back</span>
       </Button>
-      <div className="mx-auto max-w-4xl">
-        <div>
+      <div className="w-full">
+        <div className="flex items-start gap-3">
           <Tabs
-            className="w-full"
+            className="w-2/3"
             defaultValue="internalCatering"
             onValueChange={handleTabChange}
           >
@@ -113,7 +132,6 @@ function Catering() {
                 </div>
               </div>
             </Card>
-
             {/* Content Card */}
             <TabsContent value="internalCatering">
               <InHouseCatering />
@@ -122,16 +140,7 @@ function Catering() {
               <ExternalCatering />
             </TabsContent>
           </Tabs>
-
-          <div className="flex justify-end">
-            <Button
-              type="button"
-              className="mt-5 w-full max-w-20 rounded-full bg-primary-100 px-20 font-semibold text-secondary-900 hover:bg-primary-200"
-              onClick={handlePreviewButton}
-            >
-              Preview <ArrowRight />
-            </Button>
-          </div>
+          <SummaryCard handlePreviewButton={handlePreviewButton} />
         </div>
       </div>
     </div>
