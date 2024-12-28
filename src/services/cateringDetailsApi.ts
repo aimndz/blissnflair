@@ -3,10 +3,94 @@ import {
   Inclusion,
   MainDish,
   MainDishPackage,
+  Package,
   SnackCorner,
 } from "../types/catering";
 
 const API_URL = import.meta.env.VITE_API_URL;
+// -------- Main Dishes Packages API --------//
+// GET ALL MAIN DISHES PACKAGES
+export async function getAllMainDishPackage() {
+  const res = await fetch(`${API_URL}/catering-details/main-dish-package`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
+
+// CREATE MAIN DISH PACKAGE
+export async function createMainDishPackage(mainDishPackage: MainDishPackage) {
+  const res = await fetch(`${API_URL}/catering-details/main-dish-package`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+    body: JSON.stringify(mainDishPackage),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
+
+// UPDATE MAIN DISH PACKAGE
+export async function updateMainDishPackage(
+  id: string,
+  mainDishPackage: MainDishPackage,
+) {
+  const res = await fetch(
+    `${API_URL}/catering-details/main-dish-package/${id}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(mainDishPackage),
+    },
+  );
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
+
+// DELETE MAIN DISH PACKAGE
+export async function deleteMainDishPackage(id: string) {
+  const res = await fetch(
+    `${API_URL}/catering-details/main-dish-package/${id}`,
+    {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    },
+  );
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
 
 //-------- Main Dishes API --------//
 // GET ALL MAIN DISHES
@@ -253,7 +337,7 @@ export async function getAllPackages() {
 }
 
 // CREATE PACKAGE
-export async function createPackage(packageData: MainDishPackage) {
+export async function createPackage(packageData: Package) {
   const res = await fetch(`${API_URL}/catering-details/packages`, {
     method: "POST",
     headers: {
@@ -272,7 +356,7 @@ export async function createPackage(packageData: MainDishPackage) {
 }
 
 // UPDATE PACKAGE
-export async function updatePackage(id: string, packageData: MainDishPackage) {
+export async function updatePackage(id: string, packageData: Package) {
   const res = await fetch(`${API_URL}/catering-details/packages/${id}`, {
     method: "PUT",
     headers: {

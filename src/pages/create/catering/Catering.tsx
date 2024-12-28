@@ -1,21 +1,24 @@
 import { ArrowLeft, ArrowRight, ThumbsDown, ThumbsUp } from "lucide-react";
-import { Button } from "../../components/ui/button";
+import { Button } from "../../../components/ui/button";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../../components/ui/tabs";
-import InHouseCatering from "./InHouseCatering";
-import ExternalCatering from "./ExternalCatering";
+} from "../../../components/ui/tabs";
+import InHouseCatering from "./components/InHouseCatering";
+import ExternalCatering from "./components/ExternalCatering";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useRoutePrefix } from "../../hooks/useRoutePrefix";
-import { Card } from "../../components/ui/card";
+import { useRoutePrefix } from "../../../hooks/useRoutePrefix";
+import { Card } from "../../../components/ui/card";
+import { useState } from "react";
+import { useCatering } from "../../../hooks/use-catering";
 
 function Catering() {
   const location = useLocation();
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
+  const [isInternalCatering, setIsInternalCatering] = useState(false);
 
   const { event } = location.state || {};
 
@@ -25,9 +28,42 @@ function Catering() {
 
   const handlePreviewButton = () => {
     if (event) {
-      navigate(`/${routePrefix}/create/preview`, { state: { event } });
+      navigate(`/${routePrefix}/create/preview`, {
+        state: { event, isInternalCatering },
+      }); // Pass the state if needed
     }
   };
+
+  const handleTabChange = (value: string) => {
+    setIsInternalCatering(value === "internalCatering");
+  };
+
+  const {
+    expectedPax,
+    totalAmount,
+    selectedDishes,
+    numberOfMainDishes,
+    selectedPackage,
+    sandwiches,
+    fruits,
+    salad,
+    foodCarts,
+    technicals,
+  } = useCatering();
+
+  console.log({
+    expectedPax,
+    totalAmount,
+    numberOfMainDishes,
+    eventId: "`1234",
+    mainDishPackage: selectedPackage ? selectedPackage.id : null,
+    mainDishes: selectedDishes,
+    pickASnackCorner: [...sandwiches, ...fruits, ...salad],
+    addOns: [
+      ...foodCarts.map((food) => food.id),
+      ...technicals.map((tech) => tech.id),
+    ],
+  });
 
   return (
     <div className="mx-auto mb-20 max-w-4xl">
@@ -40,7 +76,11 @@ function Catering() {
       </Button>
       <div className="mx-auto max-w-4xl">
         <div>
-          <Tabs className="w-full" defaultValue="internalCatering">
+          <Tabs
+            className="w-full"
+            defaultValue="internalCatering"
+            onValueChange={handleTabChange}
+          >
             {/* Triggers Card */}
             <Card className="mb-3">
               <div className="flex h-60 flex-col justify-center p-6">
@@ -63,7 +103,7 @@ function Catering() {
                     </TabsTrigger>
                     <TabsTrigger
                       value="externalCatering"
-                      className="bg-secondary-2 00 flex h-24 w-full flex-col rounded-lg border border-secondary-600 px-4 py-2 font-semibold text-secondary-900 data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
+                      className="flex h-24 w-full flex-col rounded-lg border border-secondary-600 bg-secondary-200 px-4 py-2 font-semibold text-secondary-900 data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
                     >
                       <ThumbsDown className="mb-1" />
                       <p>No, I prefer external catering</p>
@@ -75,7 +115,6 @@ function Catering() {
             </Card>
 
             {/* Content Card */}
-
             <TabsContent value="internalCatering">
               <InHouseCatering />
             </TabsContent>

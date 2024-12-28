@@ -20,7 +20,8 @@ import SystemSettings from "../pages/SystemSettings";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Event from "../pages/eventDetails/Event";
-import Catering from "../pages/create/Catering";
+import Catering from "../pages/create/catering/Catering";
+import { CateringProvider } from "../contexts/CateringContext";
 
 const userRoutes = [
   {
@@ -41,7 +42,11 @@ const userRoutes = [
   {
     path: "create/catering",
     title: "Create Event",
-    element: <Catering />,
+    element: (
+      <CateringProvider>
+        <Catering />
+      </CateringProvider>
+    ),
   },
   {
     path: "create/preview",
