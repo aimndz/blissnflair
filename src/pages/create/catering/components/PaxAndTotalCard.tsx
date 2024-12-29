@@ -2,6 +2,7 @@ import { Card } from "../../../../components/ui/card";
 import { Input } from "../../../../components/ui/input";
 import { Label } from "../../../../components/ui/label";
 import { useCatering } from "../../../../hooks/use-catering";
+import { formatCurrency } from "../../../../utils/formatCurrency";
 
 function PaxAndTotalCard() {
   const { expectedPax, totalAmount, setExpectedPax } = useCatering();
@@ -23,7 +24,9 @@ function PaxAndTotalCard() {
       </div>
       <div>
         <p className="text-right text-sm">Total</p>
-        <p className="text-2xl font-medium">PHP {totalAmount}</p>
+        <p className="text-2xl font-medium">
+          PHP {formatCurrency(totalAmount)}
+        </p>
       </div>
     </Card>
   );

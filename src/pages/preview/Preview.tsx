@@ -1,4 +1,12 @@
-import { ArrowLeft, Calendar, Image, MapPin } from "lucide-react";
+import {
+  ArrowLeft,
+  Box,
+  Calendar,
+  Image,
+  MapPin,
+  User2,
+  Utensils,
+} from "lucide-react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../components/ui/button";
 import { createEvent } from "../../services/eventApi";
@@ -6,13 +14,36 @@ import { format, parseISO } from "date-fns";
 import eventServices from "../create/spaceDetails";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 import { useEffect, useState } from "react";
+import { createCatering } from "../../services/cateringSelectionApi";
+import { toast } from "sonner";
+import { AddOn, MainDish, SnackCorner } from "../../types/catering";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "../../components/ui/accordion";
+import { Avatar } from "../../components/ui/avatar";
+import { Separator } from "../../components/ui/separator";
 
 function Preview() {
   const location = useLocation();
-  const { event } = location.state || {};
+  const { event, catering } = location.state || {};
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+  const formattedCatering = {
+    ...catering,
+    packageId: catering?.packageId.id,
+    mainDishes: catering?.mainDishes.map((dish: MainDish) => dish.id),
+    pickASnackCorner: catering?.pickASnackCorner.map(
+      (snack: SnackCorner) => snack.id,
+    ),
+    addOns: catering?.addOns.map((addOn: AddOn) => addOn.id),
+  };
+
+  console.log(event);
 
   useEffect(() => {
     if (event?.eventImage instanceof File) {
@@ -40,36 +71,52 @@ function Preview() {
 
     const formData = new FormData();
 
-    Object.keys(eventInfo).forEach((key) => {
-      const value = eventInfo[key];
+    try {
+      Object.keys(eventInfo).forEach((key) => {
+        const value = eventInfo[key];
 
-      if (Array.isArray(value)) {
-        value.forEach((item) => {
-          formData.append(key, item);
-        });
-      } else if (typeof value === "boolean") {
-        formData.append(key, value.toString());
-      } else if (value !== undefined) {
-        formData.append(key, value);
+        if (Array.isArray(value)) {
+          value.forEach((item) => {
+            formData.append(key, item);
+          });
+        } else if (typeof value === "boolean") {
+          formData.append(key, String(value));
+        } else if (value !== undefined && value !== null) {
+          formData.append(key, value);
+        }
+      });
+
+      if (eventImage) {
+        formData.append("eventImage", eventImage);
       }
-    });
 
-    if (eventImage) {
-      formData.append("eventImage", eventImage);
-    }
+      const eventRes = await createEvent(formData);
 
-    const res = await createEvent(formData);
+      if (eventRes.success) {
+        if (formattedCatering) {
+          formattedCatering.eventId = eventRes.data.event.id;
 
-    if (res.success) {
-      console.log("Event created successfully");
-      navigate(`/${routePrefix}`);
-    } else {
-      console.error("Failed to create event");
+          const cateringRes = await createCatering(formattedCatering);
+
+          if (!cateringRes.success) {
+            console.error("Failed to create catering");
+            return;
+          }
+        }
+
+        toast.success("Event created successfully");
+        navigate(`/${routePrefix}`);
+      } else {
+        console.error("Failed to create event");
+      }
+    } catch (error) {
+      console.error("An error occurred during submission:", error);
     }
   };
 
+  console.log(event);
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto mb-10 max-w-6xl">
       <Button
         className="bg-transparent px-0 text-secondary-900 shadow-none hover:bg-transparent hover:text-secondary-800"
         onClick={handleGoBack}
@@ -94,38 +141,186 @@ function Preview() {
             <span className="text-xs text-secondary-800">{event.category}</span>
             <h2 className="text-2xl font-bold">{event.title}</h2>
           </div>
-          <div className="mt-3 flex flex-wrap items-center gap-3">
+          <div className="mt-3 flex flex-wrap items-center gap-3 font-semibold">
             <Calendar className="text-secondary-800" size={20} />
-            <span className="mr-10">
-              {format(new Date(event.date), "EEE, MMM d, yyyy")}
+            <span className="">
+              {format(new Date(event.date), "MMM d, yyyy")}
             </span>
             <span>
               {format(parseISO(event.startTime), "h:mm a")} -{" "}
               {format(parseISO(event.endTime), "h:mm a")}
             </span>
+            {event.additionalHours > 0 && (
+              <span className="text-xs font-normal text-secondary-800">
+                ( {event.additionalHours} hrs added )
+              </span>
+            )}
           </div>
-          <p className="mt-3 flex gap-3">
+          <p className="flex items-center gap-3">
             <MapPin className="text-secondary-800" size={20} />
             <span>{eventSpace?.name}</span>
           </p>
+          <div className="mt-3 flex items-center gap-1 text-sm">
+            <Avatar className="flex h-8 w-8 items-center justify-center bg-secondary-600/50 text-xs">
+              {event.organizer.trim() === ""
+                ? "Y"
+                : event.organizer.charAt(0).toUpperCase()}
+            </Avatar>
+
+            <p>
+              Organized by{" "}
+              <span className="font-semibold">
+                {event.organizer.trim() === "" ? "You" : event.organizer}
+              </span>
+            </p>
+          </div>
           <div className="mt-8">
-            <h3 className="font-medium">Description:</h3>
+            <h3 className="text-sm font-semibold">Description</h3>
             <p>{event.description}</p>
           </div>
           <div className="mt-8">
             {event.additionalNotes.trim() !== "" && (
               <div>
-                <h3 className="font-medium">Additional note:</h3>
+                <h3 className="text-sm font-semibold">Additional note</h3>
                 <p>{event.additionalNotes}</p>
               </div>
             )}
           </div>
+          {catering && (
+            <Accordion
+              type="single"
+              collapsible
+              className="mt-8 rounded-lg border border-secondary-600 bg-secondary-300"
+            >
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="px-5 py-3">
+                  <h3 className="flex items-center gap-3 text-lg font-bold">
+                    <Utensils size={20} />
+                    <span>Catering</span>
+                  </h3>
+                </AccordionTrigger>
+                <AccordionContent className="px-5">
+                  <Separator className="mb-3" />
+                  <div className="space-y-3 rounded-lg pb-3">
+                    <div className="flex items-center gap-3">
+                      <Box className="text-secondary-800" size={15} />
+                      <h4 className="text-sm font-semibold">Package </h4>
+                      <p>{catering.packageId.price} / pax</p>
+                    </div>
+                    <div className="flex items-center gap-3">
+                      <User2 className="text-secondary-800" size={15} />
+                      <h4 className="text-sm font-semibold">Expected Pax </h4>
+                      <p>{catering.expectedPax} pax</p>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold">Main Dishes</h4>
+                      <div className="grid grid-cols-3 gap-3">
+                        {catering.mainDishes
+                          .filter((dish: MainDish) => dish.dishType === "MAIN") // Filter for dishes of type "MAIN"
+                          .map((dish: MainDish) => (
+                            <div
+                              key={dish.id}
+                              className="dish-name rounded-lg border border-solid bg-secondary-100/50 p-2 text-center text-xs"
+                            >
+                              <p className="font-semibold">{dish.name}</p>
+                              <p className="text-xs text-secondary-800">
+                                ( {dish.category} )
+                              </p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold">Others</h4>
+                      <div className="grid grid-cols-3 gap-3">
+                        {catering.mainDishes
+                          .filter(
+                            (dish: MainDish) => dish.dishType === "OTHERS",
+                          ) // Filter for dishes of type "MAIN"
+                          .map((dish: MainDish) => (
+                            <div
+                              key={dish.id}
+                              className="dish-name rounded-lg border border-solid bg-secondary-100/50 p-2 text-center text-xs"
+                            >
+                              <p className="font-semibold">{dish.name}</p>
+                              <p className="text-xs text-secondary-800">
+                                ( {dish.category} )
+                              </p>
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-semibold">
+                        Picka Pick-A-Snack Corner
+                      </h4>
+                      <div className="grid grid-cols-3 gap-3">
+                        {catering.pickASnackCorner.map((dish: MainDish) => (
+                          <div
+                            key={dish.id}
+                            className="dish-name rounded-lg border border-solid bg-secondary-100/50 p-2 text-center text-xs"
+                          >
+                            <p className="font-semibold">{dish.name}</p>
+                            <p className="text-xs text-secondary-800">
+                              ( {dish.category} )
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {catering.addOns.filter(
+                      (dish: AddOn) => dish.category === "Food Carts",
+                    ).length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-semibold">Food Carts</h4>
+                        <div className="grid grid-cols-3 gap-3">
+                          {catering.addOns
+                            .filter(
+                              (dish: AddOn) => dish.category === "Food Carts",
+                            ) // Filter for dishes of type "MAIN"
+                            .map((dish: AddOn) => (
+                              <div
+                                key={dish.id}
+                                className="dish-name rounded-lg border border-solid bg-secondary-100/50 p-2 text-center text-xs"
+                              >
+                                <p className="font-semibold">{dish.name}</p>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+                    {catering.addOns.filter(
+                      (dish: AddOn) => dish.category === "Technicals",
+                    ).length > 0 && (
+                      <div>
+                        <h4 className="text-sm font-semibold">Technicals</h4>
+                        <div className="grid grid-cols-3 gap-3">
+                          {catering.addOns
+                            .filter(
+                              (dish: AddOn) => dish.category === "Technicals",
+                            ) // Filter for dishes of type "MAIN"
+                            .map((dish: AddOn) => (
+                              <div
+                                key={dish.id}
+                                className="dish-name rounded-lg border border-solid bg-secondary-100/50 p-2 text-center text-xs"
+                              >
+                                <p className="font-semibold">{dish.name}</p>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          )}
         </div>
       </div>
       <div className="flex justify-end">
         <Button
           onClick={handleEventSubmit}
-          className="mt-8 rounded-full bg-primary-100 px-10 text-secondary-900 hover:bg-primary-200"
+          className="mt-3 rounded-full bg-primary-100 px-10 text-secondary-900 hover:bg-primary-200"
         >
           Confirm
         </Button>
