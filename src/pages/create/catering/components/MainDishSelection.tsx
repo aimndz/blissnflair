@@ -56,12 +56,18 @@ function MainDishSelection() {
                     <Checkbox
                       value={dish.id}
                       id={`${category}-${index}`}
-                      checked={selectedDishes.includes(dish)}
+                      checked={selectedDishes.some(
+                        (selectedDish) => selectedDish.id === dish.id,
+                      )}
                       onClick={() => handleDishSelection(dish)}
                       disabled={
                         dish.dishType === "MAIN" &&
-                        selectedDishes.length >= maxDishes &&
-                        !selectedDishes.includes(dish)
+                        selectedDishes.filter(
+                          (selectedDish) => selectedDish.dishType === "MAIN",
+                        ).length >= maxDishes &&
+                        !selectedDishes.some(
+                          (selectedDish) => selectedDish.id === dish.id,
+                        )
                       }
                     />
                     <label htmlFor={`${category}-${index}`} className="text-sm">

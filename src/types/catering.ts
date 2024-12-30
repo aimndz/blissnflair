@@ -11,6 +11,17 @@ export interface Catering {
   addOns: AddOn[];
 }
 
+export interface CateringRequestData {
+  expectedPax: number;
+  totalAmount: number;
+  numberOfMainDishes: number;
+  eventId: string;
+  packageId: string;
+  mainDishes: string[];
+  pickASnackCorner: string[];
+  addOns: string[];
+}
+
 export interface MainDish {
   id: string;
   name: string;

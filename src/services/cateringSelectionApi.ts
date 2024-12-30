@@ -1,4 +1,4 @@
-import { Catering } from "../types/catering";
+import { Catering, CateringRequestData } from "../types/catering";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -40,7 +40,7 @@ export async function getCateringById(id: string) {
 }
 
 // CREATE A NEW CATERING OPTION
-export async function createCatering(catering: Catering) {
+export async function createCatering(catering: CateringRequestData) {
   const res = await fetch(`${API_URL}/catering-selection`, {
     method: "POST",
     headers: {

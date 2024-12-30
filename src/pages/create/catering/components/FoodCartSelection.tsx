@@ -68,6 +68,9 @@ function FoodCartSelection({
                     <Checkbox
                       id={cart.id}
                       value={cart.id}
+                      checked={foodCarts.some(
+                        (foodCart) => foodCart.id === cart.id,
+                      )}
                       onClick={() => handleFoodCartSelection(cart)}
                     />
                     <label htmlFor={cart.id} className="text-sm">

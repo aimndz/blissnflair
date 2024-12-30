@@ -53,13 +53,16 @@ function SummaryCard({
           </div>
         )}
 
-        {selectedDishes.length > 0 && (
+        {selectedDishes.filter((dish) => dish.dishType === "MAIN").length >
+          0 && (
           <div className="mt-3">
-            <p className="font-semibold">Dishes</p>
+            <p className="font-semibold">Main Dishes</p>
             <div className="ml-3">
-              {selectedDishes.map((dish) => (
-                <p key={dish.id}>{dish.name}</p>
-              ))}
+              {selectedDishes
+                .filter((dish) => dish.dishType === "MAIN")
+                .map((dish) => (
+                  <p key={dish.id}>{dish.name}</p>
+                ))}
             </div>
           </div>
         )}

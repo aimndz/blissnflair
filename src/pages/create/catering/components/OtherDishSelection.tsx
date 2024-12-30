@@ -36,26 +36,34 @@ function OtherDishSelection() {
   );
 
   const handleDrinkSelection = (selectedDrink: MainDish) => {
-    if (drinks.includes(selectedDrink)) {
-      setDrinks(drinks.filter((item) => item !== selectedDrink)); // Deselect if already selected
-    } else {
+    const isSelected = drinks.some((drink) => drink.id === selectedDrink.id);
+
+    if (!isSelected) {
       setDrinks([selectedDrink]);
+    } else {
+      setDrinks(drinks.filter((item) => item.id !== selectedDrink.id));
     }
   };
 
   const handleDessertSelection = (selectedDessert: MainDish) => {
-    if (desserts.includes(selectedDessert)) {
-      setDesserts(desserts.filter((item) => item !== selectedDessert)); // Deselect if already selected
-    } else {
+    const isSelected = desserts.some(
+      (dessert) => dessert.id === selectedDessert.id,
+    );
+
+    if (!isSelected) {
       setDesserts([selectedDessert]);
+    } else {
+      setDesserts(desserts.filter((item) => item.id !== selectedDessert.id));
     }
   };
 
   const handlePastaSelection = (selectedPasta: MainDish) => {
-    if (pastas.includes(selectedPasta)) {
-      setPastas(pastas.filter((item) => item !== selectedPasta)); // Deselect if already selected
-    } else {
+    const isSelected = pastas.some((pasta) => pasta.id === selectedPasta.id);
+
+    if (!isSelected) {
       setPastas([selectedPasta]);
+    } else {
+      setPastas(pastas.filter((item) => item.id !== selectedPasta.id));
     }
   };
 
@@ -78,12 +86,14 @@ function OtherDishSelection() {
                       id={`${category}-${index}`}
                       checked={
                         category === "Drink"
-                          ? drinks.includes(dish)
+                          ? drinks.some((drink) => drink.id === dish.id)
                           : category === "Dessert"
-                            ? desserts.includes(dish)
+                            ? desserts.some((dessert) => dessert.id === dish.id)
                             : category === "Pasta"
-                              ? pastas.includes(dish)
-                              : selectedDishes.includes(dish) // Fallback for other categories
+                              ? pastas.some((pasta) => pasta.id === dish.id)
+                              : selectedDishes.some(
+                                  (selectedDish) => selectedDish.id === dish.id,
+                                )
                       }
                       onClick={() => {
                         if (category === "Drink") {
@@ -97,13 +107,15 @@ function OtherDishSelection() {
                       disabled={
                         (category === "Drink" &&
                           drinks.length >= 1 &&
-                          !drinks.includes(dish)) ||
+                          !drinks.some((drink) => drink.id === dish.id)) ||
                         (category === "Dessert" &&
                           desserts.length >= 1 &&
-                          !desserts.includes(dish)) ||
+                          !desserts.some(
+                            (dessert) => dessert.id === dish.id,
+                          )) ||
                         (category === "Pasta" &&
                           pastas.length >= 1 &&
-                          !pastas.includes(dish))
+                          !pastas.some((pasta) => pasta.id === dish.id))
                       }
                     />
                     <label htmlFor={`${category}-${index}`} className="text-sm">

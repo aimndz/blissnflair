@@ -34,16 +34,46 @@ function Preview() {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
   const formattedCatering = {
-    ...catering,
-    packageId: catering?.packageId.id,
-    mainDishes: catering?.mainDishes.map((dish: MainDish) => dish.id),
-    pickASnackCorner: catering?.pickASnackCorner.map(
-      (snack: SnackCorner) => snack.id,
-    ),
-    addOns: catering?.addOns.map((addOn: AddOn) => addOn.id),
+    expectedPax: catering.expectedPax,
+    totalAmount: catering.totalAmount,
+    numberOfMainDishes: catering.numberOfMainDishes,
+    eventId: "",
+    package: catering.selectedPackage,
+    mainDishes: [
+      ...catering.selectedDishes,
+      ...catering.drinks,
+      ...catering.desserts,
+      ...catering.pastas,
+    ],
+    pickASnackCorner: [
+      ...catering.sandwiches,
+      ...catering.fruits,
+      ...catering.salad,
+    ],
+    addOns: [...catering.foodCarts, ...catering.technicals],
   };
 
-  console.log(event);
+  const cateringData = {
+    expectedPax: catering.expectedPax,
+    totalAmount: catering.totalAmount,
+    numberOfMainDishes: catering.numberOfMainDishes,
+    eventId: "",
+    packageId: catering.selectedPackage.id,
+    mainDishes: [
+      ...catering.selectedDishes,
+      ...catering.drinks,
+      ...catering.desserts,
+      ...catering.pastas,
+    ].map((dish: MainDish) => dish.id),
+    pickASnackCorner: [
+      ...catering.sandwiches,
+      ...catering.fruits,
+      ...catering.salad,
+    ].map((snack: SnackCorner) => snack.id),
+    addOns: [...catering.foodCarts, ...catering.technicals].map(
+      (addOn: AddOn) => addOn.id,
+    ),
+  };
 
   useEffect(() => {
     if (event?.eventImage instanceof File) {
@@ -61,7 +91,7 @@ function Preview() {
   };
 
   const handleGoBack = () => {
-    navigate(`/${routePrefix}/create/catering`, { state: { event } });
+    navigate(`/${routePrefix}/create/catering`, { state: { event, catering } });
   };
 
   const eventSpace = getEventServiceByValue(event.spaceName);
@@ -93,11 +123,9 @@ function Preview() {
       const eventRes = await createEvent(formData);
 
       if (eventRes.success) {
-        if (formattedCatering) {
-          formattedCatering.eventId = eventRes.data.event.id;
-
-          const cateringRes = await createCatering(formattedCatering);
-
+        if (cateringData) {
+          cateringData.eventId = eventRes.data.event.id;
+          const cateringRes = await createCatering(cateringData);
           if (!cateringRes.success) {
             console.error("Failed to create catering");
             return;
@@ -114,7 +142,6 @@ function Preview() {
     }
   };
 
-  console.log(event);
   return (
     <div className="mx-auto mb-10 max-w-6xl">
       <Button
@@ -186,7 +213,7 @@ function Preview() {
               </div>
             )}
           </div>
-          {catering && (
+          {formattedCatering && (
             <Accordion
               type="single"
               collapsible
@@ -205,17 +232,17 @@ function Preview() {
                     <div className="flex items-center gap-3">
                       <Box className="text-secondary-800" size={15} />
                       <h4 className="text-sm font-semibold">Package </h4>
-                      <p>{catering.packageId.price} / pax</p>
+                      <p>{formattedCatering.package.price} / pax</p>
                     </div>
                     <div className="flex items-center gap-3">
                       <User2 className="text-secondary-800" size={15} />
                       <h4 className="text-sm font-semibold">Expected Pax </h4>
-                      <p>{catering.expectedPax} pax</p>
+                      <p>{formattedCatering.expectedPax} pax</p>
                     </div>
                     <div>
                       <h4 className="text-sm font-semibold">Main Dishes</h4>
                       <div className="grid grid-cols-3 gap-3">
-                        {catering.mainDishes
+                        {formattedCatering.mainDishes
                           .filter((dish: MainDish) => dish.dishType === "MAIN") // Filter for dishes of type "MAIN"
                           .map((dish: MainDish) => (
                             <div
@@ -233,7 +260,7 @@ function Preview() {
                     <div>
                       <h4 className="text-sm font-semibold">Others</h4>
                       <div className="grid grid-cols-3 gap-3">
-                        {catering.mainDishes
+                        {formattedCatering.mainDishes
                           .filter(
                             (dish: MainDish) => dish.dishType === "OTHERS",
                           ) // Filter for dishes of type "MAIN"
@@ -255,26 +282,28 @@ function Preview() {
                         Picka Pick-A-Snack Corner
                       </h4>
                       <div className="grid grid-cols-3 gap-3">
-                        {catering.pickASnackCorner.map((dish: MainDish) => (
-                          <div
-                            key={dish.id}
-                            className="dish-name rounded-lg border border-solid bg-secondary-100/50 p-2 text-center text-xs"
-                          >
-                            <p className="font-semibold">{dish.name}</p>
-                            <p className="text-xs text-secondary-800">
-                              ( {dish.category} )
-                            </p>
-                          </div>
-                        ))}
+                        {formattedCatering.pickASnackCorner.map(
+                          (dish: MainDish) => (
+                            <div
+                              key={dish.id}
+                              className="dish-name rounded-lg border border-solid bg-secondary-100/50 p-2 text-center text-xs"
+                            >
+                              <p className="font-semibold">{dish.name}</p>
+                              <p className="text-xs text-secondary-800">
+                                ( {dish.category} )
+                              </p>
+                            </div>
+                          ),
+                        )}
                       </div>
                     </div>
-                    {catering.addOns.filter(
+                    {formattedCatering.addOns.filter(
                       (dish: AddOn) => dish.category === "Food Carts",
                     ).length > 0 && (
                       <div>
                         <h4 className="text-sm font-semibold">Food Carts</h4>
                         <div className="grid grid-cols-3 gap-3">
-                          {catering.addOns
+                          {formattedCatering.addOns
                             .filter(
                               (dish: AddOn) => dish.category === "Food Carts",
                             ) // Filter for dishes of type "MAIN"
@@ -289,13 +318,13 @@ function Preview() {
                         </div>
                       </div>
                     )}
-                    {catering.addOns.filter(
+                    {formattedCatering.addOns.filter(
                       (dish: AddOn) => dish.category === "Technicals",
                     ).length > 0 && (
                       <div>
                         <h4 className="text-sm font-semibold">Technicals</h4>
                         <div className="grid grid-cols-3 gap-3">
-                          {catering.addOns
+                          {formattedCatering.addOns
                             .filter(
                               (dish: AddOn) => dish.category === "Technicals",
                             ) // Filter for dishes of type "MAIN"

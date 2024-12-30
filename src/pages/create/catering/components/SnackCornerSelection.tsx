@@ -30,25 +30,37 @@ function SnackCornerSelection() {
     {},
   );
 
-  const handleSandwichSelection = (selectedSandWiches: SnackCorner) => {
-    if (sandwiches.includes(selectedSandWiches)) {
-      setSandwiches(sandwiches.filter((item) => item !== selectedSandWiches)); // Deselect if already selected
+  const handleSandwichSelection = (selectedSandwich: SnackCorner) => {
+    const isSelected = sandwiches.some(
+      (sandwich) => sandwich.id === selectedSandwich.id,
+    );
+
+    if (isSelected) {
+      setSandwiches(
+        sandwiches.filter((item) => item.id !== selectedSandwich.id),
+      );
     } else {
-      setSandwiches([selectedSandWiches]);
+      setSandwiches([selectedSandwich]);
     }
   };
 
   const handleFruitSelection = (selectedFruit: SnackCorner) => {
-    if (fruits.includes(selectedFruit)) {
-      setFruits(fruits.filter((item) => item !== selectedFruit)); // Deselect if already selected
+    const isSelected = fruits.some((fruit) => fruit.id === selectedFruit.id);
+
+    if (isSelected) {
+      setFruits(fruits.filter((item) => item.id !== selectedFruit.id));
     } else if (fruits.length < 2) {
-      setFruits([...fruits, selectedFruit]); // Allow selection if less than 2 fruits are selected
+      setFruits([...fruits, selectedFruit]);
     }
   };
 
   const handleSaladSelection = (selectedSalad: SnackCorner) => {
-    if (salad.includes(selectedSalad)) {
-      setSalad(salad.filter((item) => item !== selectedSalad)); // Deselect if already selected
+    const isSelected = salad.some(
+      (saladItem) => saladItem.id === selectedSalad.id,
+    );
+
+    if (isSelected) {
+      setSalad(salad.filter((item) => item.id !== selectedSalad.id));
     } else {
       setSalad([selectedSalad]);
     }
@@ -73,10 +85,12 @@ function SnackCornerSelection() {
                         id={`${category}-${dishIndex}`}
                         checked={
                           category === "Sandwich"
-                            ? sandwiches.includes(dish)
+                            ? sandwiches.some(
+                                (sandwich) => sandwich.id === dish.id,
+                              )
                             : category === "Fruit"
-                              ? fruits.includes(dish)
-                              : salad.includes(dish)
+                              ? fruits.some((fruit) => fruit.id === dish.id)
+                              : salad.some((sld) => sld.id === dish.id)
                         }
                         onClick={() => {
                           if (category === "Sandwich") {
@@ -88,9 +102,17 @@ function SnackCornerSelection() {
                           }
                         }}
                         disabled={
-                          category === "Fruit" &&
-                          fruits.length >= 2 &&
-                          !fruits.includes(dish)
+                          (category === "Sandwich" &&
+                            sandwiches.length >= 1 &&
+                            !sandwiches.some(
+                              (sandwich) => sandwich.id === dish.id,
+                            )) ||
+                          (category === "Fruit" &&
+                            fruits.length >= 2 &&
+                            !fruits.some((fruit) => fruit.id === dish.id)) ||
+                          (category === "Salad" &&
+                            salad.length >= 1 &&
+                            !salad.some((sld) => sld.id === dish.id))
                         }
                       />
                       <label

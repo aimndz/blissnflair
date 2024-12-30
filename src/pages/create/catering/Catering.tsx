@@ -11,7 +11,7 @@ import ExternalCatering from "./components/ExternalCatering";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRoutePrefix } from "../../../hooks/useRoutePrefix";
 import { Card } from "../../../components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useCatering } from "../../../hooks/use-catering";
 import { toast } from "sonner";
 import SummaryCard from "./components/SummaryCard";
@@ -21,7 +21,7 @@ function Catering() {
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
   const [isInternalCatering, setIsInternalCatering] = useState(true);
-  const { event } = location.state || {};
+  const { event, catering: cateringDetails } = location.state || {};
 
   const {
     expectedPax,
@@ -37,16 +37,34 @@ function Catering() {
     salad,
     foodCarts,
     technicals,
+    setExpectedPax,
+    setSelectedPackage,
+    setSelectedDishes,
+    setDrinks,
+    setDesserts,
+    setPastas,
+    setSandwiches,
+    setFruits,
+    setSalad,
+    setFoodCarts,
+    setTechnicals,
   } = useCatering();
 
   const catering = {
+    isInternalCatering,
     expectedPax,
     totalAmount,
     numberOfMainDishes,
-    packageId: selectedPackage,
-    mainDishes: [...selectedDishes, ...drinks, ...desserts, ...pastas],
-    pickASnackCorner: [...sandwiches, ...fruits, ...salad],
-    addOns: [...foodCarts, ...technicals],
+    selectedPackage,
+    selectedDishes,
+    drinks,
+    desserts,
+    pastas,
+    sandwiches,
+    fruits,
+    salad,
+    foodCarts,
+    technicals,
   };
 
   const handleGoBack = () => {
@@ -73,16 +91,36 @@ function Catering() {
     setIsInternalCatering(value === "internalCatering");
   };
 
-  // console.log({
-  //   expectedPax,
-  //   totalAmount,
-  //   numberOfMainDishes,
-  //   eventId: "`1234",
-  //   mainDishPackage: selectedPackage,
-  //   mainDishes: selectedDishes,
-  //   pickASnackCorner: [...sandwiches, ...fruits, ...salad],
-  //   addOns: [...foodCarts, ...technicals],
-  // });
+  useEffect(() => {
+    if (cateringDetails) {
+      setIsInternalCatering(cateringDetails.isInternalCatering);
+      setExpectedPax(cateringDetails.expectedPax);
+      setSelectedPackage(cateringDetails.packageId);
+      setSelectedDishes(cateringDetails.selectedDishes);
+      setDrinks(cateringDetails.drinks);
+      setDesserts(cateringDetails.desserts);
+      setPastas(cateringDetails.pastas);
+      setSandwiches(cateringDetails.sandwiches);
+      setFruits(cateringDetails.fruits);
+      setSalad(cateringDetails.salad);
+      setFoodCarts(cateringDetails.foodCarts);
+      setTechnicals(cateringDetails.technicals);
+    }
+  }, [
+    isInternalCatering,
+    cateringDetails,
+    setExpectedPax,
+    setSelectedPackage,
+    setSelectedDishes,
+    setDrinks,
+    setDesserts,
+    setPastas,
+    setSandwiches,
+    setFruits,
+    setSalad,
+    setFoodCarts,
+    setTechnicals,
+  ]);
 
   return (
     <div className="mx-auto mb-20 max-w-7xl">
@@ -97,7 +135,7 @@ function Catering() {
         <div className="flex items-start gap-3">
           <Tabs
             className="w-2/3"
-            defaultValue="internalCatering"
+            defaultValue={"internalCatering"}
             onValueChange={handleTabChange}
           >
             {/* Triggers Card */}
