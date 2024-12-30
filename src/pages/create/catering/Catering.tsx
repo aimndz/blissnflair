@@ -11,7 +11,7 @@ import ExternalCatering from "./components/ExternalCatering";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRoutePrefix } from "../../../hooks/useRoutePrefix";
 import { Card } from "../../../components/ui/card";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useCatering } from "../../../hooks/use-catering";
 import { toast } from "sonner";
 import SummaryCard from "./components/SummaryCard";
@@ -20,10 +20,10 @@ function Catering() {
   const location = useLocation();
   const navigate = useNavigate();
   const routePrefix = useRoutePrefix();
-  const [isInternalCatering, setIsInternalCatering] = useState(true);
   const { event, catering: cateringDetails } = location.state || {};
 
   const {
+    isInternalCatering,
     expectedPax,
     totalAmount,
     selectedDishes,
@@ -37,6 +37,7 @@ function Catering() {
     salad,
     foodCarts,
     technicals,
+    setIsInternalCatering,
     setExpectedPax,
     setSelectedPackage,
     setSelectedDishes,
@@ -93,7 +94,6 @@ function Catering() {
 
   useEffect(() => {
     if (cateringDetails) {
-      setIsInternalCatering(cateringDetails.isInternalCatering);
       setExpectedPax(cateringDetails.expectedPax);
       setSelectedPackage(cateringDetails.packageId);
       setSelectedDishes(cateringDetails.selectedDishes);
@@ -107,7 +107,6 @@ function Catering() {
       setTechnicals(cateringDetails.technicals);
     }
   }, [
-    isInternalCatering,
     cateringDetails,
     setExpectedPax,
     setSelectedPackage,
@@ -135,7 +134,9 @@ function Catering() {
         <div className="flex items-start gap-3">
           <Tabs
             className="w-2/3"
-            defaultValue={"internalCatering"}
+            defaultValue={
+              isInternalCatering ? "internalCatering" : "externalCatering"
+            }
             onValueChange={handleTabChange}
           >
             {/* Triggers Card */}

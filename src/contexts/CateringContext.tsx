@@ -15,6 +15,7 @@ const CateringContext = createContext<CateringContextType | undefined>(
 );
 
 function CateringProvider({ children }: { children: React.ReactNode }) {
+  const [isInternalCatering, setIsInternalCatering] = useState(true);
   const [expectedPax, setExpectedPax] = useState(0);
   const [totalAmount, setTotalAmount] = useState(0);
   const [maxDishes, setMaxDishes] = useState(3);
@@ -42,6 +43,8 @@ function CateringProvider({ children }: { children: React.ReactNode }) {
   return (
     <CateringContext.Provider
       value={{
+        isInternalCatering,
+        setIsInternalCatering,
         expectedPax,
         setExpectedPax,
         totalAmount,

@@ -33,47 +33,52 @@ function Preview() {
   const routePrefix = useRoutePrefix();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const formattedCatering = {
-    expectedPax: catering.expectedPax,
-    totalAmount: catering.totalAmount,
-    numberOfMainDishes: catering.numberOfMainDishes,
-    eventId: "",
-    package: catering.selectedPackage,
-    mainDishes: [
-      ...catering.selectedDishes,
-      ...catering.drinks,
-      ...catering.desserts,
-      ...catering.pastas,
-    ],
-    pickASnackCorner: [
-      ...catering.sandwiches,
-      ...catering.fruits,
-      ...catering.salad,
-    ],
-    addOns: [...catering.foodCarts, ...catering.technicals],
-  };
+  let formattedCatering = null;
+  let cateringData = null;
 
-  const cateringData = {
-    expectedPax: catering.expectedPax,
-    totalAmount: catering.totalAmount,
-    numberOfMainDishes: catering.numberOfMainDishes,
-    eventId: "",
-    packageId: catering.selectedPackage.id,
-    mainDishes: [
-      ...catering.selectedDishes,
-      ...catering.drinks,
-      ...catering.desserts,
-      ...catering.pastas,
-    ].map((dish: MainDish) => dish.id),
-    pickASnackCorner: [
-      ...catering.sandwiches,
-      ...catering.fruits,
-      ...catering.salad,
-    ].map((snack: SnackCorner) => snack.id),
-    addOns: [...catering.foodCarts, ...catering.technicals].map(
-      (addOn: AddOn) => addOn.id,
-    ),
-  };
+  if (catering?.isInternalCatering) {
+    formattedCatering = {
+      expectedPax: catering.expectedPax,
+      totalAmount: catering.totalAmount,
+      numberOfMainDishes: catering.numberOfMainDishes,
+      eventId: "",
+      package: catering.selectedPackage,
+      mainDishes: [
+        ...catering.selectedDishes,
+        ...catering.drinks,
+        ...catering.desserts,
+        ...catering.pastas,
+      ],
+      pickASnackCorner: [
+        ...catering.sandwiches,
+        ...catering.fruits,
+        ...catering.salad,
+      ],
+      addOns: [...catering.foodCarts, ...catering.technicals],
+    };
+
+    cateringData = {
+      expectedPax: catering.expectedPax,
+      totalAmount: catering.totalAmount,
+      numberOfMainDishes: catering.numberOfMainDishes,
+      eventId: "",
+      packageId: catering.selectedPackage.id,
+      mainDishes: [
+        ...catering.selectedDishes,
+        ...catering.drinks,
+        ...catering.desserts,
+        ...catering.pastas,
+      ].map((dish: MainDish) => dish.id),
+      pickASnackCorner: [
+        ...catering.sandwiches,
+        ...catering.fruits,
+        ...catering.salad,
+      ].map((snack: SnackCorner) => snack.id),
+      addOns: [...catering.foodCarts, ...catering.technicals].map(
+        (addOn: AddOn) => addOn.id,
+      ),
+    };
+  }
 
   useEffect(() => {
     if (event?.eventImage instanceof File) {
@@ -179,7 +184,8 @@ function Preview() {
             </span>
             {event.additionalHours > 0 && (
               <span className="text-xs font-normal text-secondary-800">
-                ( {event.additionalHours} hrs added )
+                ( {event.additionalHours}{" "}
+                {event?.additionalHours === 1 ? "hr" : "hrs"} added )
               </span>
             )}
           </div>
