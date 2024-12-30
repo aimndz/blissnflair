@@ -22,6 +22,19 @@ export interface CateringRequestData {
   addOns: string[];
 }
 
+export interface CateringResponseData {
+  id: string;
+  expectedPax: number;
+  totalAmount: number;
+  numberOfMainDishes: number;
+  mainDishPackage: MainDishPackage;
+  eventId: string;
+  packageId: string;
+  mainDishes: MainDish[];
+  pickASnackCorner: MainDish[];
+  addOns: AddOn[];
+}
+
 export interface MainDish {
   id: string;
   name: string;
@@ -69,6 +82,8 @@ export interface Inclusion {
 }
 
 export interface CateringContextType {
+  isInternalCatering: boolean;
+  setIsInternalCatering: (isInternalCatering: boolean) => void;
   expectedPax: number;
   setExpectedPax: (expectedPax: number) => void;
   totalAmount: number;

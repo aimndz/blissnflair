@@ -39,6 +39,24 @@ export async function getCateringById(id: string) {
   return { success: true, data: await res.json() };
 }
 
+// GET CATERING OPTION BY EVENT ID
+export async function getCateringByEventId(id: string) {
+  const res = await fetch(`${API_URL}/catering-selection/event/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
+
 // CREATE A NEW CATERING OPTION
 export async function createCatering(catering: CateringRequestData) {
   const res = await fetch(`${API_URL}/catering-selection`, {

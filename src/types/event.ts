@@ -1,6 +1,8 @@
 export interface Event {
   id: string;
   title: string;
+  organizer?: string;
+  additionalHours?: number;
   imageUrl: string;
   description: string;
   expectedPax: number;
