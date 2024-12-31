@@ -18,15 +18,10 @@ import { Link, useSearchParams } from "react-router-dom";
 import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { updateEvent } from "../../services/eventApi";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../../components/ui/dialog";
+import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import Loading from "../../components/LoadingSpinner";
+import { toast } from "sonner";
+import EventDialogApproval from "../../components/EventDialogApproval";
 
 interface User {
   id: string;
@@ -165,17 +160,21 @@ function AdminEventListContent() {
     setSearchQuery(event.target.value);
   };
 
-  const handleUpdateEvent = async (id: string, event: Event) => {
+  const handleUpdateEvent = async (id: string, updatedEvent: Event) => {
     try {
-      console.log("Id", id);
-      console.log("Event", event);
-      const response = await updateEvent(id, event);
+      const response = await updateEvent(id, updatedEvent);
       if (response.success) {
-        alert("Profile updated successfully");
+        toast.success("Event updated successfully");
+        // Update the local events state
+        setEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event.id === id ? { ...event, ...updatedEvent } : event,
+          ),
+        );
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Failed to update profile");
+      console.error("Error updating event:", error);
+      alert("Failed to update event");
     } finally {
       setLoading(false);
     }
@@ -186,7 +185,7 @@ function AdminEventListContent() {
   }
 
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto">
       <div className="mb-3 flex items-end justify-between">
         <div className="flex gap-3">
           <Combobox
@@ -267,24 +266,16 @@ function AdminEventListContent() {
                             <XIcon className="h-5 w-5 text-red-800" />
                           </button>
                         </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you sure?</DialogTitle>
-                          </DialogHeader>
-                          <DialogFooter>
-                            <button
-                              onClick={() =>
-                                handleUpdateEvent(event.id, {
-                                  ...event,
-                                  status: "REJECTED",
-                                })
-                              }
-                              className="boarder"
-                            >
-                              Yes
-                            </button>
-                          </DialogFooter>
-                        </DialogContent>
+                        <EventDialogApproval
+                          status="REJECTED"
+                          event={event}
+                          onUpdateEvent={async () =>
+                            await handleUpdateEvent(event.id, {
+                              ...event,
+                              status: "REJECTED",
+                            })
+                          }
+                        />
                       </Dialog>
                       <Dialog>
                         <DialogTrigger>
@@ -292,24 +283,16 @@ function AdminEventListContent() {
                             <CheckIcon className="h-5 w-5 text-green-800" />
                           </button>
                         </DialogTrigger>
-                        <DialogContent>
-                          <DialogHeader>
-                            <DialogTitle>Are you sure?</DialogTitle>
-                          </DialogHeader>
-                          <DialogFooter>
-                            <button
-                              onClick={() =>
-                                handleUpdateEvent(event.id, {
-                                  ...event,
-                                  status: "APPROVED",
-                                })
-                              }
-                              className="boarder"
-                            >
-                              Yes
-                            </button>
-                          </DialogFooter>
-                        </DialogContent>
+                        <EventDialogApproval
+                          status="APPROVED"
+                          event={event}
+                          onUpdateEvent={async () =>
+                            await handleUpdateEvent(event.id, {
+                              ...event,
+                              status: "APPROVED",
+                            })
+                          }
+                        />
                       </Dialog>
                     </div>
                   </TableCell>
