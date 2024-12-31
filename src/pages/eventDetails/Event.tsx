@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
-import { getEventById } from "../../services/eventApi";
+import { getEventById, updateEvent } from "../../services/eventApi";
 import {
   ArrowLeft,
   Box,
   Calendar,
+  Check,
   Image,
   MapPin,
   TriangleAlert,
   User2,
   Utensils,
+  X,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { Event as EventProps } from "../../types/event";
@@ -28,6 +30,9 @@ import {
 } from "../../components/ui/accordion";
 import { Separator } from "../../components/ui/separator";
 import { AddOn, CateringResponseData, MainDish } from "../../types/catering";
+import { toast } from "sonner";
+import { Dialog, DialogTrigger } from "../../components/ui/dialog";
+import EventDialogApproval from "../../components/EventDialogApproval";
 
 function Event() {
   const navigate = useNavigate();
@@ -79,8 +84,23 @@ function Event() {
     return <Loading />;
   }
 
+  const handleUpdateEvent = async (id: string, updatedEvent: EventProps) => {
+    try {
+      const response = await updateEvent(id, updatedEvent);
+      if (response.success) {
+        setEvent(updatedEvent);
+        toast.success("Event updated successfully");
+      }
+    } catch (error) {
+      console.error("Error updating event:", error);
+      alert("Failed to update event");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="mx-auto max-w-6xl">
+    <div className="mx-auto mb-10 max-w-6xl">
       <Button
         className="bg-transparent px-0 text-secondary-900 shadow-none hover:bg-transparent hover:text-secondary-800"
         onClick={handleGoBack}
@@ -102,15 +122,61 @@ function Event() {
         </div>
       )}
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-        <div className="col-span-1 flex aspect-square items-center justify-center rounded-lg border border-solid border-secondary-600 bg-secondary-300">
-          {event?.imageUrl ? (
-            <img
-              src={event?.imageUrl}
-              alt="Event Image"
-              className="h-full w-full rounded-lg object-cover"
-            />
-          ) : (
-            <Image className="text-secondary-100" size={40} />
+        <div>
+          <div className="col-span-1 flex aspect-square flex-col items-center justify-center rounded-lg border border-solid border-secondary-600 bg-secondary-300">
+            {event?.imageUrl ? (
+              <img
+                src={event?.imageUrl}
+                alt="Event Image"
+                className="h-full w-full rounded-lg object-cover"
+              />
+            ) : (
+              <Image className="text-secondary-100" size={40} />
+            )}
+          </div>
+          {event?.status === "PENDING" && (
+            <div className="mt-3 flex justify-center gap-3">
+              <Dialog>
+                <DialogTrigger>
+                  <Button className="w-full bg-red-500 hover:bg-red-600">
+                    <X size={20} strokeWidth={"4px"} />
+                    <p>Reject</p>
+                  </Button>
+                </DialogTrigger>
+                <EventDialogApproval
+                  status="REJECTED"
+                  event={event!}
+                  onUpdateEvent={async () => {
+                    if (event?.id) {
+                      await handleUpdateEvent(event.id, {
+                        ...event,
+                        status: "REJECTED",
+                      });
+                    }
+                  }}
+                />
+              </Dialog>
+              <Dialog>
+                <DialogTrigger>
+                  <Button className="w-full bg-primary-100 text-secondary-900 hover:bg-primary-200">
+                    <Check size={20} strokeWidth={"4px"} />
+                    <p>Approve</p>
+                  </Button>
+                </DialogTrigger>
+                <EventDialogApproval
+                  status="APPROVED"
+                  event={event!}
+                  onUpdateEvent={async () => {
+                    if (event?.id) {
+                      await handleUpdateEvent(event.id, {
+                        ...event,
+                        status: "APPROVED",
+                      });
+                    }
+                  }}
+                />
+              </Dialog>
+            </div>
           )}
         </div>
         <div className="col-span-2">
