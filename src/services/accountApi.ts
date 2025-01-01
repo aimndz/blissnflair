@@ -1,4 +1,4 @@
-import { Account, AccountCreate } from "../types/account";
+import { AccountCreate } from "../types/account";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -67,7 +67,6 @@ export async function updateAccount(id: string, account: FormData) {
 
   if (!res.ok) {
     const error = await res.json();
-    console.log(error);
     return { success: false, errors: error.errors };
   }
 

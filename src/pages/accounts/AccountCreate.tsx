@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { z } from "zod";
 
 import {
@@ -16,8 +15,8 @@ import { Button } from "../../components/ui/button";
 import { ToggleGroup, ToggleGroupItem } from "../../components/ui/toggle-group";
 import { mapValidationErrors } from "../../utils/mapValidationErrors";
 import { createAccount } from "../../services/accountApi";
-import { id } from "date-fns/locale";
 import { AccountProfile } from "../../types/account";
+import { toast } from "sonner";
 
 const FormSchema = z
   .object({
@@ -59,8 +58,6 @@ function AccountCreate({
 }: {
   onFormSubmit?: (user: AccountProfile) => void;
 }) {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -91,7 +88,10 @@ function AccountCreate({
         role: data.role,
       };
 
-      onFormSubmit(user);
+      if (onFormSubmit) {
+        onFormSubmit(user);
+        toast.success("Account created successfully.");
+      }
     } else {
       const fieldErrors = mapValidationErrors(res.errors);
       setErrors(fieldErrors);

@@ -64,7 +64,7 @@ function AccountEdit({
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
-      phoneNumber: userData.phoneNumber,
+      phoneNumber: userData.phoneNumber || "",
       role: userData.role as "USER" | "ADMIN",
       avatarImage: null,
     },
@@ -76,7 +76,7 @@ function AccountEdit({
     formData.append("firstName", values.firstName);
     formData.append("lastName", values.lastName);
     formData.append("email", values.email);
-    if (values.phoneNumber) formData.append("phoneNumber", values.phoneNumber);
+    formData.append("phoneNumber", values.phoneNumber || "");
     formData.append("role", values.role);
 
     if (values.avatarImage) formData.append("avatarImage", values.avatarImage);
@@ -85,6 +85,7 @@ function AccountEdit({
 
     if (res.success) {
       onFormSubmit(res.data.user);
+      toast.success("Account updated successfully.");
     } else {
       const fieldErrors = mapValidationErrors(res.errors);
       setErrors(fieldErrors);
