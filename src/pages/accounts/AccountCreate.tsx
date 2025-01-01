@@ -57,7 +57,7 @@ const FormSchema = z
 function AccountCreate({
   onFormSubmit,
 }: {
-  onFormSubmit: (user: AccountProfile) => void;
+  onFormSubmit?: (user: AccountProfile) => void;
 }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);

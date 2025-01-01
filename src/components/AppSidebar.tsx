@@ -50,6 +50,11 @@ const adminItems = [
     icon: CircleUserRound,
   },
   {
+    title: "Analytics",
+    url: "analytics",
+    icon: ChartLine,
+  },
+  {
     title: "System Settings",
     url: "system-settings",
     icon: Settings,

@@ -22,6 +22,7 @@ import ProtectedRoute from "../components/ProtectedRoute";
 import Event from "../pages/eventDetails/Event";
 import Catering from "../pages/create/catering/Catering";
 import { CateringProvider } from "../contexts/CateringContext";
+import Analytics from "../pages/analytics/Analytics";
 
 const userRoutes = [
   {
@@ -90,6 +91,11 @@ const adminRoutes = [
     path: "accounts/create",
     title: "Create Account",
     element: <AccountCreate />,
+  },
+  {
+    path: "analytics",
+    title: "Analytics",
+    element: <Analytics />,
   },
   {
     path: "system-settings",
