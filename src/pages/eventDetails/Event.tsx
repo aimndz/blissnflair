@@ -214,7 +214,10 @@ function Event() {
             <p>
               Organized by{" "}
               <span className="font-semibold">
-                {event?.organizer?.trim() === "" ? "You" : event?.organizer}
+                {user?.role !== "ADMIN" && event?.organizer?.trim() === ""
+                  ? "You"
+                  : event?.organizer ||
+                    `${event?.user.firstName} ${event?.user.lastName}`}
               </span>
             </p>
           </div>
