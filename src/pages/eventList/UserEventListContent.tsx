@@ -89,6 +89,24 @@ function UserEventListContent() {
     return <Loading />;
   }
 
+  const gradientDegrees = [
+    "bg-gradient-10",
+    "bg-gradient-15",
+    "bg-gradient-20",
+    "bg-gradient-25",
+    "bg-gradient-30",
+    "bg-gradient-45",
+    "bg-gradient-60",
+    "bg-gradient-90",
+    "bg-gradient-120",
+    "bg-gradient-135",
+  ];
+
+  const getRandomDegree = () => {
+    const randomIndex = Math.floor(Math.random() * gradientDegrees.length);
+    return gradientDegrees[randomIndex];
+  };
+
   return (
     <div>
       <div className="flex flex-col">
@@ -103,12 +121,15 @@ function UserEventListContent() {
           {filteredEvents.length}
         </span> */}
       </div>
-
       {filteredEvents.length > 0 ? (
-        <div className="mt-3 grid grid-cols-1 gap-3 md:grid-cols-3 lg:grid-cols-4">
-          {filteredEvents.map((event) => (
-            <EventCard key={event.id} event={event} />
-          ))}
+        <div className="mt-3 grid grid-cols-1 gap-3 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-[1400px]:grid-cols-6">
+          {filteredEvents.map((event) => {
+            const randomDeg = getRandomDegree();
+
+            return (
+              <EventCard key={event.id} event={event} randomDeg={randomDeg} />
+            );
+          })}
           <AddEventCard />
         </div>
       ) : (
