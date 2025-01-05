@@ -36,6 +36,7 @@ import { toast } from "sonner";
 import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import EventDialogApproval from "../../components/EventDialogApproval";
 import { useUser } from "../../hooks/use-user";
+import EventEditDialog from "../eventList/EventEditDialog";
 
 function Event() {
   const navigate = useNavigate();
@@ -44,6 +45,13 @@ function Event() {
   const { id } = useParams<{ id: string }>();
   const [event, setEvent] = useState<EventProps | null>(null);
   const [catering, setCatering] = useState<CateringResponseData | null>(null);
+  const [editEventData, setEditEventData] = useState<Event | null>(null);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+
+  const handleEditClick = (event: EventProps) => {
+    setEditEventData(event);
+    setOpenEditDialog(true);
+  };
 
   const getEventServiceByValue = (value: string) => {
     return eventServices.find((service) => service.value === value);
@@ -84,7 +92,28 @@ function Event() {
 
   const handleUpdateEvent = async (id: string, updatedEvent: EventProps) => {
     try {
-      const response = await updateEvent(id, updatedEvent);
+      const formData = new FormData();
+
+      // Add all necessary fields to FormData
+      formData.append("title", updatedEvent.title);
+      formData.append("organizer", updatedEvent?.organizer || "");
+      formData.append("description", updatedEvent.description);
+      formData.append("category", updatedEvent.category);
+      formData.append("date", updatedEvent.date);
+      formData.append("startTime", updatedEvent.startTime);
+      formData.append("endTime", updatedEvent.endTime);
+      formData.append("venue", updatedEvent.venue);
+      formData.append("additionalNotes", updatedEvent.additionalNotes || "");
+      formData.append("additionalHours", String(updatedEvent.additionalHours));
+      formData.append("status", updatedEvent.status);
+
+      // Only append imageUrl if it exists
+      if (updatedEvent.imageUrl) {
+        formData.append("imageUrl", updatedEvent.imageUrl);
+      }
+
+      const response = await updateEvent(id, formData);
+
       if (response.success) {
         setEvent(updatedEvent);
         toast.success("Event updated successfully");
@@ -185,7 +214,10 @@ function Event() {
               </span>
             </div>
             <div className="flex justify-end gap-5 text-secondary-800">
-              <Button className="flex gap-1 rounded-lg bg-transparent p-3 shadow-none hover:bg-secondary-300">
+              <Button
+                className="flex gap-1 rounded-lg bg-transparent p-3 shadow-none hover:bg-secondary-300"
+                onClick={() => handleEditClick(event)}
+              >
                 <Edit className="text-secondary-800" size={15} />
                 <p className="text-xs font-semibold text-secondary-800">Edit</p>
               </Button>
@@ -380,6 +412,14 @@ function Event() {
           )}
         </div>
       </div>
+      <EventEditDialog
+        open={openEditDialog}
+        onClose={() => setOpenEditDialog(false)}
+        event={editEventData}
+        onUpdate={(updatedEvent: EventProps) =>
+          handleUpdateEvent(updatedEvent.id, updatedEvent)
+        }
+      />
     </div>
   );
 }
