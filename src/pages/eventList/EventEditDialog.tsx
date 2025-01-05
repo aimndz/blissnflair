@@ -425,8 +425,13 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                               items={venue}
                               label="Select a venue"
                               value={field.value}
-                              onChange={field.onChange}
+                              onChange={(value) => {
+                                if (userRole === "ADMIN") {
+                                  field.onChange(value); // Allow change if admin
+                                }
+                              }}
                               className="w-full"
+                              disabled={userRole !== "ADMIN"}
                             />
                           </FormControl>
                           <FormMessage />
@@ -435,109 +440,117 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                     />
                   </div>
                 </div>
-                <FormField
-                  control={form.control}
-                  name="date"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col">
-                      <div className="flex items-center gap-3">
-                        <FormLabel className="text-nowrap">
-                          Event date
-                        </FormLabel>
-                        <p className="text-sm italic text-gray-500">
-                          ( <span className="font-medium">Tip:</span> Schedule
-                          your event 1 month ahead for better approval chances.
-                          )
-                        </p>
-                      </div>
-                      <Popover>
-                        <PopoverTrigger asChild>
-                          <FormControl>
-                            <Button
-                              variant={"outline"}
-                              className={cn(
-                                "w-[240px] bg-secondary-100 pl-3 text-left font-normal",
-                                !field.value && "text-muted-foreground",
-                              )}
-                            >
-                              {field.value ? (
-                                format(field.value, "PPP")
-                              ) : (
-                                <span>Select a date</span>
-                              )}
-                              <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                            </Button>
-                          </FormControl>
-                        </PopoverTrigger>
-                        <PopoverContent className="w-auto p-0" align="start">
-                          <Calendar
-                            mode="single"
-                            selected={field.value}
-                            onSelect={(date) => field.onChange(date)}
-                          />
-                        </PopoverContent>
-                      </Popover>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <div className="flex flex-wrap gap-10">
+
+                <div className="disabled:opacity-50">
                   <FormField
                     control={form.control}
-                    name="startTime"
+                    name="date"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Start Time</FormLabel>
-                        <FormControl>
-                          <TimeInput
-                            aria-label="Start Time"
-                            value={stringToTimeValue(field.value)}
-                            onChange={(time) =>
-                              field.onChange(timeValueToString(time))
-                            }
-                            classNames={{
-                              segment: "focus:bg-secondary-300",
-                              inputWrapper: "hover:bg-secondary-100",
-                            }}
-                            className="rounded-md border border-solid border-secondary-300 bg-secondary-100"
-                          />
-                        </FormControl>
-                        <p className="text-xs italic">*4 hours venue usage</p>
+                      <FormItem className="flex flex-col">
+                        <div className="flex items-center gap-3">
+                          <FormLabel className="text-nowrap">
+                            Event date
+                          </FormLabel>
+                          <p className="text-sm italic text-gray-500">
+                            ( <span className="font-medium">Tip:</span> Schedule
+                            your event 1 month ahead for better approval
+                            chances. )
+                          </p>
+                        </div>
+                        <Popover>
+                          <PopoverTrigger asChild>
+                            <FormControl>
+                              <Button
+                                variant={"outline"}
+                                className={cn(
+                                  "w-[240px] bg-secondary-100 pl-3 text-left font-normal",
+                                  !field.value && "text-muted-foreground",
+                                )}
+                                disabled={userRole !== "ADMIN"}
+                              >
+                                {field.value ? (
+                                  format(field.value, "PPP")
+                                ) : (
+                                  <span>Select a date</span>
+                                )}
+                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                              </Button>
+                            </FormControl>
+                          </PopoverTrigger>
+                          <PopoverContent className="w-auto p-0" align="start">
+                            <Calendar
+                              mode="single"
+                              selected={field.value}
+                              onSelect={(date) => field.onChange(date)}
+                              disabled={userRole !== "ADMIN"}
+                            />
+                          </PopoverContent>
+                        </Popover>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <FormItem>
-                    <FormLabel>Additional Extra Hours</FormLabel>
-                    <FormControl>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        <Button
-                          className="border border-secondary-600 bg-secondary-200 text-secondary-900 shadow-none hover:bg-secondary-300 active:bg-secondary-300"
-                          type="button"
-                          onClick={decrementHours}
-                        >
-                          -
-                        </Button>
-                        <Input
-                          type="number"
-                          value={additionalHours}
-                          readOnly
-                          className="mx-3 w-full max-w-11 text-center"
-                        />
-                        <Button
-                          className="border border-secondary-600 bg-secondary-200 text-secondary-900 shadow-none hover:bg-secondary-300 active:bg-secondary-300"
-                          type="button"
-                          onClick={incrementHours}
-                        >
-                          +
-                        </Button>
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
+                  <div className="flex flex-wrap gap-10">
+                    <FormField
+                      control={form.control}
+                      name="startTime"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Start Time</FormLabel>
+                          <FormControl>
+                            <TimeInput
+                              aria-label="Start Time"
+                              value={stringToTimeValue(field.value)}
+                              onChange={(time) =>
+                                field.onChange(timeValueToString(time))
+                              }
+                              classNames={{
+                                segment: "focus:bg-secondary-300",
+                                inputWrapper: "hover:bg-secondary-100",
+                              }}
+                              className="rounded-md border border-solid border-secondary-300 bg-secondary-100"
+                              isDisabled={userRole !== "ADMIN"}
+                            />
+                          </FormControl>
+                          <p className="text-xs italic">*4 hours venue usage</p>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormItem>
+                      <FormLabel>Additional Extra Hours</FormLabel>
+                      <FormControl>
+                        <div style={{ display: "flex", alignItems: "center" }}>
+                          <Button
+                            className="border border-secondary-600 bg-secondary-200 text-secondary-900 shadow-none hover:bg-secondary-300 active:bg-secondary-300"
+                            type="button"
+                            onClick={decrementHours}
+                            disabled={userRole !== "ADMIN"}
+                          >
+                            -
+                          </Button>
+                          <Input
+                            type="number"
+                            value={additionalHours}
+                            readOnly
+                            className="mx-3 w-full max-w-11 text-center"
+                            disabled={userRole !== "ADMIN"}
+                          />
+                          <Button
+                            className="border border-secondary-600 bg-secondary-200 text-secondary-900 shadow-none hover:bg-secondary-300 active:bg-secondary-300"
+                            type="button"
+                            onClick={incrementHours}
+                            disabled={userRole !== "ADMIN"}
+                          >
+                            +
+                          </Button>
+                        </div>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
 
-                  {/* <span className="mt-8 text-xs font-semibold">to</span> */}
-                  {/* <FormField
+                    {/* <span className="mt-8 text-xs font-semibold">to</span> */}
+                    {/* <FormField
                 control={form.control}
                 name="endTime"
                 render={({ field }) => {
@@ -565,6 +578,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                   );
                 }}
               /> */}
+                  </div>
                 </div>
 
                 <FormField

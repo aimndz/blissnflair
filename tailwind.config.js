@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-const { nextui } = require("@nextui-org/theme");
-const plugin = require("tailwindcss/plugin");
+import { nextui } from "@nextui-org/theme";
+import plugin from "tailwindcss/plugin";
 
 export default {
   darkMode: ["class"],

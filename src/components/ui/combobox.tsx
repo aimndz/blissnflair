@@ -24,21 +24,30 @@ interface ComboboxProps {
   label: string;
   value: string;
   className?: string;
+  disabled?: boolean;
   onChange: (value: string) => void;
 }
 
-function Combobox({ items, label, value, className, onChange }: ComboboxProps) {
+function Combobox({
+  items,
+  label,
+  value,
+  className,
+  onChange,
+  disabled,
+}: ComboboxProps) {
   const [open, setOpen] = React.useState(false);
 
   return (
     <div>
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={disabled ? false : open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button
             variant="outline"
             role="combobox"
             aria-expanded={open}
             className={`w-[240px] justify-between border-secondary-600 bg-secondary-100 ${className}`}
+            disabled={disabled}
           >
             {value ? items.find((item) => item.value === value)?.label : label}
             <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
