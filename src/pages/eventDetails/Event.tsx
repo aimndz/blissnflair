@@ -6,6 +6,8 @@ import {
   Box,
   Calendar,
   Check,
+  Copy,
+  Edit,
   Image,
   MapPin,
   TriangleAlert,
@@ -176,12 +178,26 @@ function Event() {
           ) : null}
         </div>
         <div className="col-span-2">
-          <div className="mt-5 gap-3">
-            <span className="text-xs text-secondary-800">
-              {event?.category}
-            </span>
-            <h2 className="text-2xl font-bold">{event?.title}</h2>
+          <div className="flex justify-between">
+            <div className="gap-3">
+              <span className="text-xs text-secondary-800">
+                {event?.category}
+              </span>
+            </div>
+            <div className="flex justify-end gap-5 text-secondary-800">
+              <Button className="flex gap-1 rounded-lg bg-transparent p-3 shadow-none hover:bg-secondary-300">
+                <Edit className="text-secondary-800" size={15} />
+                <p className="text-xs font-semibold text-secondary-800">Edit</p>
+              </Button>
+              <Button className="flex gap-1 rounded-lg bg-transparent p-3 shadow-none hover:bg-secondary-300">
+                <Copy className="text-secondary-800" size={15} />
+                <p className="text-xs font-semibold text-secondary-800">
+                  Copy link
+                </p>
+              </Button>
+            </div>
           </div>
+          <h2 className="text-2xl font-bold">{event?.title}</h2>
           <div className="mt-3 flex flex-wrap items-center gap-3 font-semibold">
             <Calendar className="text-secondary-800" size={20} />
             <span className="">
