@@ -7,6 +7,7 @@ import NoEventsMessage from "./NoEventsMessage";
 import AddEventCard from "./AddEventCard";
 import Combobox from "../../components/ui/combobox";
 import Loading from "../../components/LoadingSpinner";
+import { getRandomDegree } from "../../utils/randomGradient";
 
 const eventStatus = [
   {
@@ -88,24 +89,6 @@ function UserEventListContent() {
   if (loading) {
     return <Loading />;
   }
-
-  const gradientDegrees = [
-    "bg-gradient-10",
-    "bg-gradient-15",
-    "bg-gradient-20",
-    "bg-gradient-25",
-    "bg-gradient-30",
-    "bg-gradient-45",
-    "bg-gradient-60",
-    "bg-gradient-90",
-    "bg-gradient-120",
-    "bg-gradient-135",
-  ];
-
-  const getRandomDegree = () => {
-    const randomIndex = Math.floor(Math.random() * gradientDegrees.length);
-    return gradientDegrees[randomIndex];
-  };
 
   return (
     <div>

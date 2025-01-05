@@ -260,7 +260,7 @@ function AccountEdit({
             />
             <Button
               type="submit"
-              className="w-full rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"
+              className="w-full rounded-full bg-primary-100 font-bold text-secondary-100 hover:bg-primary-200"
             >
               Save
             </Button>

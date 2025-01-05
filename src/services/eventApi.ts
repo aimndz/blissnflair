@@ -56,18 +56,16 @@ export async function createEvent(event: FormData) {
 }
 
 //// UPDATE EVENT
-export async function updateEvent(id: string, event: Event) {
+export async function updateEvent(id: string, event: FormData) {
   const res = await fetch(`${API_URL}/event/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    body: event,
     credentials: "include",
-    body: JSON.stringify(event),
   });
 
   if (!res.ok) {
     const error = await res.json();
+    console.log(error);
     return { success: false, errors: error.errors };
   }
 

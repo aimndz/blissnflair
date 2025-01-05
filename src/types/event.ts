@@ -1,3 +1,5 @@
+import { Account } from "./account";
+
 export interface Event {
   id: string;
   title: string;
@@ -13,7 +15,7 @@ export interface Event {
   additionalServices?: string[];
   additionalNotes?: string;
   status: string;
-  userId: string;
+  user: Account;
   daysLeft?: number;
   createdAt: string;
   modifiedAt: string;
