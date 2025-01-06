@@ -109,6 +109,30 @@ function AdminEventListContent() {
       };
     })
     .sort((a, b) => {
+      // Prioritize "approved   " status if filter is "all"
+      if (filter === "all") {
+        if (
+          a.status.toUpperCase() === "CANCELLED" &&
+          b.status.toUpperCase() !== "CANCELLED"
+        ) {
+          return -1; // a should come before b
+        }
+      }
+      return 0;
+    })
+    .sort((a, b) => {
+      // Prioritize "approved   " status if filter is "all"
+      if (filter === "all") {
+        if (
+          a.status.toUpperCase() === "APPROVED" &&
+          b.status.toUpperCase() !== "APPROVED"
+        ) {
+          return -1; // a should come before b
+        }
+      }
+      return 0;
+    })
+    .sort((a, b) => {
       // Prioritize "pending" status if filter is "all"
       if (filter === "all") {
         if (
@@ -117,14 +141,8 @@ function AdminEventListContent() {
         ) {
           return -1; // a should come before b
         }
-        if (
-          a.status.toUpperCase() !== "PENDING" &&
-          b.status.toUpperCase() === "PENDING"
-        ) {
-          return 1; // b should come before a
-        }
       }
-      return 0; // no change to order
+      return 0;
     });
 
   const getStatusBadgeClass = (status: string) => {
@@ -342,8 +360,8 @@ function AdminEventListContent() {
                       </p>
                     </TableCell>
                     <TableCell>
-                      <span
-                        className={`} inline-block rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadgeClass(event.status)}`}
+                      <span     
+                        className={`} inline-block rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadgeClass(event.status)} w-full max-w-28 text-center`}
                       >
                         {event.status}
                       </span>
@@ -388,6 +406,25 @@ function AdminEventListContent() {
                             />
                           </Dialog>
                         </div>
+                      )}
+                      {event.status === "APPROVED" && (
+                        <Dialog>
+                          <DialogTrigger className="w-full">
+                            <Button className="w-full rounded-lg border border-secondary-700 bg-transparent text-secondary-800 hover:bg-secondary-800/10">
+                              <p>Cancel</p>
+                            </Button>
+                          </DialogTrigger>
+                          <EventDialogApproval
+                            status="CANCELLED"
+                            event={event}
+                            onUpdateEvent={async () =>
+                              await handleUpdateEvent(event.id, {
+                                ...event,
+                                status: "CANCELLED",
+                              })
+                            }
+                          />
+                        </Dialog>
                       )}
                     </TableCell>
                     <TableCell>

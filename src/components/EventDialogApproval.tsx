@@ -32,11 +32,23 @@ function EventDialogApproval({
             <ExclamationTriangleIcon className="h-5 w-5 text-red-800" />
           )}
 
-          <p>{status === "APPROVED" ? "Approving" : "Rejecting"} an Event</p>
+          <p>
+            {status === "APPROVED"
+              ? "Approving"
+              : status === "REJECTED"
+                ? "Rejecting"
+                : "Cancelling"}{" "}
+            an Event
+          </p>
         </DialogTitle>
       </DialogHeader>
       <DialogDescription className="text-secondary-900">
-        Are you sure you want to {status === "APPROVED" ? "approve" : "reject"}{" "}
+        Are you sure you want to{" "}
+        {status === "APPROVED"
+          ? "approve"
+          : status === "REJECTED"
+            ? "reject"
+            : "cancel"}{" "}
         <span className="font-bold">{event.title}</span>? This action cannot be
         undone.
       </DialogDescription>
@@ -48,10 +60,16 @@ function EventDialogApproval({
         </DialogClose>
         <DialogClose>
           <Button
-            className={`${status === "APPROVED" ? "bg-primary-100 hover:bg-primary-200" : "bg-red-500 text-secondary-100 hover:bg-red-600"}`}
+            className={`${status === "APPROVED" ? "bg-primary-100 hover:bg-primary-200" : status === "REJECTED" ? "bg-red-500 text-secondary-100 hover:bg-red-600" : "bg-primary-100 text-secondary-100 hover:bg-primary-200"}`}
             onClick={() => onUpdateEvent()}
           >
-            {status === "APPROVED" ? "Approve" : "Reject"}
+            {status === "APPROVED"
+              ? "Approve"
+              : status === "REJECTED"
+                ? "Reject"
+                : status === "CANCELLED"
+                  ? "Confirm"
+                  : null}
           </Button>
         </DialogClose>
       </DialogFooter>
