@@ -205,7 +205,7 @@ function AdminOverviewContent() {
                         </div>
                       </div>
                       <div className="mt-3 text-xs">
-                        <p className="font-medium">Booked by:</p>
+                        <p className="font-medium">Organized by:</p>
                         <div className="flex items-center gap-1">
                           <div className="flex aspect-square h-7 items-center justify-center rounded-full bg-secondary-200">
                             <Profile
@@ -213,7 +213,10 @@ function AdminOverviewContent() {
                               className="text-secondary-700"
                             />
                           </div>
-                          <p className="font-semibold">Amiel Ian Mendoza</p>
+                          <p className="font-semibold">
+                            {event.organizer ||
+                              `${event.user.firstName} ${event.user.firstName}  `}
+                          </p>
                         </div>
                       </div>
                     </CardContent>
