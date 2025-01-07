@@ -360,7 +360,7 @@ function AdminEventListContent() {
                       </p>
                     </TableCell>
                     <TableCell>
-                      <span     
+                      <span
                         className={`} inline-block rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadgeClass(event.status)} w-full max-w-28 text-center`}
                       >
                         {event.status}
@@ -369,24 +369,6 @@ function AdminEventListContent() {
                     <TableCell className="w-52">
                       {event.status === "PENDING" && (
                         <div className="flex gap-1">
-                          <Dialog>
-                            <DialogTrigger>
-                              <Button className="w-full rounded-lg bg-primary-100 text-secondary-100 hover:bg-primary-200">
-                                <Check size={20} />
-                                <p>Approve</p>
-                              </Button>
-                            </DialogTrigger>
-                            <EventDialogApproval
-                              status="APPROVED"
-                              event={event}
-                              onUpdateEvent={async () =>
-                                await handleUpdateEvent(event.id, {
-                                  ...event,
-                                  status: "APPROVED",
-                                })
-                              }
-                            />
-                          </Dialog>
                           <Dialog>
                             <DialogTrigger>
                               <Button className="w-full rounded-lg border border-red-500 bg-transparent text-red-500 hover:bg-red-200 hover:text-red-500">
@@ -405,12 +387,30 @@ function AdminEventListContent() {
                               }
                             />
                           </Dialog>
+                          <Dialog>
+                            <DialogTrigger>
+                              <Button className="w-full rounded-lg bg-primary-100 text-secondary-100 hover:bg-primary-200">
+                                <Check size={20} />
+                                <p>Approve</p>
+                              </Button>
+                            </DialogTrigger>
+                            <EventDialogApproval
+                              status="APPROVED"
+                              event={event}
+                              onUpdateEvent={async () =>
+                                await handleUpdateEvent(event.id, {
+                                  ...event,
+                                  status: "APPROVED",
+                                })
+                              }
+                            />
+                          </Dialog>
                         </div>
                       )}
                       {event.status === "APPROVED" && (
                         <Dialog>
                           <DialogTrigger className="w-full">
-                            <Button className="w-full rounded-lg border border-secondary-700 bg-transparent text-secondary-800 hover:bg-secondary-800/10">
+                            <Button className="w-full rounded-lg border border-secondary-700 bg-secondary-300 text-secondary-800 hover:bg-secondary-800/10">
                               <p>Cancel</p>
                             </Button>
                           </DialogTrigger>
