@@ -1,3 +1,5 @@
+import { Event } from "./event";
+
 export interface Catering {
   id: string;
   expectedPax: number;
@@ -9,6 +11,7 @@ export interface Catering {
   mainDishes: MainDish[];
   snackCorner: SnackCorner[];
   addOns: AddOn[];
+  event: Event;
 }
 
 export interface CateringRequestData {

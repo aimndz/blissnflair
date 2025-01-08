@@ -8,6 +8,7 @@ export interface Account {
   password?: string;
   confirmPassword?: string;
   imageUrl?: string;
+  createdAt: Date;
 }
 
 export interface AccountCreate {
