@@ -97,49 +97,51 @@ function AdminEventListContent() {
       return matchesFilter && matchesVenue && matchesSearch;
     })
     .map((event) => {
-      // Format startTime and endTime
-      // const startTimeFormatted = format(parseISO(event.startTime), "hh:mm a");
-      // const endTimeFormatted = format(parseISO(event.endTime), "hh:mm a");
-
       return {
         ...event,
-        // date: format(parseISO(event.date), "MMM dd yyyy"),
-        // startTime: startTimeFormatted,
-        // endTime: endTimeFormatted,
       };
     })
     .sort((a, b) => {
-      // Prioritize "approved   " status if filter is "all"
       if (filter === "all") {
         if (
           a.status.toUpperCase() === "CANCELLED" &&
           b.status.toUpperCase() !== "CANCELLED"
         ) {
-          return -1; // a should come before b
+          return -1;
         }
       }
       return 0;
     })
     .sort((a, b) => {
-      // Prioritize "approved   " status if filter is "all"
+      if (filter === "all") {
+        if (
+          a.status.toUpperCase() === "COMPLETED" &&
+          b.status.toUpperCase() !== "COMPLETED"
+        ) {
+          return -1;
+        }
+      }
+      return 0;
+    })
+    .sort((a, b) => {
       if (filter === "all") {
         if (
           a.status.toUpperCase() === "APPROVED" &&
           b.status.toUpperCase() !== "APPROVED"
         ) {
-          return -1; // a should come before b
+          return -1;
         }
       }
       return 0;
     })
+
     .sort((a, b) => {
-      // Prioritize "pending" status if filter is "all"
       if (filter === "all") {
         if (
           a.status.toUpperCase() === "PENDING" &&
           b.status.toUpperCase() !== "PENDING"
         ) {
-          return -1; // a should come before b
+          return -1;
         }
       }
       return 0;
@@ -371,7 +373,7 @@ function AdminEventListContent() {
                         <div className="flex gap-1">
                           <Dialog>
                             <DialogTrigger>
-                              <Button className="w-full rounded-lg border border-red-500 bg-transparent text-red-500 hover:bg-red-200 hover:text-red-500">
+                              <Button className="w-full rounded-lg border border-red-500 bg-red-100 text-red-500 hover:bg-red-200 hover:text-red-500">
                                 <X size={20} />
                                 <p>Reject</p>
                               </Button>
@@ -408,23 +410,42 @@ function AdminEventListContent() {
                         </div>
                       )}
                       {event.status === "APPROVED" && (
-                        <Dialog>
-                          <DialogTrigger className="w-full">
-                            <Button className="w-full rounded-lg border border-secondary-700 bg-secondary-300 text-secondary-800 hover:bg-secondary-800/10">
-                              <p>Cancel</p>
-                            </Button>
-                          </DialogTrigger>
-                          <EventDialogApproval
-                            status="CANCELLED"
-                            event={event}
-                            onUpdateEvent={async () =>
-                              await handleUpdateEvent(event.id, {
-                                ...event,
-                                status: "CANCELLED",
-                              })
-                            }
-                          />
-                        </Dialog>
+                        <div className="flex gap-1">
+                          <Dialog>
+                            <DialogTrigger className="w-full">
+                              <Button className="w-full rounded-lg border border-secondary-700 bg-secondary-200 text-secondary-800 hover:bg-secondary-800/20">
+                                <p>Cancel</p>
+                              </Button>
+                            </DialogTrigger>
+                            <EventDialogApproval
+                              status="CANCELLED"
+                              event={event}
+                              onUpdateEvent={async () =>
+                                await handleUpdateEvent(event.id, {
+                                  ...event,
+                                  status: "CANCELLED",
+                                })
+                              }
+                            />
+                          </Dialog>
+                          <Dialog>
+                            <DialogTrigger className="w-full">
+                              <Button className="w-full rounded-lg border border-secondary-700 bg-blue-200 text-secondary-800 hover:bg-blue-800/30">
+                                <p>Complete</p>
+                              </Button>
+                            </DialogTrigger>
+                            <EventDialogApproval
+                              status="COMPLETED"
+                              event={event}
+                              onUpdateEvent={async () =>
+                                await handleUpdateEvent(event.id, {
+                                  ...event,
+                                  status: "COMPLETED",
+                                })
+                              }
+                            />
+                          </Dialog>
+                        </div>
                       )}
                     </TableCell>
                     <TableCell>

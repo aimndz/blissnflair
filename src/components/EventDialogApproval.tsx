@@ -24,9 +24,9 @@ function EventDialogApproval({
     <DialogContent className="max-w-sm">
       <DialogHeader>
         <DialogTitle
-          className={`flex items-center gap-1 ${status === "APPROVED" ? "" : "text-red-800"} `}
+          className={`flex items-center gap-1 ${status === "REJECTED" ? "text-red-800" : ""} `}
         >
-          {status === "APPROVED" ? (
+          {status! !== "REJECTED" ? (
             <Info className="h-5 w-5 text-red-800" />
           ) : (
             <ExclamationTriangleIcon className="h-5 w-5 text-red-800" />
@@ -37,7 +37,9 @@ function EventDialogApproval({
               ? "Approving"
               : status === "REJECTED"
                 ? "Rejecting"
-                : "Cancelling"}{" "}
+                : status === "COMPLETED"
+                  ? "Completing"
+                  : "Cancelling"}{" "}
             an Event
           </p>
         </DialogTitle>
@@ -48,7 +50,9 @@ function EventDialogApproval({
           ? "approve"
           : status === "REJECTED"
             ? "reject"
-            : "cancel"}{" "}
+            : status === "COMPLETED"
+              ? "complete"
+              : "cancel"}{" "}
         <span className="font-bold">{event.title}</span>? This action cannot be
         undone.
       </DialogDescription>
@@ -60,16 +64,16 @@ function EventDialogApproval({
         </DialogClose>
         <DialogClose>
           <Button
-            className={`${status === "APPROVED" ? "bg-primary-100 hover:bg-primary-200" : status === "REJECTED" ? "bg-red-500 text-secondary-100 hover:bg-red-600" : "bg-primary-100 text-secondary-100 hover:bg-primary-200"}`}
+            className={`${status === "APPROVED" ? "bg-primary-100 hover:bg-primary-200" : status === "REJECTED" ? "bg-red-500 text-secondary-100 hover:bg-red-600" : status === "COMPLETED" ? "border border-secondary-700 bg-blue-200 text-secondary-800 hover:bg-blue-800/30" : "border border-secondary-700 bg-secondary-600/50 text-secondary-800 hover:bg-secondary-800/20"}`}
             onClick={() => onUpdateEvent()}
           >
             {status === "APPROVED"
               ? "Approve"
               : status === "REJECTED"
                 ? "Reject"
-                : status === "CANCELLED"
-                  ? "Confirm"
-                  : null}
+                : status === "COMPLETED"
+                  ? "Complete"
+                  : "Confirm"}
           </Button>
         </DialogClose>
       </DialogFooter>
