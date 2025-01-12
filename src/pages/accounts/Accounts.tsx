@@ -39,6 +39,7 @@ import {
   AvatarImage,
 } from "../../components/ui/avatar";
 import AccountHeader from "./AccountHeader";
+import { Separator } from "../../components/ui/separator";
 
 function Accounts() {
   const user = useUser();
@@ -123,7 +124,8 @@ function Accounts() {
   return (
     <div className="mx-auto">
       <AccountHeader accounts={users} />
-      <div className="mb-3 flex items-end justify-between">
+      <Separator className="my-6" />
+      <div className="mb-6 flex items-end justify-between">
         <Button
           className="bg-primary-100 text-secondary-900 hover:bg-primary-200"
           onClick={handleCreateClick}

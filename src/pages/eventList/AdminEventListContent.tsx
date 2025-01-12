@@ -32,6 +32,7 @@ import { getRandomDegree } from "../../utils/randomGradient";
 import { toast } from "sonner";
 import EventsListHeader from "./EventsListHeader";
 import PaginationBar from "../../components/PaginationBar";
+import { Separator } from "../../components/ui/separator";
 
 interface User {
   id: string;
@@ -266,7 +267,8 @@ function AdminEventListContent() {
   return (
     <div className="mx-auto">
       <EventsListHeader events={events} />
-      <div className="mb-3 flex items-end justify-between">
+      <Separator className="my-6" />
+      <div className="mb-6 flex items-end justify-between">
         <div className="flex gap-3">
           <Combobox
             items={eventStatus}
