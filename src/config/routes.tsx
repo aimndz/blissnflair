@@ -23,6 +23,10 @@ import Event from "../pages/eventDetails/Event";
 import Catering from "../pages/create/catering/Catering";
 import { CateringProvider } from "../contexts/CateringContext";
 import Analytics from "../pages/analytics/Analytics";
+import CalendarFunctionHall from "../pages/calendar/CalendarFunctionHall";
+import CalendarLoungeHall from "../pages/calendar/CalendarLoungeHall";
+import CalendarAlFresco from "../pages/calendar/CalendarAlFresco";
+import CalendarPrivateRoom from "../pages/calendar/CalendarPrivateRoom";
 
 const userRoutes = [
   {
@@ -64,10 +68,30 @@ const userRoutes = [
     title: "Event Details",
     element: <Event />,
   },
+  // {
+  //   path: "calendar",
+  //   title: "Calendar",
+  //   element: <Calendar />,
+  // },
   {
-    path: "calendar",
-    title: "Calendar",
-    element: <Calendar />,
+    path: "calendar/function-hall",
+    title: "Function Hall Calendar",
+    element: <CalendarFunctionHall />,
+  },
+  {
+    path: "calendar/lounge-hall",
+    title: "Lounge Hall Calendar",
+    element: <CalendarLoungeHall />,
+  },
+  {
+    path: "calendar/al-fresco",
+    title: "Al Fresco Calendar",
+    element: <CalendarAlFresco />,
+  },
+  {
+    path: "calendar/private-room",
+    title: "Private Room Calendar",
+    element: <CalendarPrivateRoom />,
   },
   {
     path: "profile",

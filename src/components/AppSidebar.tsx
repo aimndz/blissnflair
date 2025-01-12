@@ -10,6 +10,8 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
   SidebarTrigger,
 } from "./ui/sidebar";
 
@@ -20,8 +22,37 @@ import {
   ChartLine,
   CircleUserRound,
   Settings,
+  ChevronDown,
 } from "lucide-react";
 import { useUser } from "../hooks/use-user";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "./ui/collapsible";
+
+const calendarItems = [
+  {
+    title: "Lounge Hall",
+    url: "calendar/lounge-hall",
+    icon: Calendar,
+  },
+  {
+    title: "Private Room",
+    url: "calendar/private-room",
+    icon: Calendar,
+  },
+  {
+    title: "Function Hall",
+    url: "calendar/function-hall",
+    icon: Calendar,
+  },
+  {
+    title: "Al Fresco",
+    url: "calendar/al-fresco",
+    icon: Calendar,
+  },
+];
 
 // Menu items.
 const items = [
@@ -31,15 +62,15 @@ const items = [
     icon: ChartLine,
   },
   {
-    title: "My Events",
+    title: "Events",
     url: "events",
     icon: PartyPopper,
   },
-  {
-    title: "Calendar View",
-    url: "calendar",
-    icon: Calendar,
-  },
+  // {
+  //   title: "Calendar View",
+  //   url: "calendar",
+  //   icon: Calendar,
+  // },
 ];
 
 const adminItems = [
@@ -135,6 +166,44 @@ export function AppSidebar() {
                   </NavLink>
                 </SidebarMenuItem>
               ))}
+              <Collapsible defaultOpen className="group/collapsible">
+                <SidebarMenuItem>
+                  <CollapsibleTrigger className="w-full text-secondary-800">
+                    <SidebarMenuButton>
+                      <Calendar />
+                      Calendars
+                      <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
+                    </SidebarMenuButton>
+                  </CollapsibleTrigger>
+                  <CollapsibleContent>
+                    <SidebarMenuSub>
+                      {calendarItems.map((item) => (
+                        <SidebarMenuSubItem
+                          key={item.title}
+                          className="group/collapsible"
+                        >
+                          <NavLink to={item.url}>
+                            {({ isActive }) => (
+                              <div
+                                className={`flex items-center rounded-lg px-4 py-2 ${
+                                  isActive
+                                    ? "bg-primary-100 text-secondary-900 hover:bg-primary-100 active:bg-primary-100"
+                                    : "text-secondary-800 hover:bg-transparent active:bg-transparent"
+                                }`}
+                              >
+                                <div className="flex items-center gap-3 text-sm">
+                                  {/* <item.icon size={"15px"} /> */}
+                                  <span>{item.title}</span>
+                                </div>
+                              </div>
+                            )}
+                          </NavLink>
+                        </SidebarMenuSubItem>
+                      ))}
+                    </SidebarMenuSub>
+                  </CollapsibleContent>
+                </SidebarMenuItem>
+              </Collapsible>
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
