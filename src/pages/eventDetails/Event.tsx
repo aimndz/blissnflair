@@ -6,6 +6,7 @@ import {
   Box,
   Calendar,
   Check,
+  CheckIcon,
   Copy,
   Edit,
   Image,
@@ -14,6 +15,7 @@ import {
   User2,
   Utensils,
   X,
+  XIcon,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
 import { Event as EventProps } from "../../types/event";
@@ -135,19 +137,34 @@ function Event() {
         <ArrowLeft />
         <span>Back</span>
       </Button>
-      {event?.status === "APPROVED" ? (
-        event?.startTime && (
-          <Countdown
-            eventStartTime={event.startTime}
-            eventEndTime={event.endTime}
-          />
-        )
-      ) : (
-        <div className="mb-3 flex items-center gap-3 text-xl font-bold text-orange-500">
+      {event?.status === "APPROVED"
+        ? event?.startTime && (
+            <Countdown
+              eventStartTime={event.startTime}
+              eventEndTime={event.endTime}
+            />
+          )
+        : null}
+
+      {event?.status === "PENDING" && (
+        <div className="mb-3 flex items-center gap-3 rounded-lg bg-orange-200 p-3 text-xl font-bold text-orange-500">
           <TriangleAlert size={20} />{" "}
           <span>Event is currently under review</span>
         </div>
       )}
+
+      {event?.status === "COMPLETED" && (
+        <div className="mb-3 flex items-center gap-3 rounded-lg bg-blue-200 p-3 text-xl font-bold text-blue-500">
+          <CheckIcon size={20} /> <span>Event Successfully Completed</span>
+        </div>
+      )}
+
+      {event?.status === "REJECTED" && (
+        <div className="mb-3 flex items-center gap-3 rounded-lg bg-red-200 p-3 text-xl font-bold text-red-500">
+          <XIcon size={20} /> <span>Event has been rejected</span>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         <div>
           <div className="col-span-1 flex aspect-square flex-col items-center justify-center rounded-lg border border-solid border-secondary-600 bg-secondary-300">
