@@ -14,6 +14,7 @@ export const newevents = [
     createdAt: "2024-11-01T16:46:24.561Z",
     modifiedAt: "2024-11-10T14:17:03.733Z",
     userId: "ef2dea3f-3061-4650-8288-e14e5cb39ea9",
+    venue: "function hall",
   },
   {
     id: "5a6939e4-951f-41ab-a8f9-3ede54c15b35",
@@ -33,6 +34,7 @@ export const newevents = [
     createdAt: "2024-11-18T07:01:48.614Z",
     modifiedAt: "2024-11-18T07:03:00.268Z",
     userId: "ef2dea3f-3061-4650-8288-e14e5cb39ea9",
+    venue: "function hall",
   },
   {
     id: "79236fcd-a28c-43c1-9934-7e298ea8b60a",
@@ -52,5 +54,6 @@ export const newevents = [
     createdAt: "2024-11-19T07:19:07.180Z",
     modifiedAt: "2024-11-22T04:03:32.338Z",
     userId: "ef2dea3f-3061-4650-8288-e14e5cb39ea9",
+    venue: "function hall",
   },
 ];

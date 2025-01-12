@@ -1,6 +1,6 @@
 "use client";
 
-import { AddCircle, CalendarAdd } from "iconsax-react";
+import { Add, AddCircle, CalendarAdd } from "iconsax-react";
 import EventForm from "./eventform";
 import {
   Credenza,
@@ -31,7 +31,7 @@ function AddEvent({
   buttonText = "Add Event",
   formTitle = "Add Event",
   formDescription = "Create a new event in your calendar.",
-  icon = <AddCircle size={16} color="black" />, // Default icon
+  icon = <Add size={16} color="black" />, // Default icon
   CustomForm, // Accept custom form component
 }: ButtonProps) {
   const routePrefix = useRoutePrefix();
@@ -48,7 +48,7 @@ function AddEvent({
       <CredenzaTrigger asChild>
         {variant === "default" ? (
           <Button variant="default" className="flex items-center gap-2">
-            <AddCircle size={16} color="white" />
+            <Add size={16} color="white" />
             <span className="hidden lg:block">{buttonText}</span>
           </Button>
         ) : variant === "secondary" ? (

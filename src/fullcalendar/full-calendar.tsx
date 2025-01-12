@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import CalendarHeader from "./calendar-components/calendar-header";
 import Views from "./calendar-components/views";

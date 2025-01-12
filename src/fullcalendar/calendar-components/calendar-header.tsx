@@ -1,15 +1,14 @@
-// components/calendar-components/CalendarHeader.tsx
-
 import { TabTypes } from "@fullcalendar/types/tabs";
 import { Dispatch, SetStateAction } from "react";
-import AddEvent from "./add-event";
+
 import { MonthHeader } from "./monthheader";
 import { Tabs } from "./tabs";
 import { YearHeader } from "./yearheader";
 import { CalendarProps } from "@fullcalendar/types/event";
 import { Button } from "@fullcalendar/ui/button";
-import { Link } from "react-router-dom";
-import { AddCircle } from "iconsax-react";
+import { useNavigate } from "react-router-dom";
+import { Add } from "iconsax-react";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 export interface CalendarHeaderProps {
   currentDate: Date;
@@ -26,6 +25,13 @@ export interface CalendarHeaderProps {
 }
 
 const CalendarHeader = (props: CalendarHeaderProps) => {
+  const routePrefix = useRoutePrefix();
+  const navigate = useNavigate();
+
+  const handleCreateEvent = () => {
+    navigate(`/${routePrefix}/create/event-info`);
+  };
+
   return (
     <header>
       {props.activeTab === "month" ? (
@@ -40,12 +46,12 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
             handleYearChange={props.handleYearChange}
           />
           <div className="flex items-center justify-between gap-4">
-            <Link to="/dashboard/create/select-venue">
-              {" "}
-              <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
-                <AddCircle className="mr-1" /> Add Event
-              </Button>{" "}
-            </Link>
+            <Button
+              className="bg-primary-100 text-secondary-900 hover:bg-primary-200"
+              onClick={handleCreateEvent}
+            >
+              <Add className="mr-1" /> Add Event
+            </Button>
             {/* <AddEvent
                             CustomForm={props.config?.addEventConfig?.customForm}
                             buttonText={props.config?.addEventConfig?.buttonText}
@@ -71,12 +77,12 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
             handleYearChange={props.handleYearChange}
           />
           <div className="flex items-center justify-center gap-4">
-            <Link to="/dashboard/create/select-venue">
-              {" "}
-              <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
-                <AddCircle className="mr-1" /> Add Event
-              </Button>{" "}
-            </Link>
+            <Button
+              className="bg-primary-100 text-secondary-900 hover:bg-primary-200"
+              onClick={handleCreateEvent}
+            >
+              <Add className="mr-1" /> Add Event
+            </Button>
             {/* <AddEvent
               CustomForm={props.config?.addEventConfig?.customForm}
               buttonText={props.config?.addEventConfig?.buttonText}

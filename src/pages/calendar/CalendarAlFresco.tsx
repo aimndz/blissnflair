@@ -1,5 +1,11 @@
+import Calendar from "./Calendar";
+
 function CalendarAlFresco() {
-  return <div>Al Fresco Calendar</div>;
+  return (
+    <div>
+      <Calendar venue={"al fresco"} />
+    </div>
+  );
 }
 
 export default CalendarAlFresco;

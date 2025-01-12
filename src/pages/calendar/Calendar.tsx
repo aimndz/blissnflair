@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { newevents } from "./event";
-import FullCalendar from "@fullcalendar/full-calendar";
+import FullCalendar from "../../fullcalendar/full-calendar";
 import { getAllEvents } from "../../services/eventApi";
 import { useSearchParams } from "react-router-dom";
 import Combobox from "../../components/ui/combobox";
 import Loading from "../../components/LoadingSpinner";
+import { Event } from "../../types/event";
 
 const eventStatus = [
   {
@@ -29,14 +29,16 @@ const eventStatus = [
   },
 ];
 
-function Calendar() {
+function Calendar({ venue }: { venue: string }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState(newevents);
+  const [events, setEvents] = useState<Event[]>([]);
 
   const filter = searchParams.get("filter") || "approved";
 
-  const filteredEvents = events.filter((event) => {
+  const eventsByVenue = events.filter((event) => event.venue === venue);
+
+  const filteredEvents = eventsByVenue.filter((event) => {
     switch (filter) {
       case "pending":
         return event.status === "PENDING";

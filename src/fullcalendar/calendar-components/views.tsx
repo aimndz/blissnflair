@@ -5,6 +5,7 @@ import { MonthView } from "./monthview";
 import YearView from "./yearview";
 import { TabTypes } from "@fullcalendar/types/tabs";
 import { CalendarProps } from "@fullcalendar/types/event";
+import { Event } from "../../types/event";
 
 export interface ViewsProps extends CalendarProps {
   activeTab: TabTypes;
