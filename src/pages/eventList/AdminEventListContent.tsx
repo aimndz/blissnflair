@@ -30,6 +30,8 @@ import { Avatar, AvatarImage } from "../../components/ui/avatar";
 import EventEditDialog from "./EventEditDialog";
 import { getRandomDegree } from "../../utils/randomGradient";
 import { toast } from "sonner";
+import EventsListHeader from "./EventsListHeader";
+import PaginationBar from "../../components/PaginationBar";
 
 interface User {
   id: string;
@@ -62,6 +64,11 @@ function AdminEventListContent() {
   const [searchQuery, setSearchQuery] = useState("");
   const [editEventData, setEditEventData] = useState<Event | null>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+
+  // Pagination state
+  const currentPageParam = Number(searchParams.get("page")) || 1;
+  const [currentPage, setCurrentPage] = useState<number>(currentPageParam);
+  const itemsPerPage = 15; // Number of items per page
 
   const handleEditClick = (event: Event) => {
     setEditEventData(event);
@@ -134,7 +141,6 @@ function AdminEventListContent() {
       }
       return 0;
     })
-
     .sort((a, b) => {
       if (filter === "all") {
         if (
@@ -146,6 +152,14 @@ function AdminEventListContent() {
       }
       return 0;
     });
+
+  // Calculate paginated events
+  const indexOfLastEvent = currentPage * itemsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
+  const currentEvents = filteredEvents.slice(
+    indexOfFirstEvent,
+    indexOfLastEvent,
+  );
 
   const getStatusBadgeClass = (status: string) => {
     switch (status.toUpperCase()) {
@@ -173,6 +187,7 @@ function AdminEventListContent() {
         ]);
         setEvents(eventRes.data);
         setUsers(userRes.data);
+        setLoading(false);
       } catch (error) {
         console.error(error);
       }
@@ -181,6 +196,10 @@ function AdminEventListContent() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filter, venue, searchQuery]);
+
   const handleViewClick = (id: string) => {
     navigate(`/admin/dashboard/events/${id}`);
   };
@@ -188,9 +207,11 @@ function AdminEventListContent() {
   const handleFilterChange = (key: string, value: string) => {
     setSearchParams((prev) => {
       const params = new URLSearchParams(prev);
+      params.delete("page");
       params.set(key, value);
       return params;
     });
+    setCurrentPage(1);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -239,11 +260,12 @@ function AdminEventListContent() {
   };
 
   if (loading) {
-    <Loading />;
+    return <Loading />;
   }
 
   return (
     <div className="mx-auto">
+      <EventsListHeader events={events} />
       <div className="mb-3 flex items-end justify-between">
         <div className="flex gap-3">
           <Combobox
@@ -272,8 +294,7 @@ function AdminEventListContent() {
           <MagnifyingGlassIcon className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500" />
         </div>
       </div>
-
-      {filteredEvents.length > 0 ? (
+      {currentEvents.length > 0 ? (
         <div className="overflow-hidden rounded-lg border border-secondary-600">
           <Table>
             <TableHeader className="bg-secondary-300 font-semibold">
@@ -291,12 +312,11 @@ function AdminEventListContent() {
               </TableRow>
             </TableHeader>
             <TableBody className="bg-secondary-100">
-              {filteredEvents.map((event) => {
+              {currentEvents.map((event) => {
                 const randomDeg = getRandomDegree();
                 return (
                   <TableRow key={event.id}>
                     <Link to={`/admin/dashboard/events/${event.id}`}>
-                      {" "}
                       <TableCell className="cursor-pointer transition-all duration-200 ease-in-out hover:underline">
                         <div className="flex items-center gap-2">
                           <div className="h-10 w-10 overflow-hidden rounded-lg object-cover">
@@ -343,13 +363,12 @@ function AdminEventListContent() {
                       </div>
                     </TableCell>
                     <TableCell>
-                      {/* Capitalize first letter of each word */}
                       {event.venue.replace(/\b\w/g, (char) =>
                         char.toUpperCase(),
                       )}{" "}
                     </TableCell>
                     <TableCell>
-                      <p>{format(parseISO(event.date), "MMM dd yyyy")}</p>
+                      <p>{format(parseISO(event.date), "MMM dd yyyy ")}</p>
                       <p className="text-secondary-800">
                         {format(parseISO(event.startTime), "hh:mm a")} -{" "}
                         {format(parseISO(event.endTime), "hh:mm a")}
@@ -363,7 +382,7 @@ function AdminEventListContent() {
                     </TableCell>
                     <TableCell>
                       <span
-                        className={`} inline-block rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadgeClass(event.status)} w-full max-w-28 text-center`}
+                        className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${getStatusBadgeClass(event.status)} w-full max-w-28 text-center`}
                       >
                         {event.status}
                       </span>
@@ -467,13 +486,7 @@ function AdminEventListContent() {
                               <Edit className="mr-2 w-4" />
                               Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="text-red-600"
-                              // onClick={() =>
-                              //   user.id !== loggedInUserId &&
-                              //   handleDeleteClick(user.id)
-                              // }
-                            >
+                            <DropdownMenuItem className="text-red-600">
                               <Trash className="mr-2 w-4" />
                               Delete
                             </DropdownMenuItem>
@@ -498,7 +511,6 @@ function AdminEventListContent() {
           </div>
         </div>
       )}
-
       <EventEditDialog
         open={openEditDialog}
         onClose={() => setOpenEditDialog(false)}
@@ -506,6 +518,15 @@ function AdminEventListContent() {
         onUpdate={(updatedEvent: Event) =>
           handleUpdateEvent(updatedEvent.id, updatedEvent)
         }
+      />
+
+      {/* Pagination */}
+      <PaginationBar
+        itemsPerPage={itemsPerPage}
+        filteredEvents={filteredEvents}
+        currentPage={currentPage}
+        handleSetCurrentPage={setCurrentPage}
+        handleSetSearchParams={setSearchParams}
       />
     </div>
   );
