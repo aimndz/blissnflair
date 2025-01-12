@@ -161,7 +161,13 @@ function Event() {
 
       {event?.status === "COMPLETED" && (
         <div className="mb-3 flex items-center gap-3 rounded-lg bg-blue-200 p-3 text-xl font-bold text-blue-500">
-          <CheckIcon size={20} /> <span>Event Successfully Completed</span>
+          <CheckIcon size={20} /> <span>Event successfully completed</span>
+        </div>
+      )}
+
+      {event?.status === "CANCELLED" && (
+        <div className="mb-3 flex items-center gap-3 rounded-lg bg-secondary-600/50 p-3 text-xl font-bold text-secondary-800">
+          <CheckIcon size={20} /> <span>Event has been cancelled</span>
         </div>
       )}
 
@@ -226,6 +232,75 @@ function Event() {
                   }}
                 />
               </Dialog>
+            </div>
+          ) : null}
+          {event?.status === "APPROVED" ? (
+            <div className="mt-3 flex justify-center gap-3">
+              {event?.status === "APPROVED" && (
+                <div className="flex justify-center gap-3">
+                  {
+                    // Check if the user is an admin or if the event is at least 3 days away from today
+                    user?.role === "ADMIN" ||
+                    (event?.date &&
+                      new Date(event.date) >
+                        new Date(
+                          new Date().setDate(new Date().getDate() + 3),
+                        )) ? (
+                      <Dialog>
+                        <DialogTrigger>
+                          <Button className="w-full rounded-lg border border-secondary-700 bg-secondary-600/50 text-secondary-800 hover:bg-secondary-800/20">
+                            <p>Cancel Event</p>
+                          </Button>
+                        </DialogTrigger>
+                        <EventDialogApproval
+                          status="CANCELLED"
+                          event={event!}
+                          onUpdateEvent={async () => {
+                            if (event?.id) {
+                              await handleUpdateEvent(event.id, {
+                                ...event,
+                                status: "CANCELLED",
+                              });
+                            }
+                          }}
+                        />
+                      </Dialog>
+                    ) : (
+                      <div>
+                        <p className="font-bold text-red-500">
+                          You cannot cancel this event. It's too close.
+                        </p>
+                        <p className="text-sm">
+                          <strong>Note:</strong> Cancelling an event requires at
+                          least 3 days' notice.
+                        </p>
+                      </div>
+                    )
+                  }
+                </div>
+              )}
+
+              {user?.role === "ADMIN" && (
+                <Dialog>
+                  <DialogTrigger>
+                    <Button className="w-full rounded-lg border border-secondary-700 bg-blue-200 text-secondary-800 hover:bg-blue-800/30">
+                      <p>Complete</p>
+                    </Button>
+                  </DialogTrigger>
+                  <EventDialogApproval
+                    status="COMPLETED"
+                    event={event!}
+                    onUpdateEvent={async () => {
+                      if (event?.id) {
+                        await handleUpdateEvent(event.id, {
+                          ...event,
+                          status: "COMPLETED",
+                        });
+                      }
+                    }}
+                  />
+                </Dialog>
+              )}
             </div>
           ) : null}
         </div>
