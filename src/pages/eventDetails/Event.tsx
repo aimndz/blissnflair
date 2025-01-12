@@ -128,6 +128,12 @@ function Event() {
     }
   };
 
+  const handleCopyLink = () => {
+    const url = `${window.location.origin}/events/${event?.id}`;
+    navigator.clipboard.writeText(url);
+    toast.success("Link copied to clipboard");
+  };
+
   return (
     <div className="mx-auto mb-10 max-w-6xl">
       <Button
@@ -238,7 +244,10 @@ function Event() {
                 <Edit className="text-secondary-800" size={15} />
                 <p className="text-xs font-semibold text-secondary-800">Edit</p>
               </Button>
-              <Button className="flex gap-1 rounded-lg bg-transparent p-3 shadow-none hover:bg-secondary-300">
+              <Button
+                className="flex gap-1 rounded-lg bg-transparent p-3 shadow-none hover:bg-secondary-300"
+                onClick={() => handleCopyLink()}
+              >
                 <Copy className="text-secondary-800" size={15} />
                 <p className="text-xs font-semibold text-secondary-800">
                   Copy link
