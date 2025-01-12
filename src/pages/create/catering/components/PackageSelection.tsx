@@ -73,6 +73,7 @@ function PackageSelection() {
           <ToggleGroup
             type="single"
             className="mx-auto grid w-full max-w-2xl grid-cols-2 gap-3"
+            disabled={expectedPax === 0}
             value={(() => {
               const matchingPackage = mainDishPackages.find(
                 (pkg) =>
@@ -117,6 +118,7 @@ function PackageSelection() {
           <ToggleGroup
             type="single"
             className="mx-auto grid w-full max-w-2xl grid-cols-2 gap-3"
+            disabled={expectedPax === 0}
             value={(() => {
               const matchingPackage = mainDishPackages.find(
                 (pkg) =>

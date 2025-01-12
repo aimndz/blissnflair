@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { useCatering } from "../../../hooks/use-catering";
 import { toast } from "sonner";
 import SummaryCard from "./components/SummaryCard";
+import SnackCornerSelection from "./components/SnackCornerSelection";
 
 function Catering() {
   const location = useLocation();
@@ -72,16 +73,69 @@ function Catering() {
     navigate(`/${routePrefix}/create/event-info`, { state: { event } });
   };
 
+  const validateCateringDetails = () => {
+    if (expectedPax === 0 || !expectedPax) {
+      toast.error("Expected Pax is required.");
+      return false;
+    }
+    if (!selectedPackage) {
+      toast.error("Please select a catering package.");
+      return false;
+    }
+
+    if (selectedDishes.length !== selectedPackage.numOfDishesCategory) {
+      const dishRemaining =
+        selectedPackage.numOfDishesCategory - selectedDishes.length;
+      toast.error(`Please select ${dishRemaining} more dish.`);
+
+      return false;
+    }
+
+    if (drinks.length === 0) {
+      toast.error("Please select drinks.");
+      return false;
+    }
+
+    if (desserts.length === 0) {
+      toast.error("Please select a dessert.");
+      return false;
+    }
+
+    if (pastas.length === 0) {
+      toast.error("Please select a pasta.");
+      return false;
+    }
+
+    if (sandwiches.length === 0) {
+      toast.error("Please select a sandwich.");
+      return false;
+    }
+
+    if (fruits.length === 0) {
+      toast.error("Please select a fruit.");
+      return false;
+    }
+
+    if (salad.length === 0) {
+      toast.error("Please select a salad.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handlePreviewButton = () => {
     if (event) {
-      if (isInternalCatering) {
-        navigate(`/${routePrefix}/create/preview`, {
-          state: { event, catering },
-        });
-      } else {
-        navigate(`/${routePrefix}/create/preview`, {
-          state: { event },
-        });
+      if (validateCateringDetails()) {
+        if (isInternalCatering) {
+          navigate(`/${routePrefix}/create/preview`, {
+            state: { event, catering },
+          });
+        } else {
+          navigate(`/${routePrefix}/create/preview`, {
+            state: { event },
+          });
+        }
       }
     } else {
       toast.error("Please fill out the event details first.");

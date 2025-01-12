@@ -122,7 +122,7 @@ function InHouseCatering() {
       </section>
       <SnackCornerSelection />
       <Card className="p-6">
-        <h2 className="text-xl font-bold">Add ons</h2>
+        <h2 className="text-xl font-bold">Add ons </h2>
         <FoodCartSelection groupedAddOns={groupedAddOns} />
         <Separator className="my-6" />
         <TechnicalSelection groupedAddOns={groupedAddOns} />
