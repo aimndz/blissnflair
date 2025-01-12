@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -14,7 +13,6 @@ import { Input } from "../../components/ui/input";
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Button } from "../../components/ui/button";
 import { CalendarX, Edit, Ellipsis, Plus, Trash } from "lucide-react";
-import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -40,6 +38,7 @@ import {
 } from "../../components/ui/avatar";
 import AccountHeader from "./AccountHeader";
 import { Separator } from "../../components/ui/separator";
+import PaginationBar from "../../components/PaginationBar";
 
 function Accounts() {
   const user = useUser();
@@ -53,6 +52,12 @@ function Accounts() {
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
   const [editUserData, setEditUserData] = useState<Account | null>(null);
+
+  // Pagination state
+  const [searchParams, setSearchParams] = useState(new URLSearchParams());
+  const currentPageParam = Number(searchParams.get("page")) || 1;
+  const [currentPage, setCurrentPage] = useState<number>(currentPageParam);
+  const itemsPerPage = 15; // Number of items per page
 
   const handleAddUser = (newUser: AccountProfile) => {
     setUsers((prevUsers) => [...prevUsers, newUser]);
@@ -121,6 +126,14 @@ function Accounts() {
     return <Loading />;
   }
 
+  // Calculate paginated events
+  const indexOfLastEvent = currentPage * itemsPerPage;
+  const indexOfFirstEvent = indexOfLastEvent - itemsPerPage;
+  const currentAccounts = filteredUsers.slice(
+    indexOfFirstEvent,
+    indexOfLastEvent,
+  );
+
   return (
     <div className="mx-auto">
       <AccountHeader accounts={users} />
@@ -144,9 +157,8 @@ function Accounts() {
         </div>
       </div>
 
-      {filteredUsers.length > 0 ? (
+      {currentAccounts.length > 0 ? (
         <Table className="rounded-lg border border-secondary-600 bg-secondary-100">
-          <TableCaption>A list of all the users.</TableCaption>
           <TableHeader className="bg-secondary-300 font-semibold">
             <TableRow>
               <TableHead>Id</TableHead>
@@ -159,7 +171,7 @@ function Accounts() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filteredUsers.map((user) => (
+            {currentAccounts.map((user) => (
               <TableRow key={user.id}>
                 <TableCell className="cursor-pointer transition-all delay-75 hover:underline">
                   {user.id}
@@ -284,6 +296,15 @@ function Accounts() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Pagination */}
+      <PaginationBar
+        itemsPerPage={itemsPerPage}
+        dataLength={filteredUsers.length}
+        currentPage={currentPage}
+        handleSetCurrentPage={setCurrentPage}
+        handleSetSearchParams={setSearchParams}
+      />
     </div>
   );
 }

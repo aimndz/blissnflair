@@ -525,7 +525,7 @@ function AdminEventListContent() {
       {/* Pagination */}
       <PaginationBar
         itemsPerPage={itemsPerPage}
-        filteredEvents={filteredEvents}
+        dataLength={filteredEvents.length}
         currentPage={currentPage}
         handleSetCurrentPage={setCurrentPage}
         handleSetSearchParams={setSearchParams}

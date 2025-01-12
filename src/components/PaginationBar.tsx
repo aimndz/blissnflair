@@ -1,4 +1,3 @@
-import { Event } from "../types/event";
 import {
   Pagination,
   PaginationContent,
@@ -11,13 +10,13 @@ import {
 
 function PaginationBar({
   itemsPerPage,
-  filteredEvents,
+  dataLength,
   currentPage,
   handleSetCurrentPage,
   handleSetSearchParams,
 }: {
   itemsPerPage: number;
-  filteredEvents: Event[];
+  dataLength: number;
   currentPage: number;
   handleSetCurrentPage: (pageNumber: number) => void;
   handleSetSearchParams: (
@@ -29,12 +28,13 @@ function PaginationBar({
     handleSetSearchParams((prev) => {
       const params = new URLSearchParams(prev);
       params.set("page", String(pageNumber));
+
       return params;
     });
   };
 
   // Calculate total pages
-  const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
+  const totalPages = Math.ceil(dataLength / itemsPerPage);
 
   return (
     <Pagination className="mb-10 mt-3">
@@ -49,7 +49,6 @@ function PaginationBar({
 
         {(() => {
           const pageNumbers = [];
-          const totalPages = Math.ceil(filteredEvents.length / itemsPerPage);
 
           // Determine the range of pages to display
           if (currentPage <= 3) {
