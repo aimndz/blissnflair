@@ -27,6 +27,7 @@ import CalendarFunctionHall from "../pages/calendar/CalendarFunctionHall";
 import CalendarLoungeHall from "../pages/calendar/CalendarLoungeHall";
 import CalendarAlFresco from "../pages/calendar/CalendarAlFresco";
 import CalendarPrivateRoom from "../pages/calendar/CalendarPrivateRoom";
+import EventGuest from "../pages/eventDetails/EventGuest";
 
 const userRoutes = [
   {
@@ -147,6 +148,10 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <SignUp />,
+      },
+      {
+        path: "/events/:id",
+        element: <EventGuest />,
       },
     ],
   },
