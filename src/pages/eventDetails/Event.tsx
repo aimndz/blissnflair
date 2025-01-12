@@ -165,26 +165,6 @@ function Event() {
             <div className="mt-3 flex justify-center gap-3">
               <Dialog>
                 <DialogTrigger>
-                  <Button className="w-full rounded-lg bg-primary-100 text-secondary-100 hover:bg-primary-200">
-                    <Check size={20} />
-                    <p>Approve</p>
-                  </Button>
-                </DialogTrigger>
-                <EventDialogApproval
-                  status="APPROVED"
-                  event={event!}
-                  onUpdateEvent={async () => {
-                    if (event?.id) {
-                      await handleUpdateEvent(event.id, {
-                        ...event,
-                        status: "APPROVED",
-                      });
-                    }
-                  }}
-                />
-              </Dialog>
-              <Dialog>
-                <DialogTrigger>
                   <Button className="w-full rounded-lg border border-red-500 bg-transparent text-red-500 hover:bg-red-200 hover:text-red-500">
                     <X size={20} />
                     <p>Reject</p>
@@ -198,6 +178,26 @@ function Event() {
                       await handleUpdateEvent(event.id, {
                         ...event,
                         status: "REJECTED",
+                      });
+                    }
+                  }}
+                />
+              </Dialog>
+              <Dialog>
+                <DialogTrigger>
+                  <Button className="w-full rounded-lg bg-primary-100 text-secondary-100 hover:bg-primary-200">
+                    <Check size={20} />
+                    <p>Approve</p>
+                  </Button>
+                </DialogTrigger>
+                <EventDialogApproval
+                  status="APPROVED"
+                  event={event!}
+                  onUpdateEvent={async () => {
+                    if (event?.id) {
+                      await handleUpdateEvent(event.id, {
+                        ...event,
+                        status: "APPROVED",
                       });
                     }
                   }}
