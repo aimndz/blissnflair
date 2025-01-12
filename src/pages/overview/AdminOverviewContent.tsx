@@ -1,4 +1,4 @@
-import { Calendar, CheckIcon, XIcon } from "lucide-react";
+import { Calendar } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Event } from "../../types/event";
 import { format, parseISO } from "date-fns";
-import { getAllEvents } from "../../services/eventApi";
+import { getAllEvents, updateEvent } from "../../services/eventApi";
 import { Profile } from "iconsax-react";
 import SummaryCard from "./SummaryCard";
 import { ScrollArea } from "../../components/ui/scroll-area";
@@ -27,6 +27,9 @@ import { getAllAccounts } from "../../services/accountApi";
 import { getPast7DaysAccountData, getPast7DaysData } from "./chartData";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 import Loading from "../../components/LoadingSpinner";
+import { Dialog, DialogTrigger } from "../../components/ui/dialog";
+import EventDialogApproval from "../../components/EventDialogApproval";
+import { toast } from "sonner";
 
 function AdminOverviewContent() {
   const routePrefix = useRoutePrefix();
@@ -94,7 +97,7 @@ function AdminOverviewContent() {
 
       return {
         ...event,
-        date: format(parseISO(event.date), "MMM dd yyyy"),
+
         daysLeft,
       };
     });
@@ -134,6 +137,47 @@ function AdminOverviewContent() {
   if (loading) {
     return <Loading />;
   }
+
+  const handleUpdateEvent = async (id: string, updatedEvent: Event) => {
+    try {
+      const formData = new FormData();
+
+      // Add all necessary fields to FormData
+      formData.append("title", updatedEvent.title);
+      formData.append("organizer", updatedEvent?.organizer || "");
+      formData.append("description", updatedEvent.description);
+      formData.append("category", updatedEvent.category);
+      formData.append("date", updatedEvent.date);
+      formData.append("startTime", updatedEvent.startTime);
+      formData.append("endTime", updatedEvent.endTime);
+      formData.append("venue", updatedEvent.venue);
+      formData.append("additionalNotes", updatedEvent.additionalNotes || "");
+      formData.append("additionalHours", String(updatedEvent.additionalHours));
+      formData.append("status", updatedEvent.status);
+
+      // Only append imageUrl if it exists
+      if (updatedEvent.imageUrl) {
+        formData.append("imageUrl", updatedEvent.imageUrl);
+      }
+
+      const res = await updateEvent(id, formData);
+
+      if (res.success) {
+        toast.success("Event updated successfully");
+        // Update the local events state
+        setEvents((prevEvents) =>
+          prevEvents.map((event) =>
+            event.id === id ? { ...event, ...updatedEvent } : event,
+          ),
+        );
+      }
+    } catch (error) {
+      console.error("Error updating event:", error);
+      alert("Failed to update event");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -268,7 +312,12 @@ function AdminOverviewContent() {
                                   <p className="text-xs">
                                     {event.daysLeft} days left
                                   </p>
-                                  <p className="font-semibold">{event.date}</p>
+                                  <p className="font-semibold">
+                                    {format(
+                                      parseISO(event.date),
+                                      "MMM dd yyyy",
+                                    )}{" "}
+                                  </p>
                                 </div>
                               </div>
                             </div>
@@ -287,13 +336,45 @@ function AdminOverviewContent() {
                                   </p>
                                 </div>
                               </div>
-                              <div className="flex gap-1">
-                                <div className="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-full bg-red-500 transition-all delay-75 hover:bg-red-600">
-                                  <XIcon size={"15px"} />
-                                </div>
-                                <div className="flex aspect-square h-7 cursor-pointer items-center justify-center rounded-full bg-primary-100 transition-all delay-75 hover:bg-primary-200">
-                                  <CheckIcon size={"15px"} />
-                                </div>
+                              <div className="mt-3 flex justify-center gap-1">
+                                <Dialog>
+                                  <DialogTrigger>
+                                    <Button className="w-full rounded-lg border border-red-500 bg-transparent text-xs text-red-500 hover:bg-red-200 hover:text-red-500">
+                                      <p>Reject</p>
+                                    </Button>
+                                  </DialogTrigger>
+                                  <EventDialogApproval
+                                    status="REJECTED"
+                                    event={event!}
+                                    onUpdateEvent={async () => {
+                                      if (event?.id) {
+                                        await handleUpdateEvent(event.id, {
+                                          ...event,
+                                          status: "REJECTED",
+                                        });
+                                      }
+                                    }}
+                                  />
+                                </Dialog>
+                                <Dialog>
+                                  <DialogTrigger>
+                                    <Button className="w-full rounded-lg bg-primary-100 text-xs text-secondary-100 hover:bg-primary-200">
+                                      <p>Approve</p>
+                                    </Button>
+                                  </DialogTrigger>
+                                  <EventDialogApproval
+                                    status="APPROVED"
+                                    event={event!}
+                                    onUpdateEvent={async () => {
+                                      if (event?.id) {
+                                        await handleUpdateEvent(event.id, {
+                                          ...event,
+                                          status: "APPROVED",
+                                        });
+                                      }
+                                    }}
+                                  />
+                                </Dialog>
                               </div>
                             </div>
                           </CardContent>
