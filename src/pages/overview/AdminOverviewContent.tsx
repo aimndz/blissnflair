@@ -259,7 +259,7 @@ function AdminOverviewContent() {
                           </div>
                           <p className="font-semibold">
                             {event.organizer ||
-                              `${event.user.firstName} ${event.user.firstName}  `}
+                              `${event.user.firstName} ${event.user.lastName}  `}
                           </p>
                         </div>
                       </div>
@@ -322,8 +322,8 @@ function AdminOverviewContent() {
                               </div>
                             </div>
                             <div className="mt-3 flex items-center justify-between text-xs">
-                              <div>
-                                <p className="font-medium">Booked by:</p>
+                              <div className="mt-3 text-xs">
+                                <p className="font-medium">Organized by:</p>
                                 <div className="flex items-center gap-1">
                                   <div className="flex aspect-square h-7 items-center justify-center rounded-full bg-secondary-200">
                                     <Profile
@@ -332,7 +332,8 @@ function AdminOverviewContent() {
                                     />
                                   </div>
                                   <p className="font-semibold">
-                                    Amiel Ian Mendoza
+                                    {event.organizer ||
+                                      `${event.user.firstName} ${event.user.lastName}  `}
                                   </p>
                                 </div>
                               </div>
