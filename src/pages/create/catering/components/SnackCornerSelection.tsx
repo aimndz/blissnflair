@@ -73,8 +73,11 @@ function SnackCornerSelection() {
         <div className="grid grid-cols-3 gap-3">
           {Object.entries(groupedSnacks).map(([category, snacks]) => (
             <Card key={category} className="shadow-lg">
-              <CardHeader>
+              <CardHeader className="flex">
                 <CardTitle>{category}</CardTitle>
+                <span className="text-xs">
+                  [ choose {category === "Fruit" ? "2" : "1"} ]
+                </span>
               </CardHeader>
               <CardContent>
                 <div>
