@@ -8,7 +8,7 @@ function MainLayout() {
           <Outlet />
         </main>
       </div>
-      <footer className="mb-3 text-center">
+      <footer className="mb-3 mt-auto text-center">
         © 2025 Bliss & Flair Commercial Building. All rights reserved.
       </footer>
     </div>
