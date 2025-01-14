@@ -167,7 +167,7 @@ export function AppSidebar() {
                   </NavLink>
                 </SidebarMenuItem>
               ))}
-              <Collapsible defaultOpen className="group/collapsible">
+              <Collapsible className="group/collapsible">
                 <SidebarMenuItem>
                   <CollapsibleTrigger className="w-full text-secondary-800">
                     <SidebarMenuButton>

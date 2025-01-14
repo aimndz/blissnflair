@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { cn } from "../../lib/utils";
 import { z } from "zod";
 import { TimeInput } from "@nextui-org/date-input";
@@ -185,9 +185,13 @@ function VenueInfo() {
   useEffect(() => {
     if (location.state && location.state.event) {
       const event = location.state.event;
+      const updatedStartTime = parseISO(event.startTime);
+      const localUpdatedStartTime = format(updatedStartTime, "HH:mm");
+
+      console.log(event);
       const updatedEndTime = calculateEndTime(
         event.date,
-        event.startTime,
+        localUpdatedStartTime,
         additionalHours,
       );
 
@@ -295,7 +299,10 @@ function VenueInfo() {
                       <Input
                         type="file"
                         placeholder="e.g., John's 25th Birthday"
-                        onChange={(e) => field.onChange(e.target.files?.[0])}
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          field.onChange(file); // Set the file in the form state
+                        }}
                         onBlur={field.onBlur}
                         name={field.name}
                         ref={field.ref}

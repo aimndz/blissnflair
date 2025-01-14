@@ -80,11 +80,12 @@ function Venue() {
             <ToggleGroupItem
               key={space.name}
               value={space.name}
-              className={`flex cursor-pointer flex-col rounded-lg border border-secondary-600 bg-secondary-100 px-5 py-20 text-center transition-all delay-75 hover:bg-secondary-300 ${
+              disabled={space.name === "Private Room"}
+              className={`} relative flex cursor-pointer flex-col rounded-lg border border-secondary-600 bg-secondary-100 px-5 py-20 text-center transition-all delay-75 hover:bg-secondary-300 ${
                 selectedSpace && selectedSpace.name === space.name
                   ? "bg-secondary-300"
                   : ""
-              }`}
+              } `}
             >
               <div
                 className={`transition-all delay-75 ${
@@ -93,6 +94,9 @@ function Venue() {
                     : "text-secondary-700"
                 }`}
               >
+                {space.name === "Private Room" && (
+                  <p className="text-2xl font-bold uppercase">Coming soon!</p>
+                )}
                 {space.icon}
               </div>
               <div
