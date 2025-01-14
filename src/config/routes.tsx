@@ -28,6 +28,9 @@ import CalendarLoungeHall from "../pages/calendar/CalendarLoungeHall";
 import CalendarAlFresco from "../pages/calendar/CalendarAlFresco";
 import CalendarPrivateRoom from "../pages/calendar/CalendarPrivateRoom";
 import EventGuest from "../pages/eventDetails/EventGuest";
+import ForgotPassword from "../pages/auth/ForgotPassword";
+import ChangePassword from "../pages/auth/ChangePassword";
+import VerifyCode from "../pages/auth/VerifyCode";
 
 const userRoutes = [
   {
@@ -148,6 +151,18 @@ const router = createBrowserRouter([
       {
         path: "/sign-up",
         element: <SignUp />,
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />,
+      },
+      {
+        path: "/verify-code",
+        element: <VerifyCode />,
+      },
+      {
+        path: "/change-password",
+        element: <ChangePassword />,
       },
       {
         path: "/events/:id",

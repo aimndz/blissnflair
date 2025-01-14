@@ -120,7 +120,10 @@ function Login() {
             />
             {error && <FormMessage>{error}</FormMessage>}
             <div className="text-right">
-              <Link to="" className="text-sm text-secondary-800 underline">
+              <Link
+                to="/forgot-password"
+                className="text-sm text-secondary-800 underline"
+              >
                 Forgot password?
               </Link>
             </div>

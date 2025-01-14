@@ -65,3 +65,54 @@ export async function logout() {
     credentials: "include",
   });
 }
+
+export async function forgotPassword(email: string) {
+  const res = await fetch(`${API_URL}/auth/forgot-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
+
+export async function verifyCode(verificationCode: string, email: string) {
+  const res = await fetch(`${API_URL}/auth/verify-code`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ verificationCode, email }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
+
+export async function resetPassword(email: string, password: string) {
+  const res = await fetch(`${API_URL}/auth/reset-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email, password }),
+  });
+
+  if (!res.ok) {
+    const error = await res.json();
+    return { success: false, errors: error.errors };
+  }
+
+  return { success: true, data: await res.json() };
+}
