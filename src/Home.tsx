@@ -4,7 +4,7 @@ import { Facebook } from "iconsax-react";
 
 function Home() {
   return (
-    <div className="flex h-screen flex-col items-center justify-center px-4">
+    <div className="flex h-[calc(100vh-2rem)] flex-col items-center justify-center px-4">
       {/* Content Wrapper */}
       <div className="mt-36 w-full text-center">
         {/* Logo */}
@@ -13,9 +13,13 @@ function Home() {
         </div>
 
         {/* Title */}
-        <h1 className="mb-4 text-5xl font-semibold text-gray-800">
-          Welcome to <span className="text-primary-200">Bliss and Flair</span>
-        </h1>
+        <div className="mb-4 text-5xl font-semibold text-gray-800">
+          <p>Welcome to </p>
+          <p className="text-primary-200">
+            Bliss and Flair Commercial Building
+          </p>
+          <p></p>
+        </div>
 
         {/* Subtitle */}
         <p className="mx-auto mb-8 max-w-lg text-sm text-gray-600">
@@ -87,12 +91,6 @@ function Home() {
           </p>
         </div>
       </div>
-      <footer className="mt-auto w-full p-3 text-center">
-        <p className="text-sm">
-          &copy; {new Date().getFullYear()} Bliss and Flair. All rights
-          reserved.
-        </p>
-      </footer>
     </div>
   );
 }

@@ -114,8 +114,9 @@ export function AppSidebar() {
             <div className="mx-auto flex w-10 justify-center">
               <Logo />
             </div>
-            <div className="mb-6 text-2xl font-bold">
-              <span>BLISS & FLAIR</span>
+            <div className="mb-6 text-2xl">
+              <p className="font-bold">BLISS & FLAIR</p>
+              <p className="text-xs uppercase leading-3">Commercial Building</p>
             </div>
           </Link>
         </div>
