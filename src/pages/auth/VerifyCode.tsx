@@ -18,6 +18,7 @@ import Logo from "../../components/icons/Logo";
 import { verifyCode } from "../../services/authApi";
 import { toast } from "sonner";
 import { mapValidationErrors } from "../../utils/mapValidationErrors";
+import CustomToast from "../../components/toasts/CustomToast";
 
 // Define form schema
 const formSchema = z.object({
@@ -46,7 +47,9 @@ function VerifyCode() {
         const fieldErrors = mapValidationErrors(res.errors);
         setErrors(fieldErrors);
       } else {
-        toast.success(res.data.message);
+        toast.custom(() => (
+          <CustomToast type="success" message={res.data.message} />
+        ));
         navigate("/change-password", { state: { email } });
       }
     } catch (error: unknown) {

@@ -36,6 +36,7 @@ import { useUser } from "../../hooks/use-user";
 import { toast } from "sonner";
 import { updateEvent } from "../../services/eventApi";
 import { mapValidationErrors } from "../../utils/mapValidationErrors";
+import CustomToast from "../../components/toasts/CustomToast";
 
 const venue = [
   {
@@ -282,7 +283,9 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
       if (res.success) {
         onUpdate(res.data.event);
         onClose();
-        toast.success("Event updated successfully.");
+        toast.custom(() => (
+          <CustomToast type="success" message="Event updated successfully" />
+        ));
       } else {
         const fieldErrors = mapValidationErrors(res.errors);
         setError(fieldErrors);
@@ -301,13 +304,23 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
 
       if (!allowedTypes.includes(file.type)) {
-        toast.error("Please select a valid image file.");
+        toast.custom(() => (
+          <CustomToast
+            type="error"
+            message={"Please select a valid image file"}
+          />
+        ));
         return;
       }
 
       //5 MB
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size must be less than 5 MB.");
+        toast.custom(() => (
+          <CustomToast
+            type="error"
+            message={"Image size must be less than 5 MB"}
+          />
+        ));
         return;
       }
 

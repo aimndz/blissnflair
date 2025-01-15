@@ -42,6 +42,7 @@ import { toast } from "sonner";
 import EventsListHeader from "./EventsListHeader";
 import PaginationBar from "../../components/PaginationBar";
 import { Separator } from "../../components/ui/separator";
+import CustomToast from "../../components/toasts/CustomToast";
 
 interface User {
   id: string;
@@ -253,7 +254,9 @@ function AdminEventListContent() {
       const res = await updateEvent(id, formData);
 
       if (res.success) {
-        toast.success("Event updated successfully");
+        toast.custom(() => (
+          <CustomToast type="success" message="Event updated successfully" />
+        ));
         // Update the local events state
         setEvents((prevEvents) =>
           prevEvents.map((event) =>

@@ -39,6 +39,7 @@ import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import EventDialogApproval from "../../components/EventDialogApproval";
 import { useUser } from "../../hooks/use-user";
 import EventEditDialog from "../eventList/EventEditDialog";
+import CustomToast from "../../components/toasts/CustomToast";
 
 function Event() {
   const navigate = useNavigate();
@@ -118,7 +119,9 @@ function Event() {
 
       if (response.success) {
         setEvent(updatedEvent);
-        toast.success("Event updated successfully");
+        toast.custom(() => (
+          <CustomToast type="success" message="Event updated successfully" />
+        ));
       }
     } catch (error) {
       console.error("Error updating event:", error);
@@ -131,7 +134,9 @@ function Event() {
   const handleCopyLink = () => {
     const url = `${window.location.origin}/events/${event?.id}`;
     navigator.clipboard.writeText(url);
-    toast.success("Link copied to clipboard");
+    toast.custom(() => (
+      <CustomToast type="success" message="Link copied to clipboard" />
+    ));
   };
 
   return (

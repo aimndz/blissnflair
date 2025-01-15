@@ -17,6 +17,7 @@ import { Button } from "../../components/ui/button";
 import Logo from "../../components/icons/Logo";
 import { resetPassword } from "../../services/authApi";
 import { toast } from "sonner";
+import CustomToast from "../../components/toasts/CustomToast";
 
 // Define form schema
 const formSchema = z
@@ -61,7 +62,9 @@ function ChangePassword() {
       if (!res.success) {
         setError(res.data.message);
       } else {
-        toast.success(res.data.message);
+        toast.custom(() => (
+          <CustomToast type="success" message={res.data.message} />
+        ));
         navigate("/login");
       }
     } catch (error: unknown) {

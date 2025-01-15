@@ -7,7 +7,7 @@ function App() {
   return (
     <NextUIProvider>
       <RouterProvider router={router} />
-      <Toaster position="top-right" />
+      <Toaster position="top-right" visibleToasts={1} richColors />
     </NextUIProvider>
   );
 }

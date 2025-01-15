@@ -25,6 +25,7 @@ import {
 } from "../../components/ui/accordion";
 import { Avatar } from "../../components/ui/avatar";
 import { Separator } from "../../components/ui/separator";
+import CustomToast from "../../components/toasts/CustomToast";
 
 function Preview() {
   const location = useLocation();
@@ -137,7 +138,10 @@ function Preview() {
           }
         }
 
-        toast.success("Event created successfully");
+        toast.custom(() => (
+          <CustomToast type="success" message="Event created successfully" />
+        ));
+
         navigate(`/${routePrefix}`);
       } else {
         console.error("Failed to create event");

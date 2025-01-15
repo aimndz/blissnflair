@@ -17,6 +17,7 @@ import { useUser } from "../../hooks/use-user";
 import { updateAccount } from "../../services/accountApi";
 import { ArrowLeft, UserIcon } from "lucide-react";
 import { useState } from "react";
+import CustomToast from "../../components/toasts/CustomToast";
 
 const formSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required." }),
@@ -86,13 +87,23 @@ export function Profile() {
     if (file) {
       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
       if (!allowedTypes.includes(file.type)) {
-        toast.error("Please select a valid image file.");
+        toast.custom(() => (
+          <CustomToast
+            type="error"
+            message={"Please select a valid image file"}
+          />
+        ));
         return;
       }
 
       //5 MB
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size must be less than 5 MB.");
+        toast.custom(() => (
+          <CustomToast
+            type="error"
+            message={"Image size must be less than 5 MB"}
+          />
+        ));
         return;
       }
 
@@ -134,7 +145,9 @@ export function Profile() {
       const updatedUser = res.data.user;
       setUser(updatedUser);
 
-      toast.success("Account successfully updated.");
+      toast.custom(() => (
+        <CustomToast type="success" message="User updated successfully" />
+      ));
     } catch (error) {
       console.error("Error updating profile:", error);
       form.setError("root", {
@@ -188,7 +201,9 @@ export function Profile() {
       const updatedUser = res.data.user;
       setUser(updatedUser);
 
-      toast.success("Password updated successfully.");
+      toast.custom(() => (
+        <CustomToast type="success" message="Password updated successfully" />
+      ));
     } catch (error) {
       console.error("Error updating password:", error);
       passwordForm.setError("root", {

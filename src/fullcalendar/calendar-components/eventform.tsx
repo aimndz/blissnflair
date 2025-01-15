@@ -55,6 +55,7 @@ import { toast } from "sonner";
 import * as z from "zod";
 import { Danger } from "iconsax-react";
 import { formSchema } from "@fullcalendar/validation/event";
+import CustomToast from "../../components/toasts/CustomToast";
 
 const halls = [
   {
@@ -196,7 +197,12 @@ export default function EventForm({
       );
     } catch (error) {
       console.error("Form submission error", error);
-      toast.error("Failed to submit the form. Please try again.");
+      toast.custom(() => (
+        <CustomToast
+          type="error"
+          message={"Failed to submit the form. Please try again"}
+        />
+      ));
     }
   }
   return (

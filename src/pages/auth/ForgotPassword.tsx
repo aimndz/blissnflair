@@ -43,7 +43,9 @@ function ForgotPassword() {
         const fieldErrors = mapValidationErrors(res.errors);
         setErrors(fieldErrors);
       } else {
-        toast.success(res.data.message);
+        toast.custom(() => (
+          <CustomToast type="success" message={res.data.message} />
+        ));
         navigate("/verify-code", { state: { email: values.email } });
       }
     } catch (error: unknown) {

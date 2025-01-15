@@ -16,6 +16,7 @@ import { ToggleGroup, ToggleGroupItem } from "../../components/ui/toggle-group";
 import { mapValidationErrors } from "../../utils/mapValidationErrors";
 import { updateAccount } from "../../services/accountApi";
 import { Account } from "../../types/account";
+import CustomToast from "../../components/toasts/CustomToast";
 
 const FormSchema = z.object({
   firstName: z
@@ -85,7 +86,9 @@ function AccountEdit({
 
     if (res.success) {
       onFormSubmit(res.data.user);
-      toast.success("Account updated successfully.");
+      toast.custom(() => (
+        <CustomToast type="success" message="Account updated successfully" />
+      ));
     } else {
       const fieldErrors = mapValidationErrors(res.errors);
       setErrors(fieldErrors);
@@ -98,13 +101,23 @@ function AccountEdit({
       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
 
       if (!allowedTypes.includes(file.type)) {
-        toast.error("Please select a valid image file.");
+        toast.custom(() => (
+          <CustomToast
+            type="error"
+            message={"Please select a valid image file"}
+          />
+        ));
         return;
       }
 
       //5 MB
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size must be less than 5 MB.");
+        toast.custom(() => (
+          <CustomToast
+            type="error"
+            message={"Image size must be less than 5 MB"}
+          />
+        ));
         return;
       }
 

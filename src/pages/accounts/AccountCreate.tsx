@@ -17,6 +17,7 @@ import { mapValidationErrors } from "../../utils/mapValidationErrors";
 import { createAccount } from "../../services/accountApi";
 import { AccountProfile } from "../../types/account";
 import { toast } from "sonner";
+import CustomToast from "../../components/toasts/CustomToast";
 
 const FormSchema = z
   .object({
@@ -90,7 +91,9 @@ function AccountCreate({
 
       if (onFormSubmit) {
         onFormSubmit(user);
-        toast.success("Account created successfully.");
+        toast.custom(() => (
+          <CustomToast type="success" message="Account created successfully" />
+        ));
       }
     } else {
       const fieldErrors = mapValidationErrors(res.errors);

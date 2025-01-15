@@ -16,6 +16,7 @@ import { useCatering } from "../../../hooks/use-catering";
 import { toast } from "sonner";
 import SummaryCard from "./components/SummaryCard";
 import SnackCornerSelection from "./components/SnackCornerSelection";
+import CustomToast from "../../../components/toasts/CustomToast";
 
 function Catering() {
   const location = useLocation();
@@ -75,50 +76,74 @@ function Catering() {
 
   const validateCateringDetails = () => {
     if (expectedPax === 0 || !expectedPax) {
-      toast.error("Expected Pax is required.");
+      toast.custom(() => (
+        <CustomToast type="error" message={"Expected Pax is required"} />
+      ));
       return false;
     }
 
     if (!selectedPackage) {
-      toast.error("Please select a catering package.");
+      toast.custom(() => (
+        <CustomToast
+          type="error"
+          message={"Please select a catering package"}
+        />
+      ));
       return false;
     }
 
     if (selectedDishes.length !== selectedPackage.numOfDishesCategory) {
       const dishRemaining =
         selectedPackage.numOfDishesCategory - selectedDishes.length;
-      toast.error(`Please select ${dishRemaining} more dish.`);
+      toast.custom(() => (
+        <CustomToast
+          type="error"
+          message={`Please select ${dishRemaining} more dish`}
+        />
+      ));
 
       return false;
     }
 
     if (drinks.length === 0) {
-      toast.error("Please select drinks.");
+      toast.custom(() => (
+        <CustomToast type="error" message={"Please select drinks"} />
+      ));
       return false;
     }
 
     if (desserts.length === 0) {
-      toast.error("Please select a dessert.");
+      toast.custom(() => (
+        <CustomToast type="error" message={"Please select a dessert"} />
+      ));
       return false;
     }
 
     if (pastas.length === 0) {
-      toast.error("Please select a pasta.");
+      toast.custom(() => (
+        <CustomToast type="error" message={"Please select a pasta"} />
+      ));
       return false;
     }
 
     if (sandwiches.length === 0) {
-      toast.error("Please select a sandwich.");
+      toast.custom(() => (
+        <CustomToast type="error" message={"Please select a sandwich"} />
+      ));
       return false;
     }
 
     if (fruits.length === 0) {
-      toast.error("Please select a fruit.");
+      toast.custom(() => (
+        <CustomToast type="error" message={"Please select a fruit"} />
+      ));
       return false;
     }
 
     if (salad.length === 0) {
-      toast.error("Please select a salad.");
+      toast.custom(() => (
+        <CustomToast type="error" message={"Please select a salad"} />
+      ));
       return false;
     }
 
@@ -139,7 +164,12 @@ function Catering() {
         });
       }
     } else {
-      toast.error("Please fill out the event details first.");
+      toast.custom(() => (
+        <CustomToast
+          type="error"
+          message={"Please fill out the event details first"}
+        />
+      ));
     }
   };
 

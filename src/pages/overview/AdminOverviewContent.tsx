@@ -30,6 +30,7 @@ import Loading from "../../components/LoadingSpinner";
 import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import EventDialogApproval from "../../components/EventDialogApproval";
 import { toast } from "sonner";
+import CustomToast from "../../components/toasts/CustomToast";
 
 function AdminOverviewContent() {
   const routePrefix = useRoutePrefix();
@@ -163,7 +164,10 @@ function AdminOverviewContent() {
       const res = await updateEvent(id, formData);
 
       if (res.success) {
-        toast.success("Event updated successfully");
+        toast.custom(() => (
+          <CustomToast type="success" message="Event updated successfully" />
+        ));
+
         // Update the local events state
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
