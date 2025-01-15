@@ -11,7 +11,16 @@ import { getAllEvents, updateEvent } from "../../services/eventApi";
 import { getAllAccounts } from "../../services/accountApi";
 import { Event } from "../../types/event";
 import { parseISO, format } from "date-fns";
-import { CalendarX, Check, Edit, Ellipsis, Eye, Trash, X } from "lucide-react";
+import {
+  CalendarX,
+  Check,
+  Edit,
+  Ellipsis,
+  Eye,
+  Plus,
+  Trash,
+  X,
+} from "lucide-react";
 import Combobox from "../../components/ui/combobox";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { Input } from "../../components/ui/input";
@@ -264,12 +273,22 @@ function AdminEventListContent() {
     return <Loading />;
   }
 
+  const handleCreateClick = () => {
+    navigate("/admin/dashboard/create/select-venue");
+  };
+
   return (
     <div className="mx-auto">
       <EventsListHeader events={events} />
       <Separator className="my-6" />
       <div className="mb-6 flex items-end justify-between">
         <div className="flex gap-3">
+          <Button
+            className="bg-primary-100 text-secondary-900 hover:bg-primary-200"
+            onClick={handleCreateClick}
+          >
+            <Plus /> Add Event
+          </Button>
           <Combobox
             items={eventStatus}
             label=""
@@ -285,6 +304,7 @@ function AdminEventListContent() {
             className="w-48"
           />
         </div>
+
         <div className="relative w-full max-w-96">
           <Input
             type="search"
