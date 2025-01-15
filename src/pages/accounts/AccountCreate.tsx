@@ -116,7 +116,7 @@ function AccountCreate({
               render={({ field }) => (
                 <FormItem>
                   <label className="text-sm font-medium">
-                    Select User Role
+                    Select User Role *
                   </label>
                   <ToggleGroup
                     type="single"
@@ -157,7 +157,7 @@ function AccountCreate({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="First name" {...field} />
+                      <Input placeholder="First name *" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -169,7 +169,7 @@ function AccountCreate({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Last name" {...field} />
+                      <Input placeholder="Last name *" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -182,7 +182,7 @@ function AccountCreate({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Email *" {...field} />
                   </FormControl>
                   <FormMessage />
                   {errors.email && <FormMessage>{errors.email}</FormMessage>}
@@ -197,7 +197,7 @@ function AccountCreate({
                   <FormControl>
                     <Input
                       type="tel"
-                      placeholder="Phone number (e.g., +639XXXXXXXXX)"
+                      placeholder="Phone number * (e.g., +639XXXXXXXXX)"
                       {...field}
                     />
                   </FormControl>
@@ -211,7 +211,11 @@ function AccountCreate({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <Input
+                      type="password"
+                      placeholder="Password *"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -225,7 +229,7 @@ function AccountCreate({
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Confirm password"
+                      placeholder="Confirm password *"
                       {...field}
                     />
                   </FormControl>

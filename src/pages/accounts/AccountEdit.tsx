@@ -182,7 +182,7 @@ function AccountEdit({
               render={({ field }) => (
                 <FormItem>
                   <label className="text-sm font-medium">
-                    Select User Role
+                    Select User Role *
                   </label>
                   <ToggleGroup
                     type="single"
@@ -223,7 +223,7 @@ function AccountEdit({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="First name" {...field} />
+                      <Input placeholder="First name *" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -235,7 +235,7 @@ function AccountEdit({
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="Last name" {...field} />
+                      <Input placeholder="Last name *" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -248,7 +248,7 @@ function AccountEdit({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Email" {...field} />
+                    <Input placeholder="Email *" {...field} />
                   </FormControl>
                   <FormMessage />
                   {errors.email && <FormMessage>{errors.email}</FormMessage>}
@@ -263,7 +263,7 @@ function AccountEdit({
                   <FormControl>
                     <Input
                       type="tel"
-                      placeholder="Phone number (e.g., +639XXXXXXXXX)"
+                      placeholder="Phone number * (e.g., +639XXXXXXXXX)"
                       {...field}
                     />
                   </FormControl>

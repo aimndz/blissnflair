@@ -385,7 +385,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                       name="title"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Event title</FormLabel>
+                          <FormLabel>Event title *</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="e.g., John's 25th Birthday"
@@ -403,7 +403,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                         <FormItem
                           className={userRole !== "ADMIN" ? "hidden" : ""}
                         >
-                          <FormLabel>Organizer name</FormLabel>
+                          <FormLabel>Organizer name *</FormLabel>
                           <FormControl>
                             <Input placeholder="e.g., John Doe" {...field} />
                           </FormControl>
@@ -416,7 +416,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                       name="category"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Event category</FormLabel>
+                          <FormLabel>Event category *</FormLabel>
                           <FormControl>
                             <Input
                               placeholder="e.g., Birthday, Wedding, Corporate, Social Gathering"
@@ -432,7 +432,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                       name="venue"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Event venue</FormLabel>
+                          <FormLabel>Event venue *</FormLabel>
                           <FormControl>
                             <Combobox
                               items={venue}
@@ -462,7 +462,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                       <FormItem className="flex flex-col">
                         <div className="flex items-center gap-3">
                           <FormLabel className="text-nowrap">
-                            Event date
+                            Event date *
                           </FormLabel>
                           <p className="text-sm italic text-gray-500">
                             ( <span className="font-medium">Tip:</span> Schedule
@@ -509,7 +509,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                       name="startTime"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Start Time</FormLabel>
+                          <FormLabel>Start Time *</FormLabel>
                           <FormControl>
                             <TimeInput
                               aria-label="Start Time"
@@ -599,7 +599,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                   name="description"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Event Description</FormLabel>
+                      <FormLabel>Event Description *</FormLabel>
                       <FormControl>
                         <Textarea
                           placeholder="Tell us a little bit about the event"

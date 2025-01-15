@@ -278,7 +278,7 @@ function VenueInfo() {
                 name="title"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Event title</FormLabel>
+                    <FormLabel>Event title *</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="e.g., John's 25th Birthday"
@@ -318,7 +318,7 @@ function VenueInfo() {
               name="organizer"
               render={({ field }) => (
                 <FormItem className={userRole !== "ADMIN" ? "hidden" : ""}>
-                  <FormLabel>Organizer name</FormLabel>
+                  <FormLabel>Organizer name *</FormLabel>
                   <FormControl>
                     <Input placeholder="e.g., John Doe" {...field} />
                   </FormControl>
@@ -331,7 +331,7 @@ function VenueInfo() {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Event category</FormLabel>
+                  <FormLabel>Event category *</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="e.g., Birthday, Wedding, Corporate, Social Gathering"
@@ -347,7 +347,7 @@ function VenueInfo() {
               name="venue"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Event venue</FormLabel>
+                  <FormLabel>Event venue *</FormLabel>
                   <FormControl>
                     <Combobox
                       items={venue}
@@ -366,7 +366,7 @@ function VenueInfo() {
               render={({ field }) => (
                 <FormItem className="flex flex-col">
                   <div className="flex items-center gap-3">
-                    <FormLabel className="text-nowrap">Event date</FormLabel>
+                    <FormLabel className="text-nowrap">Event date *</FormLabel>
                     <p className="text-sm italic text-gray-500">
                       ( <span className="font-medium">Tip:</span> Schedule your
                       event 1 month ahead for better approval chances. )
@@ -410,7 +410,7 @@ function VenueInfo() {
                 name="startTime"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Start Time</FormLabel>
+                    <FormLabel>Start Time *</FormLabel>
                     <FormControl>
                       <TimeInput
                         aria-label="Start Time"
@@ -495,7 +495,7 @@ function VenueInfo() {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Event Description</FormLabel>
+                  <FormLabel>Event Description *</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Tell us a little bit about the event"

@@ -7,7 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import { getAllEvents, updateEvent } from "../../services/eventApi";
+import {
+  deleteEvent,
+  getAllEvents,
+  updateEvent,
+} from "../../services/eventApi";
 import { getAllAccounts } from "../../services/accountApi";
 import { Event } from "../../types/event";
 import { parseISO, format } from "date-fns";
@@ -276,6 +280,11 @@ function AdminEventListContent() {
     return <Loading />;
   }
 
+  const handleDeleteClick = async (event: Event) => {
+    // Handle delete event
+    await deleteEvent(event.id);
+  };
+
   const handleCreateClick = () => {
     navigate("/admin/dashboard/create/select-venue");
   };
@@ -511,7 +520,10 @@ function AdminEventListContent() {
                               <Edit className="mr-2 w-4" />
                               Edit
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600">
+                            <DropdownMenuItem
+                              className="text-red-600"
+                              onClick={() => handleDeleteClick(event)}
+                            >
                               <Trash className="mr-2 w-4" />
                               Delete
                             </DropdownMenuItem>
