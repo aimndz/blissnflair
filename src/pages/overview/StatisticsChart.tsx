@@ -85,7 +85,7 @@ function StatisticsChart({ events }: { events: Event[] }) {
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="count" fill="#03F484" radius={8} barSize={30}>
+            <Bar dataKey="count" fill="#31E17A" radius={8} barSize={30}>
               <LabelList
                 position="top"
                 offset={12}
