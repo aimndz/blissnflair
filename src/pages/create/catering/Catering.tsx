@@ -78,6 +78,7 @@ function Catering() {
       toast.error("Expected Pax is required.");
       return false;
     }
+
     if (!selectedPackage) {
       toast.error("Please select a catering package.");
       return false;
@@ -126,16 +127,16 @@ function Catering() {
 
   const handlePreviewButton = () => {
     if (event) {
-      if (validateCateringDetails()) {
-        if (isInternalCatering) {
+      if (isInternalCatering) {
+        if (validateCateringDetails()) {
           navigate(`/${routePrefix}/create/preview`, {
             state: { event, catering },
           });
-        } else {
-          navigate(`/${routePrefix}/create/preview`, {
-            state: { event },
-          });
         }
+      } else {
+        navigate(`/${routePrefix}/create/preview`, {
+          state: { event },
+        });
       }
     } else {
       toast.error("Please fill out the event details first.");
