@@ -271,15 +271,17 @@ function Event() {
                         />
                       </Dialog>
                     ) : (
-                      <div>
-                        <p className="font-bold text-red-500">
-                          You cannot cancel this event. It's too close.
-                        </p>
-                        <p className="text-sm">
-                          <strong>Note:</strong> Cancelling an event requires at
-                          least 3 days' notice.
-                        </p>
-                      </div>
+                      new Date(event.startTime) > new Date() && (
+                        <div className="text-center">
+                          <p className="font-bold text-red-500">
+                            You cannot cancel this event. It's too close.
+                          </p>
+                          <p className="text-sm">
+                            <strong>Note:</strong> Cancelling an event requires
+                            at least 3 days' notice.
+                          </p>
+                        </div>
+                      )
                     )
                   }
                 </div>
