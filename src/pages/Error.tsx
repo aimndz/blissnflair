@@ -11,12 +11,12 @@ function Error() {
   console.error(error);
 
   return (
-    <div>
-      <h1>Oops!</h1>
+    <div className="flex h-screen flex-col items-center justify-center">
+      <h1 className="text-2xl font-bold">Oops!</h1>
       <p>Sorry, an unexpected error has occurred.</p>
-      <p>
+      {/* <p>
         <i>{error.statusText || error.message}</i>
-      </p>
+      </p> */}
     </div>
   );
 }
