@@ -9,7 +9,7 @@ import { useYearChange } from "./hooks/useYearChange";
 import { CalendarProps } from "./types/event";
 import { TabTypes } from "./types/tabs";
 
-const FullCalendar = ({ events, config }: CalendarProps) => {
+const FullCalendar = ({ events, venue, config }: CalendarProps) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [activeTab, setActiveTab] = useState<TabTypes>("month"); // Default to "month"
 
@@ -52,12 +52,14 @@ const FullCalendar = ({ events, config }: CalendarProps) => {
         handleYearChange={handleYearChange}
         handleToday={handleToday}
         config={config}
+        venue={venue}
       />
       <Views
         currentDate={currentDate}
         activeTab={activeTab}
         isAnimating={isAnimating}
         events={events}
+        venue={venue}
       />
     </div>
   );

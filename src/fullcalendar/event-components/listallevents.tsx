@@ -27,6 +27,7 @@ type ButtonProps = {
   isToday?: boolean; // Optional boolean for checking if the date is today
   isCurrentMonth?: boolean; // Optional boolean for checking if the date is in the current month
   index?: number; // Optional index prop (if needed for the year view button)
+  venue?: string; // Optional venue prop
 };
 
 function ListAllEvents({
@@ -37,6 +38,7 @@ function ListAllEvents({
   isToday,
   isCurrentMonth,
   index,
+  venue,
 }: ButtonProps) {
   return (
     <Credenza>
@@ -79,7 +81,7 @@ function ListAllEvents({
             <EventModal key={index} eventdetails={event} />
           ))}
           <div className="w-full">
-            <AddEvent variant="primary" currentDate={date} />
+            <AddEvent variant="primary" currentDate={date} venue={venue} />
           </div>
         </CredenzaBody>
       </CredenzaContent>

@@ -2,6 +2,7 @@ import { Event } from "../../types/event";
 
 export interface CalendarProps {
   events: Event[];
+  venue?: string;
   config?: {
     addEventConfig?: {
       variant?: "default" | "secondary" | "primary";

@@ -11,12 +11,14 @@ interface RenderDaysInMonthProps {
   events: Event[];
   startWeek: Date;
   daysOfWeek: string[];
+  venue?: string;
 }
 
 export const renderDaysInMonth = ({
   currentDate,
   events,
   startWeek,
+  venue,
 }: RenderDaysInMonthProps) => {
   const days: React.ReactNode[] = [];
   let day = startWeek;
@@ -73,12 +75,12 @@ export const renderDaysInMonth = ({
           {/* Events list */}
           <div className="flex-grow overflow-hidden">
             {eventsForDay.length === 0 && (
-              <AddEvent variant="secondary" currentDate={day} />
+              <AddEvent variant="secondary" currentDate={day} venue={venue} />
             )}
             {eventsForDay.length === 1 && (
               <>
                 <EventModal eventdetails={eventsForDay[0]} />
-                <AddEvent variant="secondary" currentDate={day} />
+                <AddEvent variant="secondary" currentDate={day} venue={venue} />
               </>
             )}
             {eventsForDay.length > 1 && (
@@ -91,6 +93,7 @@ export const renderDaysInMonth = ({
                 view="day"
                 date={day}
                 eventsForDay={eventsForDay}
+                venue={venue}
               />
             )}
           </div>

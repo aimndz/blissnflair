@@ -11,6 +11,7 @@ import { Add } from "iconsax-react";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 export interface CalendarHeaderProps {
+  venue?: string;
   currentDate: Date;
   setCurrentDate: Dispatch<SetStateAction<Date>>;
   activeTab: TabTypes;
@@ -29,7 +30,9 @@ const CalendarHeader = (props: CalendarHeaderProps) => {
   const navigate = useNavigate();
 
   const handleCreateEvent = () => {
-    navigate(`/${routePrefix}/create/event-info`);
+    navigate(`/${routePrefix}/create/event-info`, {
+      state: { spaceName: props.venue },
+    });
   };
 
   return (

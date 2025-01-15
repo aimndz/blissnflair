@@ -7,9 +7,10 @@ import { getDay, startOfMonth, startOfWeek } from "date-fns";
 interface MonthViewProps {
   currentDate: Date;
   events: Event[];
+  venue?: string;
 }
 
-export function MonthView({ currentDate, events }: MonthViewProps) {
+export function MonthView({ currentDate, events, venue }: MonthViewProps) {
   const startDay = startOfMonth(currentDate);
   const startWeek = startOfWeek(startDay);
   const firstDayIndex = getDay(startDay);
@@ -21,6 +22,7 @@ export function MonthView({ currentDate, events }: MonthViewProps) {
         weekDays: reorderedDaysOfWeek,
       })}
       {renderDaysInMonth({
+        venue,
         currentDate,
         events,
         startWeek,

@@ -22,12 +22,14 @@ type ButtonProps = {
   formTitle?: string; // Custom title for the form
   formDescription?: string; // Custom description for the form
   icon?: React.ReactNode; // Custom icon for the button
+  venue?: string; // Optional venue prop
   CustomForm?: React.FC<{ currentDate?: Date }>; // Custom form component
 };
 
 function AddEvent({
   variant = "default",
   currentDate,
+  venue,
   buttonText = "Add Event",
   formTitle = "Add Event",
   formDescription = "Create a new event in your calendar.",
@@ -39,7 +41,7 @@ function AddEvent({
 
   const handleCreateEvent = () => {
     navigate(`/${routePrefix}/create/event-info`, {
-      state: { currentDate: currentDate },
+      state: { currentDate: currentDate, spaceName: venue },
     });
   };
 

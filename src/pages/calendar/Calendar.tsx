@@ -101,7 +101,7 @@ function Calendar({ venue }: { venue: string }) {
           {filteredEvents.length}
         </span> */}
       </div>
-      <FullCalendar events={filteredEvents} />
+      <FullCalendar events={filteredEvents} venue={venue} />
     </div>
   );
 }

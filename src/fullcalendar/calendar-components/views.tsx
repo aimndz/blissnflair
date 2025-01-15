@@ -10,6 +10,7 @@ import { Event } from "../../types/event";
 export interface ViewsProps extends CalendarProps {
   activeTab: TabTypes;
   isAnimating: boolean;
+  venue?: string;
   currentDate: Date;
   events: Event[];
 }
@@ -24,7 +25,11 @@ const Views = (props: ViewsProps) => {
     >
       <div style={{ minWidth: "100%", display: "table" }}>
         {props.activeTab === "month" ? (
-          <MonthView currentDate={props.currentDate} events={props.events} />
+          <MonthView
+            currentDate={props.currentDate}
+            events={props.events}
+            venue={props.venue}
+          />
         ) : (
           <YearView currentDate={props.currentDate} events={props.events} />
         )}
