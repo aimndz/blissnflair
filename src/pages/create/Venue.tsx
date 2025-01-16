@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import spaceDetails from "./spaceDetails";
 import SpaceDetailsSidebar from "./SpaceDetailsSidebar";
-import { useUser } from "../../hooks/use-user";
 import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 interface Space {
@@ -56,8 +55,10 @@ function Venue() {
   };
 
   return (
-    <div className="mx-auto flex max-w-7xl gap-5">
-      <div className="mx-auto -mt-16 flex h-[calc(100vh-4rem)] w-full max-w-3xl flex-col items-center justify-center">
+    <div
+      className={`mx-auto flex max-w-7xl flex-col gap-5 ${selectedSpace ? "min-[1000px]:flex-row" : ""} `}
+    >
+      <div className="mx-auto w-full max-w-3xl flex-col items-center justify-center min-[1000px]:mt-36">
         <h2 className="mb-3 text-center text-2xl font-semibold">
           Select Your Ideal Space
         </h2>
@@ -114,16 +115,20 @@ function Venue() {
             </ToggleGroupItem>
           ))}
         </ToggleGroup>
-        <Button
-          type="button"
-          className="ml-auto mt-5 w-full max-w-40 rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"
-          onClick={handleEventInfo}
-          disabled={!selectedSpace}
-        >
-          Next
-        </Button>
+        <div className="flex">
+          <Button
+            type="button"
+            className="ml-auto mt-5 w-full max-w-40 rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"
+            onClick={handleEventInfo}
+            disabled={!selectedSpace}
+          >
+            Next
+          </Button>
+        </div>
       </div>
-      {selectedSpace && <SpaceDetailsSidebar selectedSpace={selectedSpace} />}
+      <div className="mx-auto w-full max-w-3xl">
+        {selectedSpace && <SpaceDetailsSidebar selectedSpace={selectedSpace} />}
+      </div>
     </div>
   );
 }

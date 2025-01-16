@@ -70,7 +70,7 @@ function SnackCornerSelection() {
     <Card className="p-6">
       <section>
         <h3 className="mb-3 text-xl font-bold">Picka Pick-A-Snack Corner </h3>
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           {Object.entries(groupedSnacks).map(([category, snacks]) => (
             <Card key={category} className="shadow-lg">
               <CardHeader className="flex">

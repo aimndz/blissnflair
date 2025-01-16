@@ -1,4 +1,4 @@
-import { ArrowLeft, ThumbsDown, ThumbsUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, ThumbsDown, ThumbsUp } from "lucide-react";
 import { Button } from "../../../components/ui/button";
 import {
   Tabs,
@@ -215,14 +215,16 @@ function Catering() {
         <ArrowLeft />
         <span>Back</span>
       </Button>
-      <div className="w-full">
-        <div className="flex items-start gap-3">
+      <div className="mx-auto w-full">
+        <div className="flex flex-col items-start gap-3 min-[1000px]:flex-row-reverse">
+          <SummaryCard />
+
           <Tabs
-            className="w-2/3"
             defaultValue={
               isInternalCatering ? "internalCatering" : "externalCatering"
             }
             onValueChange={handleTabChange}
+            className="min-[1000px]:w-2/3"
           >
             {/* Triggers Card */}
             <Card className="mb-3">
@@ -233,10 +235,10 @@ function Catering() {
                   </p>
                 </div>
                 <div className="mt-4 flex justify-center">
-                  <TabsList className="flex h-24 w-full max-w-2xl space-x-4 bg-transparent p-0">
+                  <TabsList className="flex h-24 w-full space-x-4 bg-transparent p-0">
                     <TabsTrigger
                       value="internalCatering"
-                      className="h-24 w-full flex-col rounded-lg border border-secondary-600 px-4 py-2 font-semibold data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
+                      className="h-24 w-full flex-col text-wrap rounded-lg border border-secondary-600 px-4 py-2 font-semibold data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
                     >
                       <ThumbsUp className="mb-1" />
                       <p>Yes, I’d like to avail</p>
@@ -246,7 +248,7 @@ function Catering() {
                     </TabsTrigger>
                     <TabsTrigger
                       value="externalCatering"
-                      className="flex h-24 w-full flex-col rounded-lg border border-secondary-600 bg-secondary-200 px-4 py-2 font-semibold text-secondary-900 data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
+                      className="flex h-24 w-full flex-col text-wrap rounded-lg border border-secondary-600 bg-secondary-200 px-4 py-2 font-semibold text-secondary-900 data-[state=active]:bg-primary-100 data-[state=active]:text-secondary-900"
                     >
                       <ThumbsDown className="mb-1" />
                       <p>No, I prefer external catering</p>
@@ -259,12 +261,29 @@ function Catering() {
             {/* Content Card */}
             <TabsContent value="internalCatering">
               <InHouseCatering />
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  className="mt-3 w-full max-w-20 rounded-full bg-primary-100 px-20 font-semibold text-secondary-900 hover:bg-primary-200"
+                  onClick={handlePreviewButton}
+                >
+                  Preview <ArrowRight />
+                </Button>
+              </div>
             </TabsContent>
             <TabsContent value="externalCatering">
               <ExternalCatering />
+              <div className="flex justify-end">
+                <Button
+                  type="button"
+                  className="mt-3 w-full max-w-20 rounded-full bg-primary-100 px-20 font-semibold text-secondary-900 hover:bg-primary-200"
+                  onClick={handlePreviewButton}
+                >
+                  Preview <ArrowRight />
+                </Button>
+              </div>
             </TabsContent>
           </Tabs>
-          <SummaryCard handlePreviewButton={handlePreviewButton} />
         </div>
       </div>
     </div>

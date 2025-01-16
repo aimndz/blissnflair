@@ -272,7 +272,7 @@ function VenueInfo() {
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleCateringButton)}>
           <section className="w-full space-y-5">
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="title"
@@ -342,68 +342,73 @@ function VenueInfo() {
                 </FormItem>
               )}
             />
-            <FormField
-              control={form.control}
-              name="venue"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Event venue *</FormLabel>
-                  <FormControl>
-                    <Combobox
-                      items={venue}
-                      label="Select a venue"
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem className="flex flex-col">
-                  <div className="flex items-center gap-3">
-                    <FormLabel className="text-nowrap">Event date *</FormLabel>
-                    <p className="text-sm italic text-gray-500">
-                      ( <span className="font-medium">Tip:</span> Schedule your
-                      event 1 month ahead for better approval chances. )
-                    </p>
-                  </div>
-
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <Button
-                          variant={"outline"}
-                          className={cn(
-                            "w-[240px] bg-secondary-100 pl-3 text-left font-normal",
-                            !field.value && "text-muted-foreground",
-                          )}
-                        >
-                          {field.value ? (
-                            format(field.value, "PPP")
-                          ) : (
-                            <span>Select a date</span>
-                          )}
-                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                        </Button>
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0" align="start">
-                      <Calendar
-                        mode="single"
-                        selected={field.value}
-                        onSelect={(date) => field.onChange(date)}
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <FormField
+                control={form.control}
+                name="venue"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Event venue *</FormLabel>
+                    <FormControl>
+                      <Combobox
+                        items={venue}
+                        label="Select a venue"
+                        value={field.value}
+                        onChange={field.onChange}
+                        className="w-full"
                       />
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="date"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <div className="flex items-center gap-3">
+                      <FormLabel className="mb-1 mt-2 text-nowrap">
+                        Event date *
+                      </FormLabel>
+                      {/* <p className="text-sm italic text-gray-500">
+                        ( <span className="font-medium">Tip:</span> Schedule
+                        your event 1 month ahead for better approval chances. )
+                      </p> */}
+                    </div>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "border border-secondary-600 bg-secondary-100 pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground",
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Select a date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={(date) => field.onChange(date)}
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <div className="flex flex-wrap gap-10">
               <FormField
                 control={form.control}
@@ -458,36 +463,6 @@ function VenueInfo() {
                 </FormControl>
                 <FormMessage />
               </FormItem>
-
-              {/* <span className="mt-8 text-xs font-semibold">to</span> */}
-              {/* <FormField
-                control={form.control}
-                name="endTime"
-                render={({ field }) => {
-                  const startTime = form.getValues("startTime");
-
-                  return (
-                    <FormItem>
-                      <FormLabel>End Time</FormLabel>
-                      <FormControl>
-                        <TimeInput
-                          aria-label="End Time"
-                          value={stringToTimeValue(startTime)}
-                          onChange={(time) =>
-                            field.onChange(timeValueToString(time))
-                          }
-                          classNames={{
-                            segment: "focus:bg-secondary-300",
-                            inputWrapper: "hover:bg-secondary-100",
-                          }}
-                          className="rounded-md border border-solid border-secondary-300 bg-secondary-100"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              /> */}
             </div>
 
             <FormField

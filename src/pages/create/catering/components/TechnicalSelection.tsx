@@ -30,7 +30,10 @@ function TechnicalSelection({
       <h3 className="mb-3 font-bold">
         Technicals <span className="font-normal">(optional)</span>
       </h3>
-      <ToggleGroup type="multiple" className="grid grid-cols-3 gap-3">
+      <ToggleGroup
+        type="multiple"
+        className="grid grid-cols-1 gap-3 md:grid-cols-3"
+      >
         {Object.entries(groupedAddOns).map(([category, items]) => {
           if (category === "Technicals") {
             return items.map((cart) => {

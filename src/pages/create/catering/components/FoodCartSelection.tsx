@@ -47,7 +47,7 @@ function FoodCartSelection({
       <h3 className="mb-3 font-bold">
         Food Carts <span className="font-normal">(optional)</span>
       </h3>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         {Object.entries(groupedFoodCartByPrice).map(([price, carts]) => (
           <Card key={price} className="mb-6 shadow-lg">
             <CardHeader>

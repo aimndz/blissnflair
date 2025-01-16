@@ -22,7 +22,6 @@ function AdditionalDetails() {
             ))}
           </ul>
         </div>
-        <Separator className="my-3" />
         <div className="w-full">
           <h3 className="text-medium font-semibold">Inclusion</h3>
           <ul>

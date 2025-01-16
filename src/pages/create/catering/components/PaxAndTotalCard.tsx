@@ -13,11 +13,11 @@ function PaxAndTotalCard() {
       <LabelSection
         text={"Please specify expected pax first for better amount computation"}
       />
-      <div className="flex justify-between">
-        <div className="w-full max-w-72">
+      <div className="flex flex-col-reverse gap-3">
+        <div className="w-full">
           <Label>Expected pax</Label>
           <Input
-            className="rounded-lg"
+            className="w-full rounded-lg"
             placeholder="Expected pax"
             aria-label="Expected pax"
             value={expectedPax === 0 ? "" : expectedPax} // Show an empty string if the value is 0
@@ -32,8 +32,8 @@ function PaxAndTotalCard() {
           />
         </div>
         <div>
-          <p className="text-right text-sm">Total</p>
-          <p className="text-2xl font-medium">
+          <p className="text-center text-sm">Total</p>
+          <p className="text-center text-2xl font-medium">
             PHP {formatCurrency(totalAmount)}
           </p>
         </div>

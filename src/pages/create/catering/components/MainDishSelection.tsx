@@ -43,7 +43,7 @@ function MainDishSelection() {
     <>
       <h3 className="text-xl font-bold">Selection of Dishes</h3>
       <p className="mb-3">({maxDishes - selectedDishes.length} dishes left)</p>
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3">
         {Object.entries(groupedMainDishes).map(([category, dishes]) => (
           <Card key={category} className="shadow-lg">
             <CardHeader>

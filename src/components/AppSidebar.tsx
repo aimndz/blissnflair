@@ -176,11 +176,11 @@ export function AppSidebar() {
               <Collapsible className="group/collapsible">
                 <SidebarMenuItem>
                   <CollapsibleTrigger className="w-full text-secondary-800">
-                    <SidebarMenuButton>
-                      <Calendar />
+                    <div className="flex items-center gap-2 py-2 pl-5 pr-3 font-medium text-secondary-800 hover:text-secondary-900">
+                      <Calendar size={15} className="" />
                       Calendars
                       <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                    </SidebarMenuButton>
+                    </div>
                   </CollapsibleTrigger>
                   <CollapsibleContent>
                     <SidebarMenuSub>
@@ -198,8 +198,7 @@ export function AppSidebar() {
                                     : "text-secondary-800 hover:bg-transparent active:bg-transparent"
                                 }`}
                               >
-                                <div className="flex items-center gap-3 text-sm">
-                                  {/* <item.icon size={"15px"} /> */}
+                                <div className="flex items-center gap-3 text-sm font-medium hover:text-secondary-900">
                                   <span>{item.title}</span>
                                 </div>
                               </div>

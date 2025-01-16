@@ -37,7 +37,7 @@ interface Space {
 
 function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
   return (
-    <div className="w-2/5 rounded-lg border border-secondary-600 bg-secondary-100 py-3 pl-3">
+    <div className="mt-3 rounded-lg border border-secondary-600 bg-secondary-100 py-3 pl-3">
       <ScrollArea className="h-[calc(100vh-10rem)] pr-3">
         {" "}
         <div className="aspect-[4/3] w-full">
@@ -70,7 +70,6 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
         {selectedSpace.rates && (
           <div className="rounded-lg">
             <h3 className="font-bold">Rates</h3>
-            {/* <p className="mb-3">{selectedSpace.rates?.title}:</p> */}
             <div className="space-y-5">
               <div className="flex justify-center gap-3">
                 {selectedSpace.rates["mon-thurs"] > 0 && (
@@ -88,32 +87,6 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
                         )}
                       </span>
                     </p>
-                    {/* <p>
-                    <span>
-                      {new Intl.NumberFormat("en-PH", {
-                        style: "currency",
-                        currency: "PHP",
-                      }).format(selectedSpace.rates["mon-thurs"])}
-                    </span>
-                  </p>
-                  {selectedSpace.rates.additionalVAT > 0 && (
-                    <p>
-                      Add. VAT{" "}
-                      <span>
-                        {selectedSpace.rates.additionalVAT * 100}%
-                      </span>
-                      :{" "}
-                      <span className="font-semibold">
-                        {new Intl.NumberFormat("en-PH", {
-                          style: "currency",
-                          currency: "PHP",
-                        }).format(
-                          selectedSpace.rates["mon-thurs"] *
-                            selectedSpace.rates.additionalVAT,
-                        )}
-                      </span>
-                    </p>
-                  )} */}
                     <p className="text-xs text-secondary-800">
                       {selectedSpace.rates?.title}
                     </p>
@@ -121,15 +94,7 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
                 )}
                 {selectedSpace.rates["fri-sun"] > 0 && (
                   <div className="w-full rounded-lg border border-secondary-600 p-3 text-center">
-                    <p className="text-center text-xs font-medium">
-                      Fri-Sun
-                      {/* <span className="font-semibold">
-                        {new Intl.NumberFormat("en-PH", {
-                          style: "currency",
-                          currency: "PHP",
-                        }).format(selectedSpace.rates["fri-sun"])}
-                      </span> */}
-                    </p>
+                    <p className="text-center text-xs font-medium">Fri-Sun</p>
                     <p className="text-xl">
                       <span className="font-semibold">
                         {new Intl.NumberFormat("en-PH", {
@@ -146,21 +111,6 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
                     <p className="text-xs text-secondary-800">
                       {selectedSpace.rates?.title}
                     </p>
-                    {/* {selectedSpace.rates.additionalVAT > 0 && (
-                      <p>
-                        Add. VAT{" "}
-                        <span>{selectedSpace.rates.additionalVAT * 100}%</span>:{" "}
-                        <span className="font-semibold">
-                          {new Intl.NumberFormat("en-PH", {
-                            style: "currency",
-                            currency: "PHP",
-                          }).format(
-                            selectedSpace.rates["fri-sun"] *
-                              selectedSpace.rates.additionalVAT,
-                          )}
-                        </span>
-                      </p>
-                    )} */}
                   </div>
                 )}
               </div>

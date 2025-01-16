@@ -70,7 +70,7 @@ function OtherDishSelection() {
   return (
     <>
       <h3 className="mb-3 text-xl font-bold">Others</h3>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
         {/* Other Categories */}
         {Object.entries(groupedOthers).map(([category, dishes]) => (
           <Card key={category} className="shadow-lg">
