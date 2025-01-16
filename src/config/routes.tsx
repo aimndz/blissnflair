@@ -16,7 +16,7 @@ import Accounts from "../pages/accounts/Accounts";
 import Preview from "../pages/preview/Preview";
 import ProfileEdit from "../pages/ProfileEdit";
 import AccountCreate from "../pages/accounts/AccountCreate";
-import SystemSettings from "../pages/SystemSettings";
+import SystemSettings from "../pages/systemSettings/SystemSettings";
 import MainLayout from "../layouts/MainLayout";
 import ProtectedRoute from "../components/ProtectedRoute";
 import Event from "../pages/eventDetails/Event";
@@ -134,7 +134,11 @@ const adminRoutes = [
   {
     path: "system-settings",
     title: "System Settings",
-    element: <SystemSettings />,
+    element: (
+      <CateringProvider>
+        <SystemSettings />
+      </CateringProvider>
+    ),
   },
   // Combine user routes in admin routes
   ...userRoutes,

@@ -91,11 +91,11 @@ const adminItems = [
     url: "analytics",
     icon: ChartLine,
   },
-  {
-    title: "System Settings",
-    url: "system-settings",
-    icon: Settings,
-  },
+  // {
+  //   title: "System Settings",
+  //   url: "system-settings",
+  //   icon: Settings,
+  // },
 ];
 
 export function AppSidebar() {
