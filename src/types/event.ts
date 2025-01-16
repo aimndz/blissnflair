@@ -19,6 +19,7 @@ export interface Event {
   daysLeft?: number;
   createdAt: string;
   modifiedAt: string;
+  deletedAt?: string | null;
   venue: string;
 }
 

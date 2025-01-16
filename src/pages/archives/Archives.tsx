@@ -7,45 +7,21 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import {
-  deleteEvent,
-  getAllEvents,
-  updateEvent,
-} from "../../services/eventApi";
+import { getAllEvents, updateEvent } from "../../services/eventApi";
 import { getAllAccounts } from "../../services/accountApi";
 import { Event } from "../../types/event";
 import { parseISO, format } from "date-fns";
-import {
-  CalendarX,
-  Check,
-  Edit,
-  Ellipsis,
-  Eye,
-  Plus,
-  Trash,
-  X,
-} from "lucide-react";
-import Combobox from "../../components/ui/combobox";
+import { ArchiveRestore, CalendarX } from "lucide-react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Input } from "../../components/ui/input";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import Loading from "../../components/LoadingSpinner";
 import EventDialogApproval from "../../components/EventDialogApproval";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu";
 import { Button } from "../../components/ui/button";
 import { Avatar, AvatarImage } from "../../components/ui/avatar";
-import EventEditDialog from "./EventEditDialog";
+import EventEditDialog from "../eventList/EventEditDialog";
 import { getRandomDegree } from "../../utils/randomGradient";
 import { toast } from "sonner";
-import EventsListHeader from "./EventsListHeader";
 import PaginationBar from "../../components/PaginationBar";
-import { Separator } from "../../components/ui/separator";
 import CustomToast from "../../components/toasts/CustomToast";
 
 interface User {
@@ -54,24 +30,7 @@ interface User {
   lastName: string;
 }
 
-const eventStatus = [
-  { value: "all", label: "All" },
-  { value: "approved", label: "Approved" },
-  { value: "pending", label: "Pending" },
-  { value: "rejected", label: "Rejected" },
-  { value: "cancelled", label: "Cancelled" },
-  { value: "completed", label: "Completed" },
-];
-
-const venues = [
-  { value: "all", label: "All Venues" },
-  { value: "private room", label: "Private Room" },
-  { value: "lounge hall", label: "Lounge Hall" },
-  { value: "al fresco", label: "Al Fresco" },
-  { value: "function hall", label: "Function Hall" },
-];
-
-function AdminEventListContent() {
+function Archives() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [loading, setLoading] = useState(true);
   const [events, setEvents] = useState<Event[]>([]);
@@ -85,11 +44,6 @@ function AdminEventListContent() {
   const [currentPage, setCurrentPage] = useState<number>(currentPageParam);
   const itemsPerPage = 15; // Number of items per page
 
-  const handleEditClick = (event: Event) => {
-    setEditEventData(event);
-    setOpenEditDialog(true);
-  };
-
   const navigate = useNavigate();
 
   const filter = searchParams.get("filter") || "all";
@@ -98,31 +52,9 @@ function AdminEventListContent() {
   const filteredEvents = events
     .filter((event) => {
       return (
-        event.deletedAt === null ||
-        event.deletedAt === "0000-01-01T00:00:00.000Z"
+        event.deletedAt !== null &&
+        event.deletedAt !== "0000-01-01T00:00:00.000Z"
       );
-    })
-    .filter((event) => {
-      const matchesFilter =
-        filter === "all" || event.status.toUpperCase() === filter.toUpperCase();
-      const matchesVenue =
-        venue === "all" || event.venue.toLowerCase() === venue.toLowerCase();
-
-      // Check if the event matches the search query (title, venue, status, booked by)
-      const matchesSearch =
-        event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        users
-          .find((user) => user.id === event.user.id)
-          ?.firstName.toLowerCase()
-          .includes(searchQuery.toLowerCase()) ||
-        users
-          .find((user) => user.id === event.user.id)
-          ?.lastName.toLowerCase()
-          .includes(searchQuery.toLowerCase());
-
-      return matchesFilter && matchesVenue && matchesSearch;
     })
     .map((event) => {
       return {
@@ -221,24 +153,6 @@ function AdminEventListContent() {
     setCurrentPage(1);
   }, [filter, venue, searchQuery]);
 
-  const handleViewClick = (id: string) => {
-    navigate(`/admin/dashboard/events/${id}`);
-  };
-
-  const handleFilterChange = (key: string, value: string) => {
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
-      params.delete("page");
-      params.set(key, value);
-      return params;
-    });
-    setCurrentPage(1);
-  };
-
-  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(event.target.value);
-  };
-
   const handleUpdateEvent = async (id: string, updatedEvent: Event) => {
     try {
       const formData = new FormData();
@@ -254,23 +168,23 @@ function AdminEventListContent() {
       formData.append("additionalNotes", updatedEvent.additionalNotes || "");
       formData.append("additionalHours", String(updatedEvent.additionalHours));
       formData.append("status", updatedEvent.status);
-
       // Only append imageUrl if it exists
       if (updatedEvent.imageUrl) {
         formData.append("imageUrl", updatedEvent.imageUrl);
       }
 
-      if (updatedEvent.deletedAt) {
-        formData.append("deletedAt", updatedEvent.deletedAt);
+      if (updatedEvent.deletedAt === null) {
+        formData.append("deletedAt", "0000-01-01T00:00:00Z");
       }
 
       const res = await updateEvent(id, formData);
 
       if (res.success) {
         toast.custom(() => (
-          <CustomToast type="success" message="Event updated successfully" />
+          <CustomToast type="success" message="Item restored successfully" />
         ));
 
+        console.log(res.data);
         // Update the local events state
         setEvents((prevEvents) =>
           prevEvents.map((event) =>
@@ -290,49 +204,8 @@ function AdminEventListContent() {
     return <Loading />;
   }
 
-  const handleCreateClick = () => {
-    navigate("/admin/dashboard/create/select-venue");
-  };
-
   return (
     <div className="mx-auto">
-      <EventsListHeader events={filteredEvents} />
-      <Separator className="my-6" />
-      <div className="mb-6 flex items-end justify-between">
-        <div className="flex gap-3">
-          <Button
-            className="bg-primary-100 text-secondary-900 hover:bg-primary-200"
-            onClick={handleCreateClick}
-          >
-            <Plus /> Add Event
-          </Button>
-          <Combobox
-            items={eventStatus}
-            label=""
-            value={filter}
-            onChange={(value) => handleFilterChange("filter", value)}
-            className="w-48"
-          />
-          <Combobox
-            items={venues}
-            label="Venue"
-            value={venue}
-            onChange={(value) => handleFilterChange("venue", value)}
-            className="w-48"
-          />
-        </div>
-
-        <div className="relative w-full max-w-96">
-          <Input
-            type="search"
-            placeholder="Search by title, venue, status, or booked by..."
-            className="w-full pr-10"
-            value={searchQuery}
-            onChange={handleSearchChange}
-          />
-          <MagnifyingGlassIcon className="absolute right-3 top-1/2 h-5 w-5 -translate-y-1/2 transform text-gray-500" />
-        </div>
-      </div>
       {currentEvents.length > 0 ? (
         <div className="overflow-hidden rounded-lg border border-secondary-600">
           <Table>
@@ -345,9 +218,8 @@ function AdminEventListContent() {
                 <TableHead>Created at</TableHead>
                 <TableHead>Status</TableHead>
                 {filter === "pending" || filter === "all" ? (
-                  <TableHead>Approve/Reject</TableHead>
+                  <TableHead>Restore</TableHead>
                 ) : null}
-                <TableHead className="text-center">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody className="bg-secondary-100">
@@ -427,127 +299,24 @@ function AdminEventListContent() {
                       </span>
                     </TableCell>
                     <TableCell className="w-52">
-                      {event.status === "PENDING" && (
-                        <div className="flex gap-1">
-                          <Dialog>
-                            <DialogTrigger>
-                              <Button className="w-full rounded-lg border border-red-500 bg-red-100 text-red-500 hover:bg-red-200 hover:text-red-500">
-                                <X size={20} />
-                                <p>Reject</p>
-                              </Button>
-                            </DialogTrigger>
-                            <EventDialogApproval
-                              status="REJECTED"
-                              event={event}
-                              onUpdateEvent={async () =>
-                                await handleUpdateEvent(event.id, {
-                                  ...event,
-                                  status: "REJECTED",
-                                })
-                              }
-                            />
-                          </Dialog>
-                          <Dialog>
-                            <DialogTrigger>
-                              <Button className="w-full rounded-lg bg-primary-100 text-secondary-100 hover:bg-primary-200">
-                                <Check size={20} />
-                                <p>Approve</p>
-                              </Button>
-                            </DialogTrigger>
-                            <EventDialogApproval
-                              status="APPROVED"
-                              event={event}
-                              onUpdateEvent={async () =>
-                                await handleUpdateEvent(event.id, {
-                                  ...event,
-                                  status: "APPROVED",
-                                })
-                              }
-                            />
-                          </Dialog>
-                        </div>
-                      )}
-                      {event.status === "APPROVED" && (
-                        <div className="flex gap-1">
-                          <Dialog>
-                            <DialogTrigger className="w-full">
-                              <Button className="w-full rounded-lg border border-secondary-700 bg-secondary-200 text-secondary-800 hover:bg-secondary-800/20">
-                                <p>Cancel</p>
-                              </Button>
-                            </DialogTrigger>
-                            <EventDialogApproval
-                              status="CANCELLED"
-                              event={event}
-                              onUpdateEvent={async () =>
-                                await handleUpdateEvent(event.id, {
-                                  ...event,
-                                  status: "CANCELLED",
-                                })
-                              }
-                            />
-                          </Dialog>
-                          <Dialog>
-                            <DialogTrigger className="w-full">
-                              <Button className="w-full rounded-lg border border-secondary-700 bg-blue-200 text-secondary-800 hover:bg-blue-800/30">
-                                <p>Complete</p>
-                              </Button>
-                            </DialogTrigger>
-                            <EventDialogApproval
-                              status="COMPLETED"
-                              event={event}
-                              onUpdateEvent={async () =>
-                                await handleUpdateEvent(event.id, {
-                                  ...event,
-                                  status: "COMPLETED",
-                                })
-                              }
-                            />
-                          </Dialog>
-                        </div>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center justify-center">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger>
-                            <Ellipsis className="w-5 cursor-pointer text-secondary-800" />
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => handleViewClick(event.id)}
-                            >
-                              <Eye className="mr-2 w-4" />
-                              View
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => handleEditClick(event)}
-                            >
-                              <Edit className="mr-2 w-4" />
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild>
-                              <Dialog>
-                                <DialogTrigger asChild>
-                                  <button className="flex w-full items-center px-2 py-1 text-sm text-red-600 hover:bg-secondary-200/50">
-                                    <Trash className="mr-2 w-4" />
-                                    Delete
-                                  </button>
-                                </DialogTrigger>
-                                <EventDialogApproval
-                                  status="DELETED"
-                                  event={event}
-                                  onUpdateEvent={async () =>
-                                    await handleUpdateEvent(event.id, {
-                                      ...event,
-                                      deletedAt: new Date().toISOString(),
-                                    })
-                                  }
-                                />
-                              </Dialog>
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
+                      <Dialog>
+                        <DialogTrigger>
+                          <Button className="w-full rounded-lg bg-primary-100 text-secondary-100 hover:bg-primary-200">
+                            <ArchiveRestore size={20} />
+                            <p>Restore</p>
+                          </Button>
+                        </DialogTrigger>
+                        <EventDialogApproval
+                          status="RESTORED"
+                          event={event}
+                          onUpdateEvent={async () =>
+                            await handleUpdateEvent(event.id, {
+                              ...event,
+                              deletedAt: null,
+                            })
+                          }
+                        />
+                      </Dialog>
                     </TableCell>
                   </TableRow>
                 );
@@ -560,9 +329,9 @@ function AdminEventListContent() {
           <div>
             <CalendarX size={"100px"} className="mx-auto text-secondary-600" />
             <h3 className="text-center text-2xl font-semibold text-secondary-600">
-              No events found
+              No items found
             </h3>
-            <h3 className="mx-auto text-center text-secondary-700">{`It looks like there are no events matching the filter criteria.`}</h3>
+            <h3 className="mx-auto text-center text-secondary-700">{`It looks like there are no records to display.`}</h3>
           </div>
         </div>
       )}
@@ -576,15 +345,17 @@ function AdminEventListContent() {
       />
 
       {/* Pagination */}
-      <PaginationBar
-        itemsPerPage={itemsPerPage}
-        dataLength={filteredEvents.length}
-        currentPage={currentPage}
-        handleSetCurrentPage={setCurrentPage}
-        handleSetSearchParams={setSearchParams}
-      />
+      {filteredEvents.length === 0 ? null : (
+        <PaginationBar
+          itemsPerPage={itemsPerPage}
+          dataLength={filteredEvents.length}
+          currentPage={currentPage}
+          handleSetCurrentPage={setCurrentPage}
+          handleSetSearchParams={setSearchParams}
+        />
+      )}
     </div>
   );
 }
 
-export default AdminEventListContent;
+export default Archives;

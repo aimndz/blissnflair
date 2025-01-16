@@ -138,6 +138,7 @@ function Event() {
       <CustomToast type="success" message="Link copied to clipboard" />
     ));
   };
+  console.log(event);
 
   return (
     <div className="mx-auto mb-10 max-w-6xl">

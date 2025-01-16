@@ -23,6 +23,7 @@ import {
   CircleUserRound,
   Settings,
   ChevronDown,
+  Archive,
 } from "lucide-react";
 import { useUser } from "../hooks/use-user";
 import {
@@ -65,6 +66,11 @@ const items = [
     title: "Events",
     url: "events",
     icon: PartyPopper,
+  },
+  {
+    title: "Archives",
+    url: "archives",
+    icon: Archive,
   },
   // {
   //   title: "Calendar View",

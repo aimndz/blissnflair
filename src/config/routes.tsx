@@ -31,6 +31,7 @@ import EventGuest from "../pages/eventDetails/EventGuest";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ChangePassword from "../pages/auth/ChangePassword";
 import VerifyCode from "../pages/auth/VerifyCode";
+import Archives from "../pages/archives/Archives";
 
 const userRoutes = [
   {
@@ -106,6 +107,11 @@ const userRoutes = [
     path: "profile/edit",
     title: "Edit Profile",
     element: <ProfileEdit />,
+  },
+  {
+    path: "archives",
+    title: "Archives",
+    element: <Archives />,
   },
 ];
 

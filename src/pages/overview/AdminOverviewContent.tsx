@@ -38,7 +38,14 @@ function AdminOverviewContent() {
   const [account, setAccounts] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state to manage the fetching process
 
-  const upcomingEvents = events
+  // Filter out non-archived events
+  const nonArchivedEvents = events.filter((event) => {
+    return (
+      event.deletedAt === null || event.deletedAt === "0000-01-01T00:00:00.000Z"
+    );
+  });
+
+  const upcomingEvents = nonArchivedEvents
     .filter(
       (event) =>
         event.status === "APPROVED" && new Date(event.date) > new Date(),
@@ -58,7 +65,7 @@ function AdminOverviewContent() {
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 4);
 
-  const countdownDetails = events
+  const countdownDetails = nonArchivedEvents
     .filter(
       (event) =>
         event.status === "APPROVED" && new Date(event.date) > new Date(),
@@ -85,7 +92,7 @@ function AdminOverviewContent() {
   const scheduledDates = upcomingEvents.map((event) => new Date(event.date));
 
   // get all pending events
-  const pendingEvents = events
+  const pendingEvents = nonArchivedEvents
     .filter(
       (event) =>
         event.status === "PENDING" && new Date(event.date) > new Date(),
@@ -106,10 +113,10 @@ function AdminOverviewContent() {
   const totalEventsChart = getPast7DaysData(events);
   const totalAccountsChart = getPast7DaysAccountData(account);
   const activeEventsChart = getPast7DaysData(
-    events.filter((event) => event.status === "APPROVED"),
+    nonArchivedEvents.filter((event) => event.status === "APPROVED"),
   );
   const pendingEventsChart = getPast7DaysData(
-    events.filter((event) => event.status === "PENDING"),
+    nonArchivedEvents.filter((event) => event.status === "PENDING"),
   );
 
   useEffect(() => {
@@ -193,13 +200,19 @@ function AdminOverviewContent() {
         <div className="grid grid-cols-4 gap-3">
           <SummaryCard
             title="No. of Active Events"
-            value={events.filter((event) => event.status === "APPROVED").length}
+            value={
+              nonArchivedEvents.filter((event) => event.status === "APPROVED")
+                .length
+            }
             chartData={activeEventsChart}
           />
 
           <SummaryCard
             title="No. of Pending Events"
-            value={events.filter((event) => event.status === "PENDING").length}
+            value={
+              nonArchivedEvents.filter((event) => event.status === "PENDING")
+                .length
+            }
             chartData={pendingEventsChart}
           />
           <SummaryCard
@@ -210,7 +223,7 @@ function AdminOverviewContent() {
           />
           <SummaryCard
             title="Total Events"
-            value={events.length}
+            value={nonArchivedEvents.length}
             chartData={totalEventsChart}
           />
         </div>
@@ -437,7 +450,7 @@ function AdminOverviewContent() {
             </div>
             <div className="w-full">
               <h2 className="mb-3 text-2xl font-medium">Statistics</h2>
-              {events.length > 0 ? (
+              {nonArchivedEvents.length > 0 ? (
                 <StatisticsChart events={events} />
               ) : (
                 <p className="my-auto max-w-96 italic text-secondary-800">
