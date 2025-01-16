@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { getEventById, updateEvent } from "../../services/eventApi";
 import {
+  Archive,
+  ArchiveRestore,
   ArrowLeft,
   Box,
   Calendar,
@@ -115,9 +117,18 @@ function Event() {
         formData.append("imageUrl", updatedEvent.imageUrl);
       }
 
+      if (updatedEvent.deletedAt === null) {
+        formData.append("deletedAt", "0000-01-01T00:00:00Z");
+      }
+
+      if (updatedEvent.deletedAt) {
+        formData.append("deletedAt", updatedEvent.deletedAt);
+      }
+
       const response = await updateEvent(id, formData);
 
       if (response.success) {
+        console.log(response.data);
         setEvent(updatedEvent);
         toast.custom(() => (
           <CustomToast type="success" message="Event updated successfully" />
@@ -138,7 +149,8 @@ function Event() {
       <CustomToast type="success" message="Link copied to clipboard" />
     ));
   };
-  console.log(event);
+
+  const handleDelete = async () => {};
 
   return (
     <div className="mx-auto mb-10 max-w-6xl">
@@ -336,6 +348,56 @@ function Event() {
                   Copy link
                 </p>
               </Button>
+              {event?.status === "PENDING" ? (
+                event?.deletedAt === null ||
+                event.deletedAt === "0000-01-01T00:00:00.000Z" ? (
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button className="w-full rounded-lg bg-transparent text-red-800 shadow-none hover:bg-secondary-300">
+                        <Archive className="text-red-700/70" size={15} />
+                        <p className="text-xs font-semibold text-red-700/70">
+                          Delete
+                        </p>
+                      </Button>
+                    </DialogTrigger>
+                    <EventDialogApproval
+                      status="DELETED"
+                      event={event!}
+                      onUpdateEvent={async () => {
+                        if (event?.id) {
+                          await handleUpdateEvent(event.id, {
+                            ...event,
+                            deletedAt: new Date().toISOString(),
+                          });
+                        }
+                      }}
+                    />
+                  </Dialog>
+                ) : (
+                  <Dialog>
+                    <DialogTrigger>
+                      <Button className="w-full rounded-lg bg-transparent text-red-800 shadow-none hover:bg-secondary-300">
+                        <ArchiveRestore className="text-red-700/70" size={15} />
+                        <p className="text-xs font-semibold text-red-700/70">
+                          Restore
+                        </p>
+                      </Button>
+                    </DialogTrigger>
+                    <EventDialogApproval
+                      status="DELETED"
+                      event={event!}
+                      onUpdateEvent={async () => {
+                        if (event?.id) {
+                          await handleUpdateEvent(event.id, {
+                            ...event,
+                            deletedAt: null,
+                          });
+                        }
+                      }}
+                    />
+                  </Dialog>
+                )
+              ) : null}
             </div>
           </div>
           <h2 className="text-2xl font-bold">{event?.title}</h2>

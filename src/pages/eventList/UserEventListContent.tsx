@@ -42,22 +42,29 @@ function UserEventListContent() {
   const currentFilterLabel =
     eventStatus.find((status) => status.value === filter)?.label || "Approved";
 
-  const filteredEvents = events.filter((event) => {
-    switch (filter) {
-      case "pending":
-        return event.status === "PENDING";
-      case "approved":
-        return event.status === "APPROVED";
-      case "cancelled":
-        return event.status === "CANCELLED";
-      case "completed":
-        return event.status === "COMPLETED";
-      case "rejected":
-        return event.status === "REJECTED";
-      default:
-        return event.status === "APPROVED";
-    }
-  });
+  const filteredEvents = events
+    .filter((event) => {
+      return (
+        event.deletedAt === null ||
+        event.deletedAt === "0000-01-01T00:00:00.000Z"
+      );
+    })
+    .filter((event) => {
+      switch (filter) {
+        case "pending":
+          return event.status === "PENDING";
+        case "approved":
+          return event.status === "APPROVED";
+        case "cancelled":
+          return event.status === "CANCELLED";
+        case "completed":
+          return event.status === "COMPLETED";
+        case "rejected":
+          return event.status === "REJECTED";
+        default:
+          return event.status === "APPROVED";
+      }
+    });
 
   useEffect(() => {
     if (!searchParams.get("filter")) {

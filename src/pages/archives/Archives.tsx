@@ -23,6 +23,7 @@ import { getRandomDegree } from "../../utils/randomGradient";
 import { toast } from "sonner";
 import PaginationBar from "../../components/PaginationBar";
 import CustomToast from "../../components/toasts/CustomToast";
+import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 
 interface User {
   id: string;
@@ -43,6 +44,7 @@ function Archives() {
   const currentPageParam = Number(searchParams.get("page")) || 1;
   const [currentPage, setCurrentPage] = useState<number>(currentPageParam);
   const itemsPerPage = 15; // Number of items per page
+  const routePrefix = useRoutePrefix();
 
   const navigate = useNavigate();
 
@@ -204,6 +206,10 @@ function Archives() {
     return <Loading />;
   }
 
+  const handleGotoEvent = (id: string) => {
+    navigate(`/${routePrefix}/events/${id}`);
+  };
+
   return (
     <div className="mx-auto">
       {currentEvents.length > 0 ? (
@@ -227,26 +233,27 @@ function Archives() {
                 const randomDeg = getRandomDegree();
                 return (
                   <TableRow key={event.id}>
-                    <Link to={`/admin/dashboard/events/${event.id}`}>
-                      <TableCell className="cursor-pointer transition-all duration-200 ease-in-out hover:underline">
-                        <div className="flex items-center gap-2">
-                          <div className="h-10 w-10 overflow-hidden rounded-lg object-cover">
-                            {event.imageUrl ? (
-                              <img
-                                src={event.imageUrl}
-                                alt=""
-                                className="h-full w-full object-cover"
-                              />
-                            ) : (
-                              <div
-                                className={`relative aspect-square w-full rounded-t-lg ${randomDeg} from-primary-100/20 to-primary-100`}
-                              ></div>
-                            )}
-                          </div>
-                          <p>{event.title}</p>
+                    <TableCell
+                      className="cursor-pointer transition-all duration-200 ease-in-out hover:underline"
+                      onClick={() => handleGotoEvent(event.id)}
+                    >
+                      <div className="flex items-center gap-2">
+                        <div className="h-10 w-10 overflow-hidden rounded-lg object-cover">
+                          {event.imageUrl ? (
+                            <img
+                              src={event.imageUrl}
+                              alt=""
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div
+                              className={`relative aspect-square w-full rounded-t-lg ${randomDeg} from-primary-100/20 to-primary-100`}
+                            ></div>
+                          )}
                         </div>
-                      </TableCell>
-                    </Link>
+                        <p>{event.title}</p>
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
                         <Avatar className="flex h-8 w-8 items-center justify-center bg-secondary-600/50 text-xs">
