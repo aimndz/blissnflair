@@ -31,6 +31,7 @@ function SummaryCard() {
   return (
     <Accordion
       type="single"
+      defaultValue="item-1"
       collapsible
       className="sticky top-10 z-50 mt-8 w-full self-auto rounded-lg border border-secondary-600 bg-secondary-100 shadow-lg min-[1000px]:mt-0 min-[1000px]:w-1/3"
     >
