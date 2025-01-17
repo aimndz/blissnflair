@@ -18,6 +18,7 @@ import Logo from "../../components/icons/Logo";
 import { forgotPassword } from "../../services/authApi";
 import { toast } from "sonner";
 import { mapValidationErrors } from "../../utils/mapValidationErrors";
+import CustomToast from "../../components/toasts/CustomToast";
 
 // Define form schema
 const formSchema = z.object({
@@ -41,6 +42,7 @@ function ForgotPassword() {
       const res = await forgotPassword(values.email);
       if (!res.success) {
         const fieldErrors = mapValidationErrors(res.errors);
+
         setErrors(fieldErrors);
       } else {
         toast.custom(() => (

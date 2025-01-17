@@ -144,6 +144,10 @@ function Preview() {
 
         navigate(`/${routePrefix}`);
       } else {
+        toast.custom(() => (
+          <CustomToast type="error" message={eventRes.errors[0].msg} />
+        ));
+
         console.error("Failed to create event");
       }
     } catch (error) {
