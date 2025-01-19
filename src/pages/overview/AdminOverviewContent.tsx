@@ -468,7 +468,7 @@ function AdminOverviewContent() {
           </div>
 
           <div className="w-full max-w-72 rounded-lg border border-secondary-600 p-5">
-            <h2 className="mb-3 text-2xl font-medium">Calendar</h2>
+            <h2 className="mb-3 text-2xl font-medium">Calendar Preview</h2>
             <CalendarPreview
               key={scheduledDates.length}
               mode="multiple"

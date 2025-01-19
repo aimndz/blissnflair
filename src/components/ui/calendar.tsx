@@ -79,10 +79,10 @@ function Calendar({
         nav: "flex items-start",
         month_grid: "mt-4",
         week: "flex w-full mt-2",
-        day: "p-0 size-8 text-sm flex-1 flex items-center justify-center has-[button]:hover:!bg-accent rounded-md has-[button]:hover:aria-selected:!bg-primary-100 has-[button]:hover:text-accent-foreground has-[button]:hover:aria-selected:text-primary-foreground",
+        day: "p-0 size-8 text-sm flex-1 flex items-center justify-center  has-[button]:hover:!bg-accent rounded-md has-[button]:hover:aria-selected:!bg-primary-100 has-[button]:hover:text-accent-foreground has-[button]:hover:aria-selected:text-primary-foreground",
         day_button: cn(
           buttonVariants({ variant: "ghost" }),
-          "size-8 p-0 font-normal transition-none hover:bg-transparent hover:text-inherit aria-selected:opacity-100",
+          "size-8 p-0 font-normal transition-none hover:bg-transparent hover:text-inherit cursor-default aria-selected:opacity-100",
         ),
         range_start: "day-range-start rounded-s-md",
         range_end: "day-range-end rounded-e-md",
