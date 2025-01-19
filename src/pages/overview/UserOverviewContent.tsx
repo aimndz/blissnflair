@@ -1,4 +1,4 @@
-import { Calendar, Flower } from "lucide-react";
+import { Calendar, Flower, Eye } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -195,9 +195,12 @@ function UserOverviewContent() {
                             </CardDescription>
                           </CardHeader>
                           <CardContent>
-                            <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
-                              Edit event
-                            </Button>
+                            <Link to={`/dashboard/events/${event.id}`}>
+                              <Button className="bg-primary-100 text-secondary-900 hover:bg-primary-200">
+                                <Eye className="" />
+                                View Event
+                              </Button>
+                            </Link>
                           </CardContent>
                         </Card>
                       </CarouselItem>

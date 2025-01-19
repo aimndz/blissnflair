@@ -317,8 +317,14 @@ function AdminOverviewContent() {
                       <CarouselItem className="basis-1/4 pl-3" key={event.id}>
                         <Card>
                           <CardHeader className="px-5 pb-3 text-xl font-semibold">
-                            <CardTitle className="truncate">
+                            <CardTitle className="flex items-center justify-between truncate">
                               {event.title}
+                              <Link
+                                to={`/admin/dashboard/events/${event.id}`}
+                                className="text-end text-xs hover:underline"
+                              >
+                                View
+                              </Link>
                             </CardTitle>
                           </CardHeader>
                           <CardContent className="px-4 pb-6">

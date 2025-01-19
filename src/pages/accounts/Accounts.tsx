@@ -173,9 +173,7 @@ function Accounts() {
           <TableBody>
             {currentAccounts.map((user) => (
               <TableRow key={user.id}>
-                <TableCell className="cursor-pointer transition-all delay-75 hover:underline">
-                  {user.id}
-                </TableCell>
+                <TableCell>{user.id}</TableCell>
                 <TableCell>{user.firstName}</TableCell>
                 <TableCell>{user.lastName}</TableCell>
                 <TableCell className="flex items-center gap-3">

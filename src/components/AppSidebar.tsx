@@ -116,7 +116,7 @@ export function AppSidebar() {
           <div className="absolute left-0 top-0">
             <SidebarTrigger />
           </div>
-          <Link to="/">
+          <Link to={isAdmin ? "/admin/dashboard/overview" : "/"}>
             <div className="mx-auto flex w-10 justify-center">
               <Logo />
             </div>
