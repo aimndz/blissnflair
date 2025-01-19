@@ -14,7 +14,7 @@ import {
 } from "../../services/eventApi";
 import { getAllAccounts } from "../../services/accountApi";
 import { Event } from "../../types/event";
-import { parseISO, format } from "date-fns";
+import { parseISO, format, isBefore, isAfter } from "date-fns";
 import {
   CalendarX,
   Check,
@@ -23,6 +23,7 @@ import {
   Eye,
   Plus,
   Trash,
+  TriangleAlert,
   X,
 } from "lucide-react";
 import Combobox from "../../components/ui/combobox";
@@ -47,6 +48,11 @@ import EventsListHeader from "./EventsListHeader";
 import PaginationBar from "../../components/PaginationBar";
 import { Separator } from "../../components/ui/separator";
 import CustomToast from "../../components/toasts/CustomToast";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "../../components/ui/tooltip";
 
 interface User {
   id: string;
@@ -130,6 +136,12 @@ function AdminEventListContent() {
       };
     })
     .sort((a, b) => {
+      // Then, sort by scheduled date (start time)
+      const aStartTime = parseISO(a.startTime);
+      const bStartTime = parseISO(b.startTime);
+      return aStartTime.getTime() - bStartTime.getTime();
+    })
+    .sort((a, b) => {
       if (filter === "all") {
         if (
           a.status.toUpperCase() === "CANCELLED" &&
@@ -197,6 +209,34 @@ function AdminEventListContent() {
       default:
         return "bg-secondary-100 text-secondary-600 border border-secondary-500";
     }
+  };
+
+  // check for overlapping events
+  const hasOverlappingEvents = (event: Event) => {
+    const eventStart = parseISO(event.startTime);
+    const eventEnd = parseISO(event.endTime);
+
+    return filteredEvents.some((otherEvent) => {
+      // Skip the same event and only check for events with status "PENDING" or "APPROVED" and the same venue
+      if (
+        otherEvent.id === event.id ||
+        (otherEvent.status !== "PENDING" && otherEvent.status !== "APPROVED") ||
+        otherEvent.venue !== event.venue // Check if the venue is the same
+      ) {
+        return false;
+      }
+
+      const otherStart = parseISO(otherEvent.startTime);
+      const otherEnd = parseISO(otherEvent.endTime);
+
+      if (isBefore(eventStart, otherEnd) && isAfter(eventEnd, otherStart)) {
+        console.log(event.title, event.venue);
+      }
+
+      return (
+        isBefore(eventStart, otherEnd) && isAfter(eventEnd, otherStart) // Check for overlap
+      );
+    });
   };
 
   useEffect(() => {
@@ -358,6 +398,23 @@ function AdminEventListContent() {
                     <Link to={`/admin/dashboard/events/${event.id}`}>
                       <TableCell className="cursor-pointer transition-all duration-200 ease-in-out hover:underline">
                         <div className="flex items-center gap-2">
+                          <div className="w-5">
+                            {hasOverlappingEvents(event) &&
+                              (event.status === "PENDING" ||
+                                event.status === "APPROVED") && (
+                                <Tooltip>
+                                  <TooltipTrigger>
+                                    <TriangleAlert className="w-5 text-red-500" />
+                                  </TooltipTrigger>
+                                  <TooltipContent className="rounded-lg bg-secondary-200 p-2 text-secondary-900">
+                                    <p>
+                                      Event overlaps with another {event.venue}
+                                    </p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              )}
+                          </div>
+
                           <div className="h-10 w-10 overflow-hidden rounded-lg object-cover">
                             {event.imageUrl ? (
                               <img
