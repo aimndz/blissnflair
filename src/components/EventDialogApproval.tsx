@@ -33,7 +33,7 @@ function EventDialogApproval({
       REJECTED: "Reject",
       COMPLETED: "Complete",
       DELETED: "Delete",
-      CANCELLED: "Cancel",
+      CANCELLED: "Confirm",
       RESTORED: "Restore",
     }[status] || "Confirm";
 
