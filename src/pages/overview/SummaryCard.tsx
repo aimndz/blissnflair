@@ -25,7 +25,7 @@ import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 const chartConfig = {
   label: "Data",
-  color: "hsl(var(--chart-1))", // Default color
+  color: "rgb(49 225 122)", // Default color
 } satisfies ChartConfig;
 
 function SummaryCard({
@@ -33,7 +33,7 @@ function SummaryCard({
   value,
   chartData,
   dataKey = "events",
-  chartColor = "hsl(var(--chart-1))",
+  chartColor = "rgb(49 225 122)",
 }: {
   title: string;
   value: number;
