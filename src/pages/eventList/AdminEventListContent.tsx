@@ -394,7 +394,16 @@ function AdminEventListContent() {
               {currentEvents.map((event) => {
                 const randomDeg = getRandomDegree();
                 return (
-                  <TableRow key={event.id}>
+                  <TableRow
+                    key={event.id}
+                    className={
+                      hasOverlappingEvents(event) &&
+                      (event.status === "PENDING" ||
+                        event.status === "APPROVED")
+                        ? "bg-red-200 hover:bg-red-300/70"
+                        : ""
+                    }
+                  >
                     <Link to={`/admin/dashboard/events/${event.id}`}>
                       <TableCell className="cursor-pointer transition-all duration-200 ease-in-out hover:underline">
                         <div className="flex items-center gap-2">
@@ -404,17 +413,14 @@ function AdminEventListContent() {
                                 event.status === "APPROVED") && (
                                 <Tooltip>
                                   <TooltipTrigger>
-                                    <TriangleAlert className="w-5 text-red-500" />
+                                    <TriangleAlert className="w-5 text-red-600" />
                                   </TooltipTrigger>
                                   <TooltipContent className="rounded-lg bg-secondary-200 p-2 text-secondary-900">
-                                    <p>
-                                      Event overlaps with another {event.venue}
-                                    </p>
+                                    <p>Event overlaps with another</p>
                                   </TooltipContent>
                                 </Tooltip>
                               )}
                           </div>
-
                           <div className="h-10 w-10 overflow-hidden rounded-lg object-cover">
                             {event.imageUrl ? (
                               <img
