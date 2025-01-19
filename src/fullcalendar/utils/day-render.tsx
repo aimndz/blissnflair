@@ -1,5 +1,4 @@
-import { addDays, format, parseISO } from "date-fns";
-
+import { addDays, format, isBefore } from "date-fns"; // Import isBefore for date comparison
 import React from "react";
 import { Event } from "@fullcalendar/types/event";
 import EventModal from "@fullcalendar/event-components/eventmodal";
@@ -10,7 +9,6 @@ interface RenderDaysInMonthProps {
   currentDate: Date;
   events: Event[];
   startWeek: Date;
-  daysOfWeek: string[];
   venue?: string;
 }
 
@@ -24,9 +22,7 @@ export const renderDaysInMonth = ({
   let day = startWeek;
 
   // Today's date
-  const todayDate = format(new Date(), "d");
-  const todayMonth = format(new Date(), "M");
-  const todayYear = format(new Date(), "yyyy");
+  const todayDate = new Date();
 
   // Calculate the number of days in the current month
   const totalDaysInMonth = new Date(
@@ -43,13 +39,11 @@ export const renderDaysInMonth = ({
       const formattedDay = format(day, "yyyy-MM-dd");
       const isCurrentMonth = format(day, "M") === format(currentDate, "M");
 
-      // For days not in the current month, we'll handle the display differently
+      // Check if the day is today or in the past
       const isToday =
-        format(day, "d") === todayDate &&
-        format(day, "M") === todayMonth &&
-        format(day, "yyyy") === todayYear;
+        format(day, "yyyy-MM-dd") === format(todayDate, "yyyy-MM-dd");
+      const isPast = isBefore(day, todayDate); // Check if the day is before today
 
-      // Filter events for the specific day
       // Filter events for the specific day
       const eventsForDay = events.filter((event) => {
         const eventDate = format(new Date(event.startTime), "yyyy-MM-dd");
@@ -59,7 +53,7 @@ export const renderDaysInMonth = ({
       days.push(
         <div
           key={day.toString()}
-          className={`group relative flex h-[80px] flex-col rounded border p-1 sm:h-[130px] sm:p-2 ${isCurrentMonth ? "" : "text-gray-400"} `} // Dim color for days outside the current month
+          className={`group relative flex h-[80px] flex-col rounded border p-1 sm:h-[130px] sm:p-2 ${isCurrentMonth ? "" : "text-gray-400"}`} // Dim color for days outside the current month
         >
           {/* Day number */}
           <div
@@ -74,27 +68,32 @@ export const renderDaysInMonth = ({
 
           {/* Events list */}
           <div className="flex-grow overflow-hidden">
-            {eventsForDay.length === 0 && (
+            {/* Only render AddEvent if the day is not in the past */}
+            {(!isPast || isToday) && eventsForDay.length === 0 && (
               <AddEvent variant="secondary" currentDate={day} venue={venue} />
             )}
             {eventsForDay.length === 1 && (
               <>
                 <EventModal eventdetails={eventsForDay[0]} />
-                <AddEvent variant="secondary" currentDate={day} venue={venue} />
+                {!isPast && (
+                  <AddEvent
+                    variant="secondary"
+                    currentDate={day}
+                    venue={venue}
+                  />
+                )}
               </>
             )}
             {eventsForDay.length > 1 && (
               <>
                 <EventModal eventdetails={eventsForDay[0]} />
+                <ListAllEvents
+                  view="day"
+                  date={day}
+                  eventsForDay={eventsForDay}
+                  venue={venue}
+                />
               </>
-            )}
-            {eventsForDay.length > 1 && (
-              <ListAllEvents
-                view="day"
-                date={day}
-                eventsForDay={eventsForDay}
-                venue={venue}
-              />
             )}
           </div>
         </div>,

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { format, parseISO } from "date-fns";
+import { format, isBefore, parseISO } from "date-fns";
 import { cn } from "../../lib/utils";
 import { z } from "zod";
 import { TimeInput } from "@nextui-org/date-input";
@@ -400,6 +400,7 @@ function VenueInfo() {
                           mode="single"
                           selected={field.value}
                           onSelect={(date) => field.onChange(date)}
+                          disabled={{ before: new Date() }}
                         />
                       </PopoverContent>
                     </Popover>
