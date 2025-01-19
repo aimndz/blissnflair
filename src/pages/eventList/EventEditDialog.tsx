@@ -79,14 +79,7 @@ const createFormSchema = (userRole: string) => {
       ),
     date: z
       .date()
-      .refine((date) => date !== null, { message: "Date is required" })
-      .refine(
-        (date) =>
-          date >= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
-        {
-          message: "Event date should be at least 7 days from now",
-        },
-      ),
+      .refine((date) => date !== null, { message: "Date is required" }),
     venue: z.string().min(1, { message: "Event venue is required" }),
     organizer: z.string().refine(
       (val) => {
@@ -141,7 +134,7 @@ const convertToLocalTime = (utcIsoString: string) => {
 };
 
 function EventEditDialog({ open, onClose, event, onUpdate }) {
-  const [error, setError] = useState<{ [key: string]: string } | string>("");
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const location = useLocation();
   const { user } = useUser();
   const [previewImage, setPreviewImage] = useState<string | null>(
@@ -240,6 +233,8 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
         additionalNotes: event.additionalNotes,
         additionalHours: event.additionalHours,
       });
+
+      setErrors({});
     }
   }, [event, additionalHours, form]);
 
@@ -255,8 +250,8 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
   }, [initialValues.startTime, initialValues.date, additionalHours, form]);
 
   const handleUpdate = async (values: z.infer<typeof FormSchema>) => {
+    console.log("hello");
     const formData = new FormData();
-
     formData.append("title", values.title);
     formData.append("organizer", values.organizer);
     formData.append("description", values.description);
@@ -272,14 +267,17 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
     formData.append("additionalHours", String(additionalHours));
     formData.append("spaceName", spaceName);
 
-    if (values.eventImage) {
+    if (previewImage && typeof values.eventImage === "string") {
       formData.append("eventImage", values.eventImage);
+    } else {
+      formData.append("eventImage", "");
     }
 
     formData.append("status", event.status);
 
     try {
       const res = await updateEvent(event.id, formData);
+
       if (res.success) {
         onUpdate(res.data.event);
         onClose();
@@ -288,11 +286,12 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
         ));
       } else {
         const fieldErrors = mapValidationErrors(res.errors);
-        setError(fieldErrors);
+
+        setErrors(fieldErrors);
       }
     } catch (error: unknown) {
       if (error instanceof Error) {
-        setError(error.message);
+        // setErrors();
         console.error(error);
       }
     }
@@ -300,6 +299,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null;
+
     if (file) {
       const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
 
@@ -344,7 +344,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                     <FormField
                       control={form.control}
                       name="eventImage"
-                      render={({ field }) => (
+                      render={() => (
                         <FormItem className="flex w-full flex-col items-center">
                           <FormControl>
                             <div
@@ -367,6 +367,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                             </div>
                             {/* Move Input outside FormControl */}
                           </FormControl>
+
                           <Input
                             id="avatarInput"
                             type="file"
@@ -393,6 +394,9 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                             />
                           </FormControl>
                           <FormMessage />
+                          {errors.title && (
+                            <FormMessage>{errors.title}</FormMessage>
+                          )}
                         </FormItem>
                       )}
                     />
@@ -561,36 +565,6 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                       </FormControl>
                       <FormMessage />
                     </FormItem>
-
-                    {/* <span className="mt-8 text-xs font-semibold">to</span> */}
-                    {/* <FormField
-                control={form.control}
-                name="endTime"
-                render={({ field }) => {
-                  const startTime = form.getValues("startTime");
-
-                  return (
-                    <FormItem>
-                      <FormLabel>End Time</FormLabel>
-                      <FormControl>
-                        <TimeInput
-                          aria-label="End Time"
-                          value={stringToTimeValue(startTime)}
-                          onChange={(time) =>
-                            field.onChange(timeValueToString(time))
-                          }
-                          classNames={{
-                            segment: "focus:bg-secondary-300",
-                            inputWrapper: "hover:bg-secondary-100",
-                          }}
-                          className="rounded-md border border-solid border-secondary-300 bg-secondary-100"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              /> */}
                   </div>
                 </div>
 
@@ -632,16 +606,7 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
                   )}
                 />
               </section>
-              {error && <FormMessage>{error}</FormMessage>}
-              {/* <div className="flex justify-end">
-                <Button
-                  type="button"
-                  className="mt-5 w-full max-w-40 rounded-full bg-primary-100 px-28 font-semibold text-secondary-900 hover:bg-primary-200"
-                  onClick={form.handleSubmit(handleCateringButton)}
-                >
-                  Proceed to Catering <ArrowRight />
-                </Button>
-              </div> */}
+              {errors && <FormMessage>{errors[0]}</FormMessage>}
               <Button
                 type="submit"
                 className="mt-3 w-full rounded-full bg-primary-100 font-bold text-secondary-100 hover:bg-primary-200"
