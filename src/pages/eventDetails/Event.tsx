@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getEventById, updateEvent } from "../../services/eventApi";
 import {
   Archive,
@@ -24,7 +24,6 @@ import { Event as EventProps } from "../../types/event";
 import { Button } from "../../components/ui/button";
 import Countdown from "./Countdown";
 import eventServices from "../create/spaceDetails";
-import { useRoutePrefix } from "../../hooks/useRoutePrefix";
 import Loading from "../../components/LoadingSpinner";
 import { getCateringByEventId } from "../../services/cateringSelectionApi";
 import { Avatar } from "../../components/ui/avatar";
@@ -50,7 +49,7 @@ function Event() {
   const { id } = useParams<{ id: string }>();
   const [event, setEvent] = useState<EventProps | null>(null);
   const [catering, setCatering] = useState<CateringResponseData | null>(null);
-  const [editEventData, setEditEventData] = useState<Event | null>(null);
+  const [editEventData, setEditEventData] = useState<EventProps | null>(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
 
   const handleEditClick = (event: EventProps) => {
@@ -128,7 +127,6 @@ function Event() {
       const response = await updateEvent(id, formData);
 
       if (response.success) {
-        console.log(response.data);
         setEvent(updatedEvent);
         toast.custom(() => (
           <CustomToast type="success" message="Event updated successfully" />
@@ -149,8 +147,6 @@ function Event() {
       <CustomToast type="success" message="Link copied to clipboard" />
     ));
   };
-
-  const handleDelete = async () => {};
 
   return (
     <div className="mx-auto mb-10 max-w-6xl">
@@ -211,7 +207,7 @@ function Event() {
           {event?.status === "PENDING" && user?.role === "ADMIN" ? (
             <div className="mt-3 flex justify-center gap-3">
               <Dialog>
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button className="w-full rounded-lg border border-red-500 bg-transparent text-red-500 hover:bg-red-200 hover:text-red-500">
                     <X size={20} />
                     <p>Reject</p>
@@ -231,7 +227,7 @@ function Event() {
                 />
               </Dialog>
               <Dialog>
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button className="w-full rounded-lg bg-primary-100 text-secondary-100 hover:bg-primary-200">
                     <Check size={20} />
                     <p>Approve</p>
@@ -265,7 +261,7 @@ function Event() {
                           new Date().setDate(new Date().getDate() + 3),
                         )) ? (
                       <Dialog>
-                        <DialogTrigger>
+                        <DialogTrigger asChild>
                           <Button className="w-full rounded-lg border border-secondary-700 bg-secondary-600/50 text-secondary-800 hover:bg-secondary-800/20">
                             <p>Cancel Event</p>
                           </Button>
@@ -302,7 +298,7 @@ function Event() {
 
               {user?.role === "ADMIN" && (
                 <Dialog>
-                  <DialogTrigger>
+                  <DialogTrigger asChild>
                     <Button className="w-full rounded-lg border border-secondary-700 bg-blue-200 text-secondary-800 hover:bg-blue-800/30">
                       <p>Complete</p>
                     </Button>
@@ -334,7 +330,7 @@ function Event() {
             <div className="flex justify-end gap-5 text-secondary-800">
               <Button
                 className="flex gap-1 rounded-lg bg-transparent p-3 shadow-none hover:bg-secondary-300"
-                onClick={() => handleEditClick(event)}
+                onClick={() => event && handleEditClick(event)}
               >
                 <Edit className="text-secondary-800" size={15} />
                 <p className="text-xs font-semibold text-secondary-800">Edit</p>
@@ -352,7 +348,7 @@ function Event() {
                 event?.deletedAt === null ||
                 event.deletedAt === "0000-01-01T00:00:00.000Z" ? (
                   <Dialog>
-                    <DialogTrigger>
+                    <DialogTrigger asChild>
                       <Button className="w-full rounded-lg bg-transparent text-red-800 shadow-none hover:bg-secondary-300">
                         <Archive className="text-red-700/70" size={15} />
                         <p className="text-xs font-semibold text-red-700/70">
@@ -375,7 +371,7 @@ function Event() {
                   </Dialog>
                 ) : (
                   <Dialog>
-                    <DialogTrigger>
+                    <DialogTrigger asChild>
                       <Button className="w-full rounded-lg bg-transparent text-red-800 shadow-none hover:bg-secondary-300">
                         <ArchiveRestore className="text-red-700/70" size={15} />
                         <p className="text-xs font-semibold text-red-700/70">

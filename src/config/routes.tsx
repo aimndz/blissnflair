@@ -26,7 +26,7 @@ import Analytics from "../pages/analytics/Analytics";
 import CalendarFunctionHall from "../pages/calendar/CalendarFunctionHall";
 import CalendarLoungeHall from "../pages/calendar/CalendarLoungeHall";
 import CalendarAlFresco from "../pages/calendar/CalendarAlFresco";
-import CalendarPrivateRoom from "../pages/calendar/CalendarPrivateRoom";
+// import CalendarPrivateRoom from "../pages/calendar/CalendarPrivateRoom";
 import EventGuest from "../pages/eventDetails/EventGuest";
 import ForgotPassword from "../pages/auth/ForgotPassword";
 import ChangePassword from "../pages/auth/ChangePassword";

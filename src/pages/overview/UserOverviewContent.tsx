@@ -1,4 +1,4 @@
-import { Calendar, Flower, Eye } from "lucide-react";
+import { Calendar, Eye } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -23,14 +23,6 @@ import { ScrollArea } from "../../components/ui/scroll-area";
 import { ClockIcon } from "@radix-ui/react-icons";
 import StatisticsChart from "./StatisticsChart";
 import Loading from "../../components/LoadingSpinner";
-
-const availableServices = [
-  "Floral Arrangement Services",
-  "Audio-Visual Equipment Rental",
-  "Entertainment Services",
-  "Decor and Setup",
-  "Event lighting Services",
-];
 
 function UserOverviewContent() {
   const [events, setEvents] = useState<Event[]>([]);
@@ -80,7 +72,6 @@ function UserOverviewContent() {
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 4);
 
-  console.log(countdownDetails);
   // get all scheduled dates
   const scheduledDates = upcomingEvents.map((event) => new Date(event.date));
 
@@ -111,54 +102,56 @@ function UserOverviewContent() {
   return (
     <>
       <OverviewSection>
-        <div className="rounded-lg border border-secondary-600 p-5">
+        <div className="h-auto rounded-lg border border-secondary-600 p-5">
           <h2 className="mb-3 flex items-center gap-3 text-2xl font-medium">
             Upcoming events{" "}
             <span className="text-lg font-light">
               ( {upcomingEvents.length} )
             </span>
           </h2>
-          {upcomingEvents.length !== 0 ? (
-            <div className="flex gap-3">
-              {upcomingEvents.map((event) => (
-                <Link
-                  to={`/dashboard/events/${event.id}`}
-                  className="w-full max-w-xs"
-                  state={{ from: location.pathname }}
-                  replace
-                  key={event.id}
-                >
-                  <Card>
-                    <CardHeader className="pt-6 text-xl font-semibold">
-                      <CardTitle className="truncate">{event.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="px-4 pb-6">
-                      <div className="rounded-lg bg-secondary-200 p-2">
-                        <div className="justify-left itemss-center flex gap-3">
-                          <Calendar />
-                          <div>
-                            <p className="text-xs">
-                              {event.daysLeft} days left
-                            </p>
-                            <p className="font-semibold">{event.date}</p>
+          <ScrollArea className="h-[180px] pr-3">
+            {upcomingEvents.length !== 0 ? (
+              <div className="flex flex-col gap-3 md:flex-row">
+                {upcomingEvents.map((event) => (
+                  <Link
+                    to={`/dashboard/events/${event.id}`}
+                    className="w-full max-w-sm"
+                    key={event.id}
+                  >
+                    <Card>
+                      <CardHeader className="pt-6 text-xl font-semibold">
+                        <CardTitle className="truncate">
+                          {event.title}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent className="px-4 pb-6">
+                        <div className="rounded-lg bg-secondary-200 p-2">
+                          <div className="justify-left itemss-center flex gap-3">
+                            <Calendar />
+                            <div>
+                              <p className="text-xs">
+                                {event.daysLeft} days left
+                              </p>
+                              <p className="font-semibold">{event.date}</p>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p className="italic text-secondary-800">
-              It looks like there are no upcoming events right now.
-            </p>
-          )}
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="italic text-secondary-800">
+                It looks like there are no upcoming events right now.
+              </p>
+            )}
+          </ScrollArea>
         </div>
       </OverviewSection>
 
       <OverviewSection>
-        <div className="mt-5 flex gap-5">
+        <div className="mt-5 flex flex-col gap-5 md:flex-row">
           <div className="w-full max-w-96 rounded-lg border border-secondary-600 py-5 pl-5 pr-2">
             <h2 className="mb-3 flex items-center gap-3 text-2xl font-medium">
               Pending events{" "}
@@ -206,8 +199,6 @@ function UserOverviewContent() {
                       </CarouselItem>
                     ))}
                   </CarouselContent>
-                  {/* <CarouselPrevious />
-          <CarouselNext /> */}
                 </Carousel>
               ) : (
                 <div className="italic text-secondary-800">
@@ -218,7 +209,7 @@ function UserOverviewContent() {
             </ScrollArea>
           </div>
 
-          <div className="text flex w-full gap-3 rounded-lg border border-secondary-600 p-5">
+          <div className="text flex w-full flex-col gap-3 rounded-lg border border-secondary-600 p-5 min-[1500px]:flex-row">
             <div className="w-full">
               <h2 className="mb-3 text-2xl font-medium">
                 10 days Countdown{" "}
@@ -267,7 +258,7 @@ function UserOverviewContent() {
             </div>
           </div>
 
-          <div className="w-full max-w-72 rounded-lg border border-secondary-600 p-5">
+          <div className="w-full rounded-lg border border-secondary-600 p-5 md:max-w-72">
             <h2 className="mb-3 text-2xl font-medium">Calendar</h2>
             <CalendarPreview
               key={scheduledDates.length}
@@ -279,20 +270,6 @@ function UserOverviewContent() {
           </div>
         </div>
       </OverviewSection>
-
-      {/* <OverviewSection>
-        <div className="text w-full rounded-lg border border-secondary-600 bg-secondary-300 p-5">
-          <h2 className="mb-3 text-2xl font-medium">Available services</h2>
-          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-            {availableServices.map((service) => (
-              <div className="flex aspect-square flex-col items-center justify-center rounded-lg border border-secondary-600 bg-secondary-100 p-3 text-center">
-                <Flower />
-                <p className="font-medium">{service}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </OverviewSection> */}
     </>
   );
 }

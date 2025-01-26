@@ -75,12 +75,12 @@ function EventDialogApproval({
         {status === "DELETED" && "This can be undone later."}
       </DialogDescription>
       <DialogFooter>
-        <DialogClose>
+        <DialogClose asChild>
           <Button className="border border-secondary-600 bg-secondary-200 text-secondary-900 hover:bg-secondary-300">
             Cancel
           </Button>
         </DialogClose>
-        <DialogClose>
+        <DialogClose asChild>
           <Button className={buttonStyle} onClick={onUpdateEvent}>
             {actionTitle}
           </Button>

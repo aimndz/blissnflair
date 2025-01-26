@@ -1,6 +1,7 @@
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "../../components/ui/dialog";
@@ -344,6 +345,9 @@ function EventEditDialog({
         <DialogHeader>
           <DialogTitle>Edit Event</DialogTitle>
         </DialogHeader>
+        <DialogDescription>
+          Please fill in the details below to update the event.
+        </DialogDescription>
         <div>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(handleUpdate)}>
