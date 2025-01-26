@@ -453,8 +453,10 @@ function AdminEventListContent() {
                               ? event.user.firstName + " " + event.user.lastName
                               : event?.organizer}
                           </p>
-                          <p className="text-xs text-secondary-800">
-                            {event.user.email}
+                          <p className="text-xs text-secondary-800 hover:underline">
+                            <a href={`mailto:${event.user.email}`}>
+                              {event.user.email}
+                            </a>
                           </p>
                         </div>
                       </div>
