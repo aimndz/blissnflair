@@ -24,9 +24,10 @@ function PaxAndTotalCard() {
             type="number"
             onChange={(e) => {
               const value = e.target.value;
-              const numericValue = value === "" ? 0 : Number(value);
+              const numericValue =
+                value === "" ? 0 : Math.max(0, Number(value)); // Ensure non-negative values
               if (numericValue <= 200) {
-                setExpectedPax(numericValue); // Only update if the value is <= 200
+                setExpectedPax(numericValue); // Only update if value is within range
               }
             }}
           />
