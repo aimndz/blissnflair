@@ -1,15 +1,16 @@
 import React from "react";
 import { CloudSun, LampWallUp, Sofa } from "lucide-react";
-import privateRoomImg from "../../images/private_room.jpg";
+// import privateRoomImg from "../../images/private_room.jpg";
 import alFrescoImg from "../../images/al_fresco.jpg";
 import functionHallImg from "../../images/function_hall.jpg";
+import loungeHallImg from "../../images/lounge_hall.png";
 
 const eventServices = [
   {
     id: 1,
     name: "Lounge Hall",
     value: "lounge hall",
-    image: privateRoomImg,
+    image: loungeHallImg,
     floorLevel: "Ground Floor",
     floorArea: "78",
     capacity: "20 to 40",

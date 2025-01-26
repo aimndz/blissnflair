@@ -1,6 +1,7 @@
 import { CubeIcon, PersonIcon } from "@radix-ui/react-icons";
 import { ScrollArea } from "../../components/ui/scroll-area";
 import { Separator } from "../../components/ui/separator";
+import { Check } from "lucide-react";
 
 interface Space {
   name: string;
@@ -198,10 +199,12 @@ function SpaceDetailsSidebar({ selectedSpace }: { selectedSpace: Space }) {
         )}
         <div className="mt-5">
           <h3 className="font-bold">Inclusions</h3>
-          <ul className="ml-4 list-disc">
+          <ul className="ml-4">
             {/* List the inclusions */}
             {selectedSpace.inclusions.map((item, index) => (
-              <li key={index}>{item}</li>
+              <li key={index} className="flex gap-3">
+                <Check size={15} /> {item}
+              </li>
             ))}
           </ul>
           <div>
