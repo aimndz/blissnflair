@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { format, isBefore, parseISO } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { cn } from "../../lib/utils";
 import { z } from "zod";
 import { TimeInput } from "@nextui-org/date-input";
@@ -46,7 +46,10 @@ const venue = [
 
 const createFormSchema = (userRole: string) => {
   return z.object({
-    title: z.string().min(1, { message: "Event title is required" }),
+    title: z
+      .string()
+      .min(1, { message: "Event title is required" })
+      .max(50, { message: "Event title should be less than 50 characters" }),
     eventImage: z
       .any()
       .refine(
@@ -88,7 +91,11 @@ const createFormSchema = (userRole: string) => {
     category: z.string().min(1, { message: "Event category is required" }),
     description: z
       .string()
-      .min(1, { message: "Event description is required" }),
+      .min(1, { message: "Event description is required" })
+      .max(255, {
+        message: "Event description should be less than 255 characters",
+      }),
+
     additionalNotes: z.string(),
   });
 };

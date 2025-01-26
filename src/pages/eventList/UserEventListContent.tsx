@@ -39,8 +39,8 @@ function UserEventListContent() {
 
   const filter = searchParams.get("filter") || "approved";
 
-  const currentFilterLabel =
-    eventStatus.find((status) => status.value === filter)?.label || "Approved";
+  // const currentFilterLabel =
+  //   eventStatus.find((status) => status.value === filter)?.label || "Approved";
 
   const filteredEvents = events
     .filter((event) => {

@@ -9,7 +9,6 @@ interface EventCardProps {
 }
 
 function EventCard({ event, randomDeg }: EventCardProps) {
-  console.log(event);
   return (
     <Link
       to={`/dashboard/events/${event.id}`}

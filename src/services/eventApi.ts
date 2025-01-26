@@ -1,5 +1,3 @@
-import { Event, CreateEventData } from "../types/event";
-
 const API_URL = import.meta.env.VITE_API_URL;
 
 //// GET ALL EVENTS

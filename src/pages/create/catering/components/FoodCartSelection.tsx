@@ -56,9 +56,9 @@ function FoodCartSelection({
                 {carts.length > 0 && (
                   <>
                     <p className="text-sm">{carts[0].description}</p>
-                    <p className="-mt-1 flex items-center gap-1 text-sm font-normal">
+                    <div className="-mt-1 flex items-center gap-1 text-sm font-normal">
                       <User2 size={"13px"} /> <p>{carts[0].paxCapacity} pax</p>
-                    </p>
+                    </div>
                   </>
                 )}
               </CardTitle>
