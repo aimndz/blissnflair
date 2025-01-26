@@ -248,8 +248,6 @@ function AdminOverviewContent() {
                 <Link
                   to={`/admin/dashboard/events/${event.id}`}
                   className="w-full max-w-xs"
-                  state={{ from: location.pathname }}
-                  replace
                   key={event.id}
                 >
                   <Card>
