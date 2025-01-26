@@ -61,7 +61,7 @@ const createFormSchema = (userRole: string) => {
       .min(1, { message: "Event title is required" })
       .max(50, { message: "Event title must be less than 50 characters" }),
     eventImage: z
-      .union([z.string().url(), z.instanceof(File)])
+      .union([z.string().url(), z.instanceof(File), z.null()])
       .optional()
       .refine(
         (file) =>
@@ -97,7 +97,10 @@ const createFormSchema = (userRole: string) => {
     ),
     startTime: z.string().min(1, { message: "Start time is required" }),
     endTime: z.string().min(1, { message: "End time is required" }),
-    category: z.string().min(1, { message: "Event category is required" }),
+    category: z
+      .string()
+      .min(1, { message: "Event category is required" })
+      .max(50, { message: "Event category should be less than 50 characters" }),
     description: z
       .string()
       .min(1, { message: "Event description is required" })
@@ -187,7 +190,7 @@ function EventEditDialog({
     return localDate.toISOString();
   };
 
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues] = useState({
     title: "",
     eventImage: undefined,
     organizer: "",
@@ -216,24 +219,10 @@ function EventEditDialog({
       const updatedEndTime = calculateEndTime(
         event.date,
         localUpdatedStartTime,
-        additionalHours,
+        event.additionalHours,
       );
 
-      setInitialValues({
-        title: event.title,
-        eventImage: event.imageUrl,
-        organizer:
-          event.organizer || `${event.user.firstName} ${event.user.lastName}`,
-        description: event.description,
-        date: new Date(event.date),
-        startTime: convertToLocalTime(event.startTime),
-        venue: event.venue,
-        endTime: updatedEndTime,
-        category: event.category,
-        additionalNotes: event.additionalNotes,
-        additionalHours: event.additionalHours,
-      });
-
+      setAdditionalHours(event.additionalHours);
       setPreviewImage(event.imageUrl);
 
       form.reset({
@@ -253,18 +242,17 @@ function EventEditDialog({
 
       setErrors({});
     }
-  }, [event, additionalHours, form]);
+  }, [event, form]);
 
   useEffect(() => {
     const updatedEndTime = calculateEndTime(
-      initialValues.date,
-      initialValues.startTime,
+      form.getValues("date"),
+      form.getValues("startTime"),
       additionalHours,
     );
 
-    setInitialValues((prev) => ({ ...prev, endTime: updatedEndTime }));
     form.setValue("endTime", updatedEndTime);
-  }, [initialValues.startTime, initialValues.date, additionalHours, form]);
+  }, [form, additionalHours]);
 
   const handleUpdate = async (values: z.infer<typeof FormSchema>) => {
     const formData = new FormData();
