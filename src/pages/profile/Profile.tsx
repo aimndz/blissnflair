@@ -222,7 +222,7 @@ export function Profile() {
         <ArrowLeft />
         <span>Back</span>
       </Button>
-      <div className="relative mt-3 flex justify-center gap-3 md:flex-row">
+      <div className="relative mt-3 flex flex-col justify-center gap-3 md:flex-row">
         <div className="flex flex-col items-center justify-center rounded-xl p-5 md:justify-start">
           <label
             htmlFor="avatar-upload"
@@ -251,7 +251,7 @@ export function Profile() {
             <h2 className="mb-3 text-xl font-medium">Personal Information</h2>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(handleUpdateAccount)}>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                   <FormField
                     control={form.control}
                     name="firstName"
@@ -321,7 +321,7 @@ export function Profile() {
             <h2 className="mb-3 text-xl font-medium">Change Password</h2>
             <Form {...passwordForm}>
               <form onSubmit={passwordForm.handleSubmit(handleChangePassword)}>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
                   <FormField
                     control={passwordForm.control}
                     name="currentPassword"
