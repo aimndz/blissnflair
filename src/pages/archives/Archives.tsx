@@ -12,7 +12,7 @@ import { getAllAccounts } from "../../services/accountApi";
 import { Event } from "../../types/event";
 import { parseISO, format } from "date-fns";
 import { ArchiveRestore, CalendarX } from "lucide-react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import Loading from "../../components/LoadingSpinner";
 import EventDialogApproval from "../../components/EventDialogApproval";
@@ -332,7 +332,7 @@ function Archives() {
           </Table>
         </div>
       ) : (
-        <div className="-mt-16 flex h-[calc(100vh-200px)] items-center justify-center">
+        <div className="-mt-16 flex h-[calc(100vh-100px)] items-center justify-center">
           <div>
             <CalendarX size={"100px"} className="mx-auto text-secondary-600" />
             <h3 className="text-center text-2xl font-semibold text-secondary-600">

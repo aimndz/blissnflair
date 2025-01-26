@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { getEventById } from "../../services/eventApi";
 import {
   Box,
@@ -10,7 +10,6 @@ import {
   TriangleAlert,
   User2,
   Utensils,
-  X,
   XIcon,
 } from "lucide-react";
 import { format, parseISO } from "date-fns";
@@ -72,7 +71,7 @@ function EventGuest() {
   }
 
   return (
-    <div className="mx-auto mb-10 max-w-6xl pt-10">
+    <div className="mx-auto mb-10 min-h-[calc(100vh-80px)] max-w-6xl pt-10">
       <div>
         <Logo className="mx-auto h-14 w-14" />
         <p className="mt-3 text-center uppercase">
