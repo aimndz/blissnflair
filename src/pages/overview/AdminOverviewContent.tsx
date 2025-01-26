@@ -11,7 +11,6 @@ import { useEffect, useState } from "react";
 import { Event } from "../../types/event";
 import { format, parseISO } from "date-fns";
 import { getAllEvents, updateEvent } from "../../services/eventApi";
-import { Profile } from "iconsax-react";
 import SummaryCard from "./SummaryCard";
 import { ScrollArea } from "../../components/ui/scroll-area";
 import {
@@ -31,6 +30,7 @@ import { Dialog, DialogTrigger } from "../../components/ui/dialog";
 import EventDialogApproval from "../../components/EventDialogApproval";
 import { toast } from "sonner";
 import CustomToast from "../../components/toasts/CustomToast";
+import { Avatar, AvatarImage } from "../../components/ui/avatar";
 
 function AdminOverviewContent() {
   const routePrefix = useRoutePrefix();
@@ -45,6 +45,7 @@ function AdminOverviewContent() {
     );
   });
 
+  // Get upcoming events
   const upcomingEvents = nonArchivedEvents
     .filter(
       (event) =>
@@ -65,6 +66,7 @@ function AdminOverviewContent() {
     .sort((a, b) => a.daysLeft - b.daysLeft)
     .slice(0, 4);
 
+  // Get countdown details
   const countdownDetails = nonArchivedEvents
     .filter(
       (event) =>
@@ -108,7 +110,8 @@ function AdminOverviewContent() {
 
         daysLeft,
       };
-    });
+    })
+    .sort((a, b) => a.daysLeft - b.daysLeft);
 
   const totalEventsChart = getPast7DaysData(events);
   const totalAccountsChart = getPast7DaysAccountData(account);
@@ -267,13 +270,19 @@ function AdminOverviewContent() {
                       </div>
                       <div className="mt-3 text-xs">
                         <p className="font-medium">Organized by:</p>
-                        <div className="flex items-center gap-1">
-                          <div className="flex aspect-square h-7 items-center justify-center rounded-full bg-secondary-200">
-                            <Profile
-                              size={"20px"}
-                              className="text-secondary-700"
-                            />
-                          </div>
+                        <div className="mt-1 flex items-center gap-1">
+                          <Avatar className="flex h-8 w-8 items-center justify-center bg-secondary-600/50 text-xs">
+                            {event?.organizer === "" && event.user.imageUrl ? (
+                              <AvatarImage
+                                src={event.user?.imageUrl}
+                                className="object-cover"
+                              />
+                            ) : event?.organizer?.trim() === "" ? (
+                              "Y"
+                            ) : (
+                              event?.organizer?.charAt(0).toUpperCase()
+                            )}
+                          </Avatar>
                           <p className="font-semibold">
                             {event.organizer ||
                               `${event.user.firstName} ${event.user.lastName}  `}
@@ -317,8 +326,8 @@ function AdminOverviewContent() {
                       <CarouselItem className="basis-1/4 pl-3" key={event.id}>
                         <Card>
                           <CardHeader className="px-5 pb-3 text-xl font-semibold">
-                            <CardTitle className="flex items-center justify-between truncate">
-                              {event.title}
+                            <CardTitle className="flex items-center justify-between">
+                              <p className="truncate">{event.title}</p>
                               <Link
                                 to={`/admin/dashboard/events/${event.id}`}
                                 className="text-end text-xs hover:underline"
@@ -348,13 +357,24 @@ function AdminOverviewContent() {
                               <div className="mt-3 text-xs">
                                 <p className="font-medium">Organized by:</p>
                                 <div className="flex items-center gap-1">
-                                  <div className="flex aspect-square h-7 items-center justify-center rounded-full bg-secondary-200">
-                                    <Profile
-                                      size={"20px"}
-                                      className="text-secondary-700"
-                                    />
+                                  <div className="mt-1 flex aspect-square h-7 items-center justify-center rounded-full bg-secondary-200">
+                                    <Avatar className="flex h-8 w-8 items-center justify-center bg-secondary-600/50 text-xs">
+                                      {event?.organizer === "" &&
+                                      event.user.imageUrl ? (
+                                        <AvatarImage
+                                          src={event.user?.imageUrl}
+                                          className="object-cover"
+                                        />
+                                      ) : event?.organizer?.trim() === "" ? (
+                                        "Y"
+                                      ) : (
+                                        event?.organizer
+                                          ?.charAt(0)
+                                          .toUpperCase()
+                                      )}
+                                    </Avatar>
                                   </div>
-                                  <p className="font-semibold">
+                                  <p className="w-24 truncate font-semibold">
                                     {event.organizer ||
                                       `${event.user.firstName} ${event.user.lastName}  `}
                                   </p>
