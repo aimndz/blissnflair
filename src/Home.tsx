@@ -64,6 +64,7 @@ function Home() {
             </span>
             <a
               href="https://maps.app.goo.gl/nMNhBdcmohAJextKA"
+              target="_blank"
               className="text-start hover:text-primary-200 hover:no-underline"
             >
               <span>
