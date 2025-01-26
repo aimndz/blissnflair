@@ -34,10 +34,15 @@ function Analytics() {
     return eventDate.toISOString();
   });
 
-  const accountsDates = accounts.map((account) => {
-    const eventDate = new Date(account.createdAt);
-    return eventDate.toISOString();
-  });
+  const accountsDates = accounts
+    .map((account) => {
+      if (account.createdAt) {
+        const eventDate = new Date(account.createdAt);
+        return eventDate.toISOString();
+      }
+      return "";
+    })
+    .filter((date) => date !== "");
 
   const eventsStatusData = events.map((event) => {
     return event.status;

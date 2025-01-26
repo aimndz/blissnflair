@@ -12,8 +12,10 @@ function AnalyticsHeader({
   caterings: Catering[];
   accounts: Account[];
 }) {
-  const approvedEvents = events.filter(
-    (event) => event.status === "APPROVED" || event.status === "COMPLETED",
+  const approvedEvents = events.filter((event) => event.status === "APPROVED");
+
+  const completedEvents = events.filter(
+    (event) => event.status === "COMPLETED",
   );
 
   const eventsThisMonth = events.filter((event) => {
@@ -35,7 +37,9 @@ function AnalyticsHeader({
   });
 
   const accountsRegisterdThisMonth = accounts.filter((account) => {
-    const accountDate = new Date(account.createdAt);
+    const accountDate = account.createdAt
+      ? new Date(account.createdAt)
+      : new Date();
     const currentDate = new Date();
     return (
       accountDate.getMonth() === currentDate.getMonth() &&
@@ -62,9 +66,9 @@ function AnalyticsHeader({
         <Separator orientation="vertical" className="h-auto" />
         <div className="w-full pl-4">
           <h3 className="text-xs font-semibold uppercase text-secondary-800">
-            Approved Private Rooms
+            Completed Events
           </h3>
-          <p className="text-2xl font-semibold">{approvedEvents?.length}</p>
+          <p className="text-2xl font-semibold">{completedEvents?.length}</p>
         </div>
         <Separator orientation="vertical" className="h-auto" />
         <div className="w-full pl-4">
