@@ -69,8 +69,15 @@ const createFormSchema = (userRole: string) => {
       .date()
       .refine((date) => date !== null, { message: "Date is required" })
       .refine(
-        (date) =>
-          date >= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000),
+        (date) => {
+          // Apply the 7 days validation only for USER role
+          if (userRole === "USER") {
+            return (
+              date >= new Date(new Date().getTime() + 7 * 24 * 60 * 60 * 1000)
+            );
+          }
+          return true; // Skip validation for ADMIN role
+        },
         {
           message: "Event date should be at least 7 days from now",
         },
@@ -88,7 +95,10 @@ const createFormSchema = (userRole: string) => {
     ),
     startTime: z.string().min(1, { message: "Start time is required" }),
     endTime: z.string().min(1, { message: "End time is required" }),
-    category: z.string().min(1, { message: "Event category is required" }),
+    category: z
+      .string()
+      .min(1, { message: "Event category is required" })
+      .max(50, { message: "Event category should be less than 50 characters" }),
     description: z
       .string()
       .min(1, { message: "Event description is required" })
@@ -168,7 +178,7 @@ function VenueInfo() {
     return localDate.toISOString();
   };
 
-  const [initialValues, setInitialValues] = useState({
+  const [initialValues] = useState({
     title: "",
     eventImage: undefined,
     organizer: "",
@@ -195,26 +205,15 @@ function VenueInfo() {
       const updatedStartTime = parseISO(event.startTime);
       const localUpdatedStartTime = format(updatedStartTime, "HH:mm");
 
-      console.log(event);
       const updatedEndTime = calculateEndTime(
         event.date,
         localUpdatedStartTime,
-        additionalHours,
+        event.additionalHours,
       );
 
-      setInitialValues({
-        title: event.title,
-        eventImage: event.eventImage,
-        organizer: event.organizer,
-        description: event.description,
-        date: new Date(event.date),
-        startTime: convertToLocalTime(event.startTime),
-        venue: event.venue,
-        endTime: updatedEndTime,
-        category: event.category,
-        additionalNotes: event.additionalNotes,
-        additionalHours: event.additionalHours,
-      });
+      setAdditionalHours(event.additionalHours);
+
+      // Set form values directly without resetting
       form.reset({
         title: event.title,
         eventImage: event.eventImage,
@@ -226,21 +225,19 @@ function VenueInfo() {
         endTime: updatedEndTime,
         category: event.category,
         additionalNotes: event.additionalNotes,
-        additionalHours: event.additionalHours,
       });
     }
-  }, [location.state, form, additionalHours]);
+  }, [location.state, form]);
 
   useEffect(() => {
     const updatedEndTime = calculateEndTime(
-      initialValues.date,
-      initialValues.startTime,
+      form.getValues("date"),
+      form.getValues("startTime"),
       additionalHours,
     );
 
-    setInitialValues((prev) => ({ ...prev, endTime: updatedEndTime }));
     form.setValue("endTime", updatedEndTime);
-  }, [initialValues.startTime, initialValues.date, additionalHours, form]);
+  }, [form, additionalHours]);
 
   const handleCateringButton = async (values: z.infer<typeof FormSchema>) => {
     try {
