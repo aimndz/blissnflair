@@ -17,6 +17,7 @@ import { Input } from "../../components/ui/input";
 import { Button } from "../../components/ui/button";
 import GoogleIcon from "../../components/icons/GoogleIcon";
 import { mapValidationErrors } from "../../utils/mapValidationErrors";
+import Logo2 from "../../components/icons/Logo2";
 
 const FormSchema = z
   .object({
@@ -92,8 +93,11 @@ function SignUp() {
   };
 
   return (
-    <div className="flex h-screen flex-col justify-center text-center">
-      <div className="mx-auto w-full max-w-md rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
+    <div className="flex min-h-[calc(100vh-2rem)] flex-col justify-center text-center">
+      <div>
+        <Logo2 className="fixed -bottom-36 -right-36 aspect-auto w-[800px] opacity-20" />
+      </div>
+      <div className="z-10 mx-auto w-full max-w-md rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
         <h1 className="text-xl font-bold">Sign up</h1>
         <p className="mb-8 text-sm text-secondary-800">
           Welcome! Please fill in the details
@@ -170,11 +174,7 @@ function SignUp() {
                 </FormItem>
               )}
             />
-            <div className="text-right">
-              <Link to="" className="text-sm text-secondary-800 underline">
-                Forgot password?
-              </Link>
-            </div>
+
             <Button
               type="submit"
               className="w-full rounded-full bg-primary-100 font-bold text-secondary-900 hover:bg-primary-200"

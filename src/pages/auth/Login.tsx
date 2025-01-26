@@ -19,6 +19,9 @@ import { Button } from "../../components/ui/button";
 import GoogleIcon from "../../components/icons/GoogleIcon";
 import { useUser } from "../../hooks/use-user";
 import Logo from "../../components/icons/Logo";
+import Logo2 from "../../components/icons/Logo2";
+import { Eye, EyeOff } from "lucide-react";
+// Import your eye icons
 
 // Define form schema
 const formSchema = z.object({
@@ -30,6 +33,7 @@ function Login() {
   const navigate = useNavigate();
   const { setUser } = useUser();
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // State for password visibility
 
   // Initialize form
   const form = useForm<z.infer<typeof formSchema>>({
@@ -78,14 +82,20 @@ function Login() {
   };
 
   return (
-    <div className="flex h-screen flex-col justify-center text-center">
-      <div className="mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
+    <div className="flex min-h-[calc(100vh-2rem)] flex-col justify-center text-center">
+      <div>
+        <Logo2 className="fixed -bottom-36 -right-36 aspect-auto w-[800px] opacity-20" />
+      </div>
+      <div className="z-50 mx-auto w-full max-w-sm rounded-xl border border-solid border-secondary-600 bg-secondary-100 p-8 shadow-xl">
         <Link to="/">
           <div className="mx-auto flex w-10 justify-center">
             <Logo />
           </div>
-          <div className="mb-6 text-2xl font-bold">
-            <span>BLISS & FLAIR</span>
+          <div className="mb-6 text-2xl">
+            <p className="font-bold">BLISS & FLAIR</p>
+            <p className="-mt-2 text-xs font-normal uppercase">
+              Commercial Building
+            </p>
           </div>
         </Link>
         <h1 className="text-xl font-bold">Login</h1>
@@ -112,7 +122,24 @@ function Login() {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input type="password" placeholder="Password" {...field} />
+                    <div className="relative">
+                      <Input
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Password"
+                        {...field}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute inset-y-0 right-0 flex items-center pr-3"
+                      >
+                        {showPassword ? (
+                          <Eye className="text-secondary-600" size={20} />
+                        ) : (
+                          <EyeOff className="text-secondary-600" size={20} />
+                        )}
+                      </button>
+                    </div>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
