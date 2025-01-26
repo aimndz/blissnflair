@@ -1,5 +1,5 @@
 import React from "react";
-import { CloudSun, DoorClosed, LampWallUp, Sofa } from "lucide-react";
+import { CloudSun, LampWallUp, Sofa } from "lucide-react";
 import privateRoomImg from "../../images/private_room.jpg";
 import alFrescoImg from "../../images/al_fresco.jpg";
 import functionHallImg from "../../images/function_hall.jpg";
@@ -52,61 +52,61 @@ const eventServices = [
       },
     ],
   },
-  {
-    id: 2,
-    name: "Private Room",
-    value: "private room",
-    image: privateRoomImg,
-    floorLevel: "Ground Floor",
-    floorArea: "0",
-    capacity: "2",
-    icon: React.createElement(DoorClosed, { className: "mx-auto", size: 50 }),
-    rates: null,
-    packages: {
-      packageRates: [
-        {
-          title: "Package 1",
-          Description: "3 Hours Stay",
-          price: 400,
-        },
-        {
-          title: "Package 2",
-          Description: "6 Hours Stay",
-          price: 700,
-        },
-        {
-          title: "Package 3",
-          Description: "12 Hours Stay",
-          price: 1000,
-        },
-        {
-          title: "Package 4",
-          Description: "22 Hours Stay",
-          price: 1350,
-        },
-      ],
-      additionalHead: 200,
-      additionalHour: 200,
-    },
-    inclusions: [
-      "Queen-size Bed",
-      "Wifi",
-      "Smart Wall Mounted Smart Television",
-      "Hot & Cold Shower w/ Basic Toiletries",
-      "Netflix",
-      "Air Conditioned",
-      "Private Comfort Room",
-      "Vanity Mirror",
-      "Cabinet",
-      "Wall Clock",
-      "Small Console Table w/ Lamp",
-      "Free Parking Space",
-    ],
-    note: [
-      "This is a NON-SMOKING room. A cleaning fee of PHP 5,000 will be imposed for any smoking violations to cover the cost of overall cleaning and restoration of the room.",
-    ],
-    additionalNote: [],
-  },
+  // {
+  //   id: 2,
+  //   name: "Private Room",
+  //   value: "private room",
+  //   image: privateRoomImg,
+  //   floorLevel: "Ground Floor",
+  //   floorArea: "0",
+  //   capacity: "2",
+  //   icon: React.createElement(DoorClosed, { className: "mx-auto", size: 50 }),
+  //   rates: null,
+  //   packages: {
+  //     packageRates: [
+  //       {
+  //         title: "Package 1",
+  //         Description: "3 Hours Stay",
+  //         price: 400,
+  //       },
+  //       {
+  //         title: "Package 2",
+  //         Description: "6 Hours Stay",
+  //         price: 700,
+  //       },
+  //       {
+  //         title: "Package 3",
+  //         Description: "12 Hours Stay",
+  //         price: 1000,
+  //       },
+  //       {
+  //         title: "Package 4",
+  //         Description: "22 Hours Stay",
+  //         price: 1350,
+  //       },
+  //     ],
+  //     additionalHead: 200,
+  //     additionalHour: 200,
+  //   },
+  //   inclusions: [
+  //     "Queen-size Bed",
+  //     "Wifi",
+  //     "Smart Wall Mounted Smart Television",
+  //     "Hot & Cold Shower w/ Basic Toiletries",
+  //     "Netflix",
+  //     "Air Conditioned",
+  //     "Private Comfort Room",
+  //     "Vanity Mirror",
+  //     "Cabinet",
+  //     "Wall Clock",
+  //     "Small Console Table w/ Lamp",
+  //     "Free Parking Space",
+  //   ],
+  //   note: [
+  //     "This is a NON-SMOKING room. A cleaning fee of PHP 5,000 will be imposed for any smoking violations to cover the cost of overall cleaning and restoration of the room.",
+  //   ],
+  //   additionalNote: [],
+  // },
   {
     id: 3,
     name: "Function Hall",

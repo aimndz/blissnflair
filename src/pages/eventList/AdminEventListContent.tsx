@@ -7,11 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "../../components/ui/table";
-import {
-  deleteEvent,
-  getAllEvents,
-  updateEvent,
-} from "../../services/eventApi";
+import { getAllEvents, updateEvent } from "../../services/eventApi";
 import { getAllAccounts } from "../../services/accountApi";
 import { Event } from "../../types/event";
 import { parseISO, format, isBefore, isAfter } from "date-fns";
@@ -71,7 +67,6 @@ const eventStatus = [
 
 const venues = [
   { value: "all", label: "All Venues" },
-  { value: "private room", label: "Private Room" },
   { value: "lounge hall", label: "Lounge Hall" },
   { value: "al fresco", label: "Al Fresco" },
   { value: "function hall", label: "Function Hall" },

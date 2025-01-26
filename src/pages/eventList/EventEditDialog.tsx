@@ -133,7 +133,17 @@ const convertToLocalTime = (utcIsoString: string) => {
   return `${hours}:${minutes}`;
 };
 
-function EventEditDialog({ open, onClose, event, onUpdate }) {
+function EventEditDialog({
+  open,
+  onClose,
+  event,
+  onUpdate,
+}: {
+  open: boolean;
+  onClose: () => void;
+  event: any;
+  onUpdate: (event: any) => void;
+}) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const location = useLocation();
   const { user } = useUser();
@@ -250,7 +260,6 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
   }, [initialValues.startTime, initialValues.date, additionalHours, form]);
 
   const handleUpdate = async (values: z.infer<typeof FormSchema>) => {
-    console.log("hello");
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("organizer", values.organizer);
@@ -266,14 +275,14 @@ function EventEditDialog({ open, onClose, event, onUpdate }) {
     formData.append("additionalNotes", values.additionalNotes);
     formData.append("additionalHours", String(additionalHours));
     formData.append("spaceName", spaceName);
-
-    if (previewImage && typeof values.eventImage === "string") {
-      formData.append("eventImage", values.eventImage);
-    } else {
-      formData.append("eventImage", "");
-    }
-
     formData.append("status", event.status);
+
+    if (
+      (previewImage && typeof values.eventImage === "string") ||
+      values.eventImage instanceof File
+    ) {
+      formData.append("eventImage", values.eventImage);
+    }
 
     try {
       const res = await updateEvent(event.id, formData);

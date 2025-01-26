@@ -75,7 +75,7 @@ function Venue() {
               }
             }
           }}
-          className="mx-auto grid w-full grid-cols-1 justify-center gap-3 md:grid-cols-2"
+          className="mx-auto grid w-full grid-cols-1 justify-center gap-3 md:grid-cols-3"
         >
           {spaceDetails.map((space) => (
             <ToggleGroupItem
@@ -95,9 +95,6 @@ function Venue() {
                     : "text-secondary-700"
                 }`}
               >
-                {space.name === "Private Room" && (
-                  <p className="text-2xl font-bold uppercase">Coming soon!</p>
-                )}
                 {space.icon}
               </div>
               <div

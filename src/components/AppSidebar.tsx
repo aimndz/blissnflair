@@ -21,7 +21,6 @@ import {
   PartyPopper,
   ChartLine,
   CircleUserRound,
-  Settings,
   ChevronDown,
   Archive,
 } from "lucide-react";
@@ -38,11 +37,11 @@ const calendarItems = [
     url: "calendar/lounge-hall",
     icon: Calendar,
   },
-  {
-    title: "Private Room",
-    url: "calendar/private-room",
-    icon: Calendar,
-  },
+  // {
+  //   title: "Private Room",
+  //   url: "calendar/private-room",
+  //   icon: Calendar,
+  // },
   {
     title: "Function Hall",
     url: "calendar/function-hall",

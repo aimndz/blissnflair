@@ -9,7 +9,7 @@ import Overview from "../pages/overview/Overview";
 import Create from "../pages/create/Create";
 import Venue from "../pages/create/Venue";
 import EventList from "../pages/eventList/EventList";
-import Calendar from "../pages/calendar/Calendar";
+// import Calendar from "../pages/calendar/Calendar";
 import Profile from "../pages/profile/Profile";
 import AdminLogin from "../pages/auth/AdminLogin";
 import Accounts from "../pages/accounts/Accounts";
@@ -93,11 +93,11 @@ const userRoutes = [
     title: "Al Fresco Calendar",
     element: <CalendarAlFresco />,
   },
-  {
-    path: "calendar/private-room",
-    title: "Private Room Calendar",
-    element: <CalendarPrivateRoom />,
-  },
+  // {
+  //   path: "calendar/private-room",
+  //   title: "Private Room Calendar",
+  //   element: <CalendarPrivateRoom />,
+  // },
   {
     path: "profile",
     title: "Profile",
