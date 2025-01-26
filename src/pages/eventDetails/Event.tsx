@@ -26,7 +26,7 @@ import Countdown from "./Countdown";
 import eventServices from "../create/spaceDetails";
 import Loading from "../../components/LoadingSpinner";
 import { getCateringByEventId } from "../../services/cateringSelectionApi";
-import { Avatar } from "../../components/ui/avatar";
+import { Avatar, AvatarImage } from "../../components/ui/avatar";
 import {
   Accordion,
   AccordionContent,
@@ -251,7 +251,7 @@ function Event() {
           {event?.status === "APPROVED" ? (
             <div className="mt-3 flex justify-center gap-3">
               {event?.status === "APPROVED" && (
-                <div className="flex justify-center gap-3">
+                <div className="flex w-full justify-center gap-3">
                   {
                     // Check if the user is an admin or if the event is at least 3 days away from today
                     user?.role === "ADMIN" ||
@@ -421,11 +421,17 @@ function Event() {
           </p>
           <div className="mt-3 flex items-center gap-1 text-sm">
             <Avatar className="flex h-8 w-8 items-center justify-center bg-secondary-600/50 text-xs">
-              {event?.organizer?.trim() === ""
-                ? "Y"
-                : event?.organizer?.charAt(0).toUpperCase()}
+              {event?.organizer === "" && event.user.imageUrl ? (
+                <AvatarImage
+                  src={event.user?.imageUrl}
+                  className="object-cover"
+                />
+              ) : event?.organizer?.trim() === "" ? (
+                "Y"
+              ) : (
+                event?.organizer?.charAt(0).toUpperCase()
+              )}
             </Avatar>
-
             <p>
               Organized by{" "}
               <span className="font-semibold">
