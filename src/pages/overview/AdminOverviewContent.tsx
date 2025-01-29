@@ -221,7 +221,7 @@ function AdminOverviewContent() {
           <SummaryCard
             title="Total Registered Accounts"
             value={account.length}
-            chartData={totalAccountsChart}
+            chartData={totalAccountsChart}a
             dataKey="accounts"
           />
           <SummaryCard
@@ -247,7 +247,7 @@ function AdminOverviewContent() {
               {upcomingEvents.map((event) => (
                 <Link
                   to={`/admin/dashboard/events/${event.id}`}
-                  className="w-full max-w-xs"
+                  className="w-full max-w-lg"
                   key={event.id}
                 >
                   <Card>

@@ -14,12 +14,18 @@ function Analytics() {
   const [caterings, setCaterings] = useState<Catering[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
 
-  const eventsScheduleDates = events.map((event) => {
+  const existingEvents = events.filter((event) => {
+    return (
+      event.deletedAt === null || event.deletedAt === "0000-01-01T00:00:00.000Z"
+    );
+  });
+
+  const eventsScheduleDates = existingEvents.map((event) => {
     const eventDate = new Date(event.startTime);
     return eventDate.toISOString();
   });
 
-  const eventsCreatedDates = events.map((event) => {
+  const eventsCreatedDates = existingEvents.map((event) => {
     const eventDate = new Date(event.createdAt);
     return eventDate.toISOString();
   });
@@ -44,11 +50,11 @@ function Analytics() {
     })
     .filter((date) => date !== "");
 
-  const eventsStatusData = events.map((event) => {
+  const eventsStatusData = existingEvents.map((event) => {
     return event.status;
   });
 
-  const eventsVenueData = events.map((event) => {
+  const eventsVenueData = existingEvents.map((event) => {
     return event.venue;
   });
 
@@ -83,7 +89,7 @@ function Analytics() {
   return (
     <div className="mx-auto max-w-7xl space-y-3">
       <AnalyticsHeader
-        events={events}
+        events={existingEvents}
         caterings={caterings}
         accounts={accounts}
       />

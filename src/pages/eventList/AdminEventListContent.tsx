@@ -96,6 +96,12 @@ function AdminEventListContent() {
   const filter = searchParams.get("filter") || "all";
   const venue = searchParams.get("venue") || "all";
 
+  const headerEvents = events.filter((event) => {
+    return (
+      event.deletedAt === null || event.deletedAt === "0000-01-01T00:00:00.000Z"
+    );
+  });
+
   const filteredEvents = events
     .filter((event) => {
       return (
@@ -114,6 +120,9 @@ function AdminEventListContent() {
         event.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.venue.toLowerCase().includes(searchQuery.toLowerCase()) ||
         event.status.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (event.organizer ?? "")
+          .toLowerCase()
+          .includes(searchQuery.toLowerCase()) ||
         users
           .find((user) => user.id === event.user.id)
           ?.firstName.toLowerCase()
@@ -331,8 +340,8 @@ function AdminEventListContent() {
 
   return (
     <div className="mx-auto">
-      <EventsListHeader events={filteredEvents} />
       <Separator className="my-6" />
+      <EventsListHeader events={headerEvents} />
       <div className="mb-6 flex items-end justify-between">
         <div className="flex gap-3">
           <Button
@@ -360,7 +369,7 @@ function AdminEventListContent() {
         <div className="relative w-full max-w-96">
           <Input
             type="search"
-            placeholder="Search by title, venue, status, or booked by..."
+            placeholder="Search by title, venue, status, or organized by"
             className="w-full pr-10"
             value={searchQuery}
             onChange={handleSearchChange}

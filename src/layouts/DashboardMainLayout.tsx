@@ -10,7 +10,7 @@ import {
 } from "../components/ui/dropdown-menu";
 import { useUser } from "../hooks/use-user";
 import { logout } from "../services/authApi";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useRoutePrefix } from "../hooks/useRoutePrefix";
 
 function DashboardMainLayout({
@@ -34,7 +34,7 @@ function DashboardMainLayout({
 
   return (
     <div className="w-full">
-      <header className="flex w-full justify-between gap-3 px-5 py-8">
+      <header className="relative z-10 flex w-full justify-between gap-3 px-5 py-8">
         <div className="flex items-center justify-center gap-3">
           <SidebarTrigger />
           <h1 className="text-3xl font-semibold">{title}</h1>
