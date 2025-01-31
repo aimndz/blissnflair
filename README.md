@@ -1,4 +1,4 @@
-![Screenshot 2025-01-31 231242](https://github.com/user-attachments/assets/37b0e6c2-eae8-4aae-9558-bf724145d786)# Bliss and Flair Commercial Building Website
+# Bliss and Flair Commercial Building Website
 
 ## Description
   Bliss and Flair Commercial Building Website is an event place management system that offers venue booking, scheduling, and managing, providing a better experience for both admins and customers.
